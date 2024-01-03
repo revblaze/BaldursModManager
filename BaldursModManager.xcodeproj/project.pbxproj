@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2937012F2B46144700A5861C /* Mod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2937012E2B46144700A5861C /* Mod.swift */; };
 		29939AF22B4494B600581D26 /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */; };
 		29939AF42B4494B600581D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29939AF32B4494B600581D26 /* ContentView.swift */; };
 		29939AF62B4494B700581D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29939AF52B4494B700581D26 /* Assets.xcassets */; };
@@ -14,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2937012E2B46144700A5861C /* Mod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mod.swift; sourceTree = "<group>"; };
 		29939AEE2B4494B600581D26 /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
 		29939AF32B4494B600581D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -33,6 +35,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2937012D2B46143500A5861C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2937012E2B46144700A5861C /* Mod.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		29939AE52B4494B600581D26 = {
 			isa = PBXGroup;
 			children = (
@@ -52,6 +62,7 @@
 		29939AF02B4494B600581D26 /* BaldursModManager */ = {
 			isa = PBXGroup;
 			children = (
+				2937012D2B46143500A5861C /* Models */,
 				29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */,
 				29939AF32B4494B600581D26 /* ContentView.swift */,
 				29939AF52B4494B700581D26 /* Assets.xcassets */,
@@ -139,6 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2937012F2B46144700A5861C /* Mod.swift in Sources */,
 				29939AF42B4494B600581D26 /* ContentView.swift in Sources */,
 				29939AF22B4494B600581D26 /* BaldursModManagerApp.swift in Sources */,
 			);
@@ -279,12 +291,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -306,12 +320,14 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
