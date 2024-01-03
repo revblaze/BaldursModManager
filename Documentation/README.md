@@ -130,7 +130,7 @@ The important parts we'll need to parse come with keys: `[Name, Folder, Version,
                 <node id="ModOrder">
                     <children>
                         <node id="Module">
-                            <attribute id="UUID" value="991c9c7a-fb80-40cb-8f0d-b92d4e80e9b1" type="FixedString" />
+                            <attribute id="UUID" value="28ac9ce2-2aba-8cda-b3b5-6e922f71b6b8" type="FixedString" />
                         </node>
                         <node id="Module">
                             <attribute id="UUID" value="8c611d4b-75d9-40eb-ad61-15f898396e12" type="FixedString" />
