@@ -24,6 +24,7 @@ struct ContentView: View {
             // Optionally display more details from the ModItem
             ForEach(item.mods) { mod in
               Text(mod.name ?? "Unknown Mod")
+              Text(mod.description ?? "No description provided.")
             }
           }
         }
@@ -101,10 +102,6 @@ struct ContentView: View {
           let newModItem = ModItem(directoryPath: directoryURL.path, directoryContents: directoryContents, mods: mods)
           
           handleModFolder(at: directoryURL, for: newModItem)
-          
-          DispatchQueue.main.async {
-            self.modItems.append(newModItem)
-          }
         }
       }
     } catch {
