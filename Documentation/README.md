@@ -24,7 +24,7 @@ For this walkthrough, we are going to be installing and applying the [Faces of F
 
 ---
 
-Before we proceed any further, let's take a look at the [default modsettings.lsx file](https://github.com/revblaze/BaldursModManager/Documentation/DefaultResourceFiles/default_modsettings.lsx):
+Before we proceed any further, let's take a look at the [default modsettings.lsx file](/Documentation/DefaultResourceFiles/default_modsettings.lsx):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
