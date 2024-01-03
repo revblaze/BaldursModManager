@@ -1,15 +1,15 @@
 # Documentation
 
-## APFS Pathing
+## [APFS](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html) Pathing
 
-Default Absolute Paths 
+#### Default Absolute Paths 
 
 - Mod Contents Directory: `"/Users/{USER}/Documents/Larian Studios/Baldur's Gate 3/Mods"`
 - Mod Load Config File: `"/Users/{USER}/Documents/Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx"`
 
 Caution: The absolute path for the mod contents may depend on if the user is using [iCloud Drive optimizations](https://support.apple.com/en-us/HT206985)
 -  Xcode should be able to resolve this path automatically
--  If the user is using iCloud Drive, then it *should* automatically download the contents of this folder upon request
+-  If the user is using iCloud Drive, then it *should* automatically download the contents of this directory upon request
 -  However, given the potential size of this folder, as well as iCloud Drive inconsistencies, we may need to implement additional handling methods to ensure that all files are available offline
 
 ## Manual Modding Walkthrough
