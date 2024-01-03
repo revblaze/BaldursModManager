@@ -170,13 +170,13 @@ The important parts we'll need to parse come with keys: `[Name, Folder, Version,
 - Always keep a backup of the original modsettings.lsx
 
 #### Locked File Requirements(?)
-u/Dapper-Ad3707 notes that the modsettings.lsx file needs to be unlocked for editing, and locked again after editing, to ensure that the game doesn't overwrite previous changes. I'll need to double check if this is still an issue, as the file was unlocked by default for version `4.1.1.4251417`.
+[u/Dapper-Ad3707](https://www.reddit.com/r/BaldursGate3/comments/15cksse/manual_modding_in_bg3_specifically_for_macos_users/) notes that the modsettings.lsx file needs to be unlocked for editing, and locked again after editing, to ensure that the game doesn't overwrite previous changes. I'll need to double check if this is still an issue, as the file was unlocked by default for version `4.1.1.4251417`.
 - If this is an issue, manually applying `chmod` permissions should help to resolve it
 - It'll likely be easiest for us to generate a new version of modsettings.lsx each time the load order is changed
   - Thus, simply creating a new file with custom permissions should resolve this
 
 #### JSON parsing
-u/Dapper-Ad3707 notes that some mods may use a `float` type, instead of an `int` type, for denoting the value of key `Version64`. We'll use their example to help portray this issue:
+[u/Dapper-Ad3707](https://www.reddit.com/r/BaldursGate3/comments/15cksse/manual_modding_in_bg3_specifically_for_macos_users/) notes that some mods may use a `float` type, instead of an `int` type, for denoting the value of key `Version64`. We'll use their example to help portray this issue:
 
 ```
 {"Mods":[{"Author":"clintmich","Name":"RaritiesOfTheRealms","Folder":"RaritiesOfTheRealms","Version":"1.0","Description":"Adds rare and unique items found in the DnD 5e rule set.","UUID":"d23881c2-f6b5-4e64-a2fe-f55c9538ab1e","Created":"2023-01-13T00:35:44.7257018-07:00","Dependencies":[],"Group":"e4b043fa-c72a-46e9-8d5d-7664cbac08d3"}],"MD5":"e8d7cc3971ea9a53f9e31843ada6b72a"}
@@ -188,4 +188,4 @@ The issue pertains to the entry: `"Version":"1.0"`. They suggest translating tha
 <attribute id="Version" type="float32" value="1.0" />
 ```
 
-This appears to use a different `attribute id` vlaue to the previous entries, which used `"Version64"`. Perhaps this is due to the float value being specified as 32-bit. They acknowledge that they haven't yet tested this with float64 values. Perhaps we can play around with these upon testing.
+This appears to use a different `attribute id` value to the previous entries, which used `"Version64"`. Perhaps this is due to the float value being specified as 32-bit. They acknowledge that they haven't yet tested this with float64 values. Perhaps we can play around with these upon testing.
