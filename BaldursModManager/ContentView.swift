@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
-  @Query private var modItems: [ModItem]
+  @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   
   var body: some View {
     NavigationSplitView {
@@ -23,6 +23,7 @@ struct ContentView: View {
           }
         }
         .onDelete(perform: deleteItems)
+        .onMove(perform: moveItems)
       }
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
       .toolbar {
@@ -46,6 +47,26 @@ struct ContentView: View {
     }
      */
   }
+  
+  private func moveItems(from source: IndexSet, to destination: Int) {
+      var reorderedItems = modItems
+      reorderedItems.move(fromOffsets: source, toOffset: destination)
+      
+      // Update the 'order' of each 'ModItem' to its new index
+      for (index, item) in reorderedItems.enumerated() {
+          // Assuming 'ModItem' is a managed object and 'order' is an attribute
+          item.order = index
+      }
+
+      // Save the context
+      do {
+          try modelContext.save()
+      } catch {
+          // Handle the error, e.g., show an alert to the user
+          print("Error saving context: \(error)")
+      }
+  }
+
   
   private func selectFile() {
     let openPanel = NSOpenPanel()
