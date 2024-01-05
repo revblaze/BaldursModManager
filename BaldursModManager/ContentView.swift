@@ -207,11 +207,40 @@ struct ContentView: View {
     return nil
   }
   
+  // Triggered by UI delete button
+  private func deleteItem(item: ModItem) {
+    deleteModItems(itemToDelete: item)
+  }
   
+  // Triggered by menu bar item Edit > Delete
   private func deleteItems(offsets: IndexSet) {
+    deleteModItems(at: offsets)
+  }
+  
+  private func deleteModItems(at offsets: IndexSet? = nil, itemToDelete: ModItem? = nil) {
+    var indexToSelect: Int?
+    
     withAnimation {
-      for index in offsets {
+      if let offsets = offsets {
+        let sortedOffsets = offsets.sorted()
+        var adjustment = 0
+        
+        for index in sortedOffsets {
+          let adjustedIndex = index - adjustment
+          if adjustedIndex < modItems.count {
+            indexToSelect = adjustedIndex
+            modelContext.delete(modItems[adjustedIndex])
+            adjustment += 1
+          }
+        }
+      } else if let item = itemToDelete, let index = modItems.firstIndex(of: item) {
+        indexToSelect = index
         modelContext.delete(modItems[index])
+      }
+      try? modelContext.save()    // Save the context after deletion
+      updateOrderOfModItems()     // Update the order of remaining items
+      
+      if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
           selectedModItemOrderNumber = index - 1
         }
@@ -219,21 +248,18 @@ struct ContentView: View {
     }
   }
   
-  private func deleteItem(item: ModItem) {
-    // Find the index of the item to be deleted
-    if let index = modItems.firstIndex(where: { $0.id == item.id }) {
-      // Perform the deletion
-      withAnimation {
-        // Remove the item from your data model
-        modelContext.delete(modItems[index])
-        try? modelContext.save()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-          selectedModItemOrderNumber = index - 1
-        }
-      }
-    } else {
-      Debug.log("Item not found.")
+  private func updateOrderOfModItems() {
+    var updatedOrder = 0
+    for item in modItems.sorted(by: { $0.order < $1.order }) {
+      item.order = updatedOrder
+      updatedOrder += 1
+    }
+    
+    // Save the context after reordering
+    do {
+      try modelContext.save()
+    } catch {
+      print("Error saving context after reordering: \(error)")
     }
   }
   
