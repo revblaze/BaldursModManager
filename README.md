@@ -1,7 +1,9 @@
 # BaldursModManager
 Baldur's Gate 3 Mod Manager for macOS
 
-Will fill out this README.md as project development progresses. 
+<sup>This mod manager is currently in active development and does not function as expected. I will update the [Releases](https://github.com/revblaze/BaldursModManager/releases) page once there is something to test!</sup>
+
+<img width="843" alt="Screenshot 2024-01-05 at 3 52 30 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/d7af718f-4468-4894-9638-53864b1e00b6">
 
 For pre-development planning, see the [Documentation](/Documentation/) section.
 
