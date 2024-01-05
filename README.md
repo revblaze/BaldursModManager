@@ -7,6 +7,31 @@ Baldur's Gate 3 Mod Manager for macOS
 
 For pre-development planning, see the [Documentation](/Documentation/) section.
 
+## TODO
+
+- [x] Transition to SwiftData
+- [x] SwiftData implementation
+- [x] JSON mod metadata parsing (`info.json`)
+- [x] NavigationView (master)
+  - [x] Add ModItem to SwiftData store
+  - [x] Delete ModItem from SwiftData store 
+  - [x] Drag/drop ModItem to set load order
+- [x] ModItemDetailView (detail)
+  - [x] Populate with metadata from parsed JSON
+  - [x] Toggle modItem's `isEnabled` state
+- [ ] File management
+  - [ ] UserSettings: Option for copy or move on mod import 
+  - [ ] Copy/move mod folder to Application Support/Documents on import
+  - [ ] Handling of `.pak` file location based on `isEnabled` status
+  - [ ] Remove mod folder contents on Delete
+- [ ] `modsettings.lsx`
+  - [ ] modsettings XML version/build check on launch
+    - [ ] Backup default modsettings file for restore (remove all mods) functionality
+    - [ ] Use latest XML version/build tags for generation
+  - [ ] Mod load order XML generation based on `isEnabled` status
+  - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
+  
+
 ## Resources
 
 - [Fix Stuck Loading Main Menu - Fake GustavDev](https://www.nexusmods.com/baldursgate3/mods/611) (Nexus)
