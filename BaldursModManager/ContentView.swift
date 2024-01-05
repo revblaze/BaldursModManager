@@ -64,7 +64,7 @@ struct ContentView: View {
       try modelContext.save()
     } catch {
       // Handle the error, e.g., show an alert to the user
-      print("Error saving context: \(error)")
+      Debug.log("Error saving context: \(error)")
     }
   }
   
@@ -200,7 +200,7 @@ struct ContentView: View {
           return result
         }
       } catch {
-        print("Error parsing JSON: \(error.localizedDescription)")
+        Debug.log("Error parsing JSON: \(error.localizedDescription)")
       }
     }
     
@@ -259,7 +259,7 @@ struct ContentView: View {
     do {
       try modelContext.save()
     } catch {
-      print("Error saving context after reordering: \(error)")
+      Debug.log("Error saving context after reordering: \(error)")
     }
   }
   
