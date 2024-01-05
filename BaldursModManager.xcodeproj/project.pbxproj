@@ -7,23 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		29939AF22B4494B600581D26 /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */; };
-		29939AF42B4494B600581D26 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29939AF32B4494B600581D26 /* ContentView.swift */; };
-		29939AF62B4494B700581D26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29939AF52B4494B700581D26 /* Assets.xcassets */; };
-		29939AF92B4494B700581D26 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29939AF82B4494B700581D26 /* Preview Assets.xcassets */; };
+		29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */; };
+		29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EA2B4875EC003729AD /* ContentView.swift */; };
+		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
+		29DD55EF2B4875ED003729AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55EE2B4875ED003729AD /* Assets.xcassets */; };
+		29DD55F22B4875ED003729AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55F12B4875ED003729AD /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		29939AEE2B4494B600581D26 /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
-		29939AF32B4494B600581D26 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		29939AF52B4494B700581D26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		29939AF82B4494B700581D26 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		29939AFA2B4494B700581D26 /* BaldursModManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaldursModManager.entitlements; sourceTree = "<group>"; };
+		29DD55E52B4875EC003729AD /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
+		29DD55EA2B4875EC003729AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		29DD55EC2B4875EC003729AD /* ModItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModItem.swift; sourceTree = "<group>"; };
+		29DD55EE2B4875ED003729AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		29DD55F12B4875ED003729AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaldursModManager.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		29939AEB2B4494B600581D26 /* Frameworks */ = {
+		29DD55E22B4875EC003729AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,38 +35,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		29939AE52B4494B600581D26 = {
+		29DD55DC2B4875EC003729AD = {
 			isa = PBXGroup;
 			children = (
-				29939AF02B4494B600581D26 /* BaldursModManager */,
-				29939AEF2B4494B600581D26 /* Products */,
+				29DD55E72B4875EC003729AD /* BaldursModManager */,
+				29DD55E62B4875EC003729AD /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		29939AEF2B4494B600581D26 /* Products */ = {
+		29DD55E62B4875EC003729AD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				29939AEE2B4494B600581D26 /* BaldursModManager.app */,
+				29DD55E52B4875EC003729AD /* BaldursModManager.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29939AF02B4494B600581D26 /* BaldursModManager */ = {
+		29DD55E72B4875EC003729AD /* BaldursModManager */ = {
 			isa = PBXGroup;
 			children = (
-				29939AF12B4494B600581D26 /* BaldursModManagerApp.swift */,
-				29939AF32B4494B600581D26 /* ContentView.swift */,
-				29939AF52B4494B700581D26 /* Assets.xcassets */,
-				29939AFA2B4494B700581D26 /* BaldursModManager.entitlements */,
-				29939AF72B4494B700581D26 /* Preview Content */,
+				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
+				29DD55EA2B4875EC003729AD /* ContentView.swift */,
+				29DD55EC2B4875EC003729AD /* ModItem.swift */,
+				29DD55EE2B4875ED003729AD /* Assets.xcassets */,
+				29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */,
+				29DD55F02B4875ED003729AD /* Preview Content */,
 			);
 			path = BaldursModManager;
 			sourceTree = "<group>";
 		};
-		29939AF72B4494B700581D26 /* Preview Content */ = {
+		29DD55F02B4875ED003729AD /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				29939AF82B4494B700581D26 /* Preview Assets.xcassets */,
+				29DD55F12B4875ED003729AD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -72,13 +75,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		29939AED2B4494B600581D26 /* BaldursModManager */ = {
+		29DD55E42B4875EC003729AD /* BaldursModManager */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 29939AFD2B4494B700581D26 /* Build configuration list for PBXNativeTarget "BaldursModManager" */;
+			buildConfigurationList = 29DD55F62B4875ED003729AD /* Build configuration list for PBXNativeTarget "BaldursModManager" */;
 			buildPhases = (
-				29939AEA2B4494B600581D26 /* Sources */,
-				29939AEB2B4494B600581D26 /* Frameworks */,
-				29939AEC2B4494B600581D26 /* Resources */,
+				29DD55E12B4875EC003729AD /* Sources */,
+				29DD55E22B4875EC003729AD /* Frameworks */,
+				29DD55E32B4875EC003729AD /* Resources */,
 			);
 			buildRules = (
 			);
@@ -86,25 +89,25 @@
 			);
 			name = BaldursModManager;
 			productName = BaldursModManager;
-			productReference = 29939AEE2B4494B600581D26 /* BaldursModManager.app */;
+			productReference = 29DD55E52B4875EC003729AD /* BaldursModManager.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		29939AE62B4494B600581D26 /* Project object */ = {
+		29DD55DD2B4875EC003729AD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
 				LastUpgradeCheck = 1510;
 				TargetAttributes = {
-					29939AED2B4494B600581D26 = {
+					29DD55E42B4875EC003729AD = {
 						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
-			buildConfigurationList = 29939AE92B4494B600581D26 /* Build configuration list for PBXProject "BaldursModManager" */;
+			buildConfigurationList = 29DD55E02B4875EC003729AD /* Build configuration list for PBXProject "BaldursModManager" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -112,42 +115,43 @@
 				en,
 				Base,
 			);
-			mainGroup = 29939AE52B4494B600581D26;
-			productRefGroup = 29939AEF2B4494B600581D26 /* Products */;
+			mainGroup = 29DD55DC2B4875EC003729AD;
+			productRefGroup = 29DD55E62B4875EC003729AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				29939AED2B4494B600581D26 /* BaldursModManager */,
+				29DD55E42B4875EC003729AD /* BaldursModManager */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		29939AEC2B4494B600581D26 /* Resources */ = {
+		29DD55E32B4875EC003729AD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29939AF92B4494B700581D26 /* Preview Assets.xcassets in Resources */,
-				29939AF62B4494B700581D26 /* Assets.xcassets in Resources */,
+				29DD55F22B4875ED003729AD /* Preview Assets.xcassets in Resources */,
+				29DD55EF2B4875ED003729AD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		29939AEA2B4494B600581D26 /* Sources */ = {
+		29DD55E12B4875EC003729AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29939AF42B4494B600581D26 /* ContentView.swift in Sources */,
-				29939AF22B4494B600581D26 /* BaldursModManagerApp.swift in Sources */,
+				29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */,
+				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
+				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		29939AFB2B4494B700581D26 /* Debug */ = {
+		29DD55F42B4875ED003729AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -210,7 +214,7 @@
 			};
 			name = Debug;
 		};
-		29939AFC2B4494B700581D26 /* Release */ = {
+		29DD55F52B4875ED003729AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -265,7 +269,7 @@
 			};
 			name = Release;
 		};
-		29939AFE2B4494B700581D26 /* Debug */ = {
+		29DD55F72B4875ED003729AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -284,6 +288,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -292,7 +297,7 @@
 			};
 			name = Debug;
 		};
-		29939AFF2B4494B700581D26 /* Release */ = {
+		29DD55F82B4875ED003729AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -311,6 +316,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -322,25 +328,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		29939AE92B4494B600581D26 /* Build configuration list for PBXProject "BaldursModManager" */ = {
+		29DD55E02B4875EC003729AD /* Build configuration list for PBXProject "BaldursModManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				29939AFB2B4494B700581D26 /* Debug */,
-				29939AFC2B4494B700581D26 /* Release */,
+				29DD55F42B4875ED003729AD /* Debug */,
+				29DD55F52B4875ED003729AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29939AFD2B4494B700581D26 /* Build configuration list for PBXNativeTarget "BaldursModManager" */ = {
+		29DD55F62B4875ED003729AD /* Build configuration list for PBXNativeTarget "BaldursModManager" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				29939AFE2B4494B700581D26 /* Debug */,
-				29939AFF2B4494B700581D26 /* Release */,
+				29DD55F72B4875ED003729AD /* Debug */,
+				29DD55F82B4875ED003729AD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 29939AE62B4494B600581D26 /* Project object */;
+	rootObject = 29DD55DD2B4875EC003729AD /* Project object */;
 }
