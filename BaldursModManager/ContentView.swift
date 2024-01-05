@@ -17,9 +17,12 @@ struct ContentView: View {
       List {
         ForEach(modItems) { item in
           NavigationLink {
-            Text("Item at \(item.modName) with order# \(item.order)")
+            ModItemDetailView(item: item, deleteAction: deleteItem)
           } label: {
-            Text(item.modName)
+            HStack {
+              Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
+              Text(item.modName)
+            }
           }
         }
         .onDelete(perform: deleteItems)
@@ -34,39 +37,33 @@ struct ContentView: View {
         }
       }
     } detail: {
-      Text("Select an item")
+      WelcomeDetailView()
     }
   }
   
   private func addItem() {
     selectFile()
-    /*
-    withAnimation {
-      let newItem = ModItem(timestamp: Date())
-      modelContext.insert(newItem)
-    }
-     */
   }
   
   private func moveItems(from source: IndexSet, to destination: Int) {
-      var reorderedItems = modItems
-      reorderedItems.move(fromOffsets: source, toOffset: destination)
-      
-      // Update the 'order' of each 'ModItem' to its new index
-      for (index, item) in reorderedItems.enumerated() {
-          // Assuming 'ModItem' is a managed object and 'order' is an attribute
-          item.order = index
-      }
-
-      // Save the context
-      do {
-          try modelContext.save()
-      } catch {
-          // Handle the error, e.g., show an alert to the user
-          print("Error saving context: \(error)")
-      }
+    var reorderedItems = modItems
+    reorderedItems.move(fromOffsets: source, toOffset: destination)
+    
+    // Update the 'order' of each 'ModItem' to its new index
+    for (index, item) in reorderedItems.enumerated() {
+      // Assuming 'ModItem' is a managed object and 'order' is an attribute
+      item.order = index
+    }
+    
+    // Save the context
+    do {
+      try modelContext.save()
+    } catch {
+      // Handle the error, e.g., show an alert to the user
+      print("Error saving context: \(error)")
+    }
   }
-
+  
   
   private func selectFile() {
     let openPanel = NSOpenPanel()
@@ -163,7 +160,7 @@ struct ContentView: View {
     }
     return nil
   }
-
+  
   
   func parseJsonToDict(atPath filePath: String) -> [String: String]? {
     if let data = try? Data(contentsOf: URL(fileURLWithPath: filePath)) {
@@ -196,7 +193,7 @@ struct ContentView: View {
     
     return nil
   }
-
+  
   
   private func deleteItems(offsets: IndexSet) {
     withAnimation {
@@ -206,12 +203,55 @@ struct ContentView: View {
     }
   }
   
+  private func deleteItem(item: ModItem) {
+    // Find the index of the item to be deleted
+    if let index = modItems.firstIndex(where: { $0.id == item.id }) {
+      // Perform the deletion
+      withAnimation {
+        // Remove the item from your data model
+        modelContext.delete(modItems[index])
+        try? modelContext.save()
+      }
+    } else {
+      Debug.log("Item not found.")
+    }
+  }
+  
   private func nextOrderValue() -> Int {
-    (modItems.max(by: { $0.order < $1.order })?.order ?? 0) + 1
+    if modItems.isEmpty {
+      // If there are no items, start with 0
+      return 0
+    } else {
+      // Otherwise, find the maximum order and add 1
+      return (modItems.max(by: { $0.order < $1.order })?.order ?? 0) + 1
+    }
   }
 }
 
 #Preview {
   ContentView()
     .modelContainer(for: ModItem.self, inMemory: true)
+}
+
+struct ModItemDetailView: View {
+  let item: ModItem
+  let deleteAction: (ModItem) -> Void
+  
+  var body: some View {
+    VStack {
+      Text("Detail view for \(item.modName). Priority: \(item.order)")
+      // Other details
+      Button(action: { deleteAction(item) }) {
+        Label("Delete", systemImage: "trash.circle.fill")
+      }
+      .buttonStyle(.bordered)
+      .tint(.red)
+    }
+  }
+}
+
+struct WelcomeDetailView: View {
+  var body: some View {
+    Text("Welcome to BaldursModManager!")
+  }
 }
