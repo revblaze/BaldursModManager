@@ -9,7 +9,6 @@ For pre-development planning, see the [Documentation](/Documentation/) section.
 
 ## TODO
 
-- [x] Transition to SwiftData
 - [x] SwiftData implementation
 - [x] JSON mod metadata parsing (`info.json`)
 - [x] NavigationView (master)
