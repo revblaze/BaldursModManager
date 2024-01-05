@@ -280,21 +280,91 @@ struct ContentView: View {
 }
 
 struct ModItemDetailView: View {
+  @Environment(\.modelContext) private var modelContext
   let item: ModItem
   let deleteAction: (ModItem) -> Void
   
   var body: some View {
     VStack {
-      Text("Detail view for \(item.modName). Priority: \(item.order)")
-      // Other details
-      Button(action: { deleteAction(item) }) {
-        Label("Delete", systemImage: "trash.circle.fill")
+      
+      HStack {
+        Spacer()
+        Button(action: { toggleEnabled() }) {
+          Label(item.isEnabled ? "Enabled" : "Disabled", systemImage: item.isEnabled ? "checkmark.circle.fill" : "circle")
+            .frame(width: 80)
+            .padding(6)
+        }
+        .buttonStyle(.bordered)
+        .tint(item.isEnabled ? .green : .gray)
       }
-      .buttonStyle(.bordered)
-      .tint(.red)
+      
+      HStack {
+        VStack(alignment: .leading) {
+          Text(item.modName).font(.title)
+            .padding(.bottom, 2)
+          
+          if let author = item.modAuthor {
+            Text("by \(author)").font(.footnote)
+          }
+          
+          if let summary = item.modDescription {
+            Divider()
+              .padding(.vertical, 10)
+            
+            Text(summary)
+          }
+          
+          Divider()
+            .padding(.vertical, 10)
+          
+          HStack {
+            Text("Load Order Number: \(item.order)").font(.system(.body, design: .monospaced))
+            if item.order == 0 {
+              Text("(top)").font(.system(.body, design: .monospaced))
+            }
+          }
+          .padding(.bottom, 10)
+          
+          Text("Folder: \(item.modFolder)").font(.system(.body, design: .monospaced))
+            .padding(.bottom, 10)
+          
+          Text("UUID: \(item.modUuid)").font(.system(.body, design: .monospaced))
+          Text("MD5:  \(item.modMd5)").font(.system(.body, design: .monospaced))
+          
+          Spacer()
+          
+          Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
+            .font(.system(.body, design: .monospaced))
+          
+        }
+        .padding()
+        Spacer()
+      }
+      
+      Spacer()
+      
+      HStack {
+        Spacer()
+        Button(action: { deleteAction(item) }) {
+          Label("Delete", systemImage: "trash.circle.fill")
+            .padding(6)
+        }
+        .buttonStyle(.bordered)
+        .tint(.red)
+        
+      }
+    }
+    .padding()
+  }
+  
+  private func toggleEnabled() {
+    withAnimation {
+      item.isEnabled.toggle()
+      try? modelContext.save()
     }
   }
 }
+
 
 struct WelcomeDetailView: View {
   var body: some View {

@@ -37,3 +37,12 @@ class ModItem {
   }
 }
 
+extension ModItem {
+  static var mockData: [ModItem] {
+    [
+      ModItem(order: 0, directoryPath: "/path/to/mod1", directoryContents: ["file1", "file2"], name: "Mod One", folder: "Folder1", uuid: "UUID1", md5: "MD51"),
+      ModItem(order: 1, directoryPath: "/path/to/mod2", directoryContents: ["file3", "file4"], name: "Mod Two", folder: "Folder2", uuid: "UUID2", md5: "MD52"),
+      ModItem(order: 2, directoryPath: "/path/to/mod3", directoryContents: ["file5", "file6"], name: "Mod Three", folder: "Folder3", uuid: "UUID3", md5: "MD53")
+    ]
+  }
+}
