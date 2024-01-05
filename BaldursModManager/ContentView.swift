@@ -8,13 +8,16 @@
 import SwiftUI
 import SwiftData
 
+let UIDELAY: CGFloat = 0.01
+
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
+  @State private var selectedModItemOrderNumber: Int?
   
   var body: some View {
     NavigationSplitView {
-      List {
+      List(selection: $selectedModItemOrderNumber) {
         ForEach(modItems) { item in
           NavigationLink {
             ModItemDetailView(item: item, deleteAction: deleteItem)
@@ -24,6 +27,7 @@ struct ContentView: View {
               Text(item.modName)
             }
           }
+          .tag(item.order)
         }
         .onDelete(perform: deleteItems)
         .onMove(perform: moveItems)
@@ -123,9 +127,12 @@ struct ContentView: View {
       }
     }
     
-    if (name != nil) && (folder != nil) && (uuid != nil) && (md5 != nil) {
+    //if (name != nil) && (folder != nil) && (uuid != nil) && (md5 != nil) {
+    if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
+      let newOrderNumber = nextOrderValue()
       withAnimation {
-        let newModItem = ModItem(order: nextOrderValue(), directoryPath: directoryURL.path, directoryContents: directoryContents, name: name!, folder: folder!, uuid: uuid!, md5: md5!)
+        //let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, name: name!, folder: folder!, uuid: uuid!, md5: md5!)
+        let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, name: name, folder: folder, uuid: uuid, md5: md5)
         // Check for optional keys
         for (key, value) in infoDict {
           switch key.lowercased() {
@@ -144,6 +151,12 @@ struct ContentView: View {
           }
         }
         modelContext.insert(newModItem)
+        
+        // Schedule the update after the animation
+        DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
+          selectedModItemOrderNumber = newOrderNumber
+        }
+        
       }
     }
     
@@ -199,6 +212,9 @@ struct ContentView: View {
     withAnimation {
       for index in offsets {
         modelContext.delete(modItems[index])
+        DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
+          selectedModItemOrderNumber = index - 1
+        }
       }
     }
   }
@@ -211,6 +227,10 @@ struct ContentView: View {
         // Remove the item from your data model
         modelContext.delete(modItems[index])
         try? modelContext.save()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
+          selectedModItemOrderNumber = index - 1
+        }
       }
     } else {
       Debug.log("Item not found.")
