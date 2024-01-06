@@ -368,7 +368,6 @@ struct ModItemDetailView: View {
         Spacer()
         Button(action: { deleteAction(item) }) {
           Label("Remove", systemImage: "trash.circle.fill")
-            //.frame(width: 80)
             .padding(6)
         }
         .buttonStyle(.bordered)
