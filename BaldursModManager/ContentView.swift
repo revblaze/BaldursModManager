@@ -14,6 +14,10 @@ struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItemOrderNumber: Int?
+  @State private var showAlertForModDeletion = false
+  // Properties to store deletion details
+  @State private var offsetsToDelete: IndexSet?
+  @State private var modItemToDelete: ModItem?
   
   var body: some View {
     NavigationSplitView {
@@ -42,6 +46,16 @@ struct ContentView: View {
       }
     } detail: {
       WelcomeDetailView()
+    }
+    .alert(isPresented: $showAlertForModDeletion) {
+      Alert(
+        title: Text("Remove Mod"),
+        message: Text("Are you sure you want to remove this mod? It will be moved to the trash."),
+        primaryButton: .destructive(Text("Move to Trash")) {
+          deleteModItems(at: offsetsToDelete, itemToDelete: modItemToDelete)
+        },
+        secondaryButton: .cancel()
+      )
     }
   }
   
@@ -152,7 +166,6 @@ struct ContentView: View {
         }
         modelContext.insert(newModItem)
         
-        // Schedule the update after the animation
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
           selectedModItemOrderNumber = newOrderNumber
         }
@@ -209,12 +222,16 @@ struct ContentView: View {
   
   // Triggered by UI delete button
   private func deleteItem(item: ModItem) {
-    deleteModItems(itemToDelete: item)
+    modItemToDelete = item
+    offsetsToDelete = nil
+    showAlertForModDeletion = true
   }
   
   // Triggered by menu bar item Edit > Delete
   private func deleteItems(offsets: IndexSet) {
-    deleteModItems(at: offsets)
+    offsetsToDelete = offsets
+    modItemToDelete = nil
+    showAlertForModDeletion = true
   }
   
   private func deleteModItems(at offsets: IndexSet? = nil, itemToDelete: ModItem? = nil) {
@@ -239,6 +256,9 @@ struct ContentView: View {
       }
       try? modelContext.save()    // Save the context after deletion
       updateOrderOfModItems()     // Update the order of remaining items
+      
+      offsetsToDelete = nil
+      modItemToDelete = nil
       
       if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
@@ -272,6 +292,7 @@ struct ContentView: View {
       return (modItems.max(by: { $0.order < $1.order })?.order ?? 0) + 1
     }
   }
+  
 }
 
 #Preview {
@@ -346,7 +367,7 @@ struct ModItemDetailView: View {
       HStack {
         Spacer()
         Button(action: { deleteAction(item) }) {
-          Label("Delete", systemImage: "trash.circle.fill")
+          Label("Remove", systemImage: "trash.circle.fill")
             .padding(6)
         }
         .buttonStyle(.bordered)
