@@ -50,7 +50,7 @@ struct ContentView: View {
     .alert(isPresented: $showAlertForModDeletion) {
       Alert(
         title: Text("Remove Mod"),
-        message: Text("Are you sure you want to remove this mod from the loader? Its contents will be moved to the trash."),
+        message: Text("Are you sure you want to remove this mod? It will be moved to the trash."),
         primaryButton: .destructive(Text("Move to Trash")) {
           deleteModItems(at: offsetsToDelete, itemToDelete: modItemToDelete)
         },
