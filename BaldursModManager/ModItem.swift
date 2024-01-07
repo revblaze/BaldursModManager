@@ -11,6 +11,7 @@ import SwiftData
 @Model
 class ModItem {
   var order: Int
+  var directoryUrl: URL
   var directoryPath: String
   var directoryContents: [String]
   var pakFileString: String
@@ -27,8 +28,9 @@ class ModItem {
   var modVersion: String?
   var modMd5: String?
   
-  init(order: Int, directoryPath: String, directoryContents: [String], pakFileString: String, name: String, folder: String, uuid: String, md5: String) {
+  init(order: Int, directoryUrl: URL, directoryPath: String, directoryContents: [String], pakFileString: String, name: String, folder: String, uuid: String, md5: String) {
     self.order = order
+    self.directoryUrl = directoryUrl
     self.directoryPath = directoryPath
     self.directoryContents = directoryContents
     self.pakFileString = pakFileString
@@ -39,6 +41,7 @@ class ModItem {
   }
 }
 
+/*
 extension ModItem {
   static var mockData: [ModItem] {
     [
@@ -48,3 +51,4 @@ extension ModItem {
     ]
   }
 }
+*/

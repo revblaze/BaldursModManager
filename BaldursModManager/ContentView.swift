@@ -19,6 +19,10 @@ struct ContentView: View {
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
   
+  init() {
+    FileUtility.createUserModsFolderIfNeeded()
+  }
+
   var body: some View {
     NavigationSplitView {
       List(selection: $selectedModItemOrderNumber) {
@@ -146,7 +150,7 @@ struct ContentView: View {
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
         let newOrderNumber = nextOrderValue()
         withAnimation {
-          let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
+          let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
           // Check for optional keys
           for (key, value) in infoDict {
             switch key.lowercased() {
@@ -158,17 +162,24 @@ struct ContentView: View {
             default: break
             }
           }
-          modelContext.insert(newModItem)
           
-          DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-            selectedModItemOrderNumber = newOrderNumber
-          }
+          addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
         }
       }
       
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
+  }
+  
+  private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL) {
+    modelContext.insert(modItem)
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
+      selectedModItemOrderNumber = orderNumber
+    }
+    
+    importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem)
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
@@ -278,7 +289,6 @@ struct ContentView: View {
       item.order = updatedOrder
       updatedOrder += 1
     }
-    
     // Save the context after reordering
     do {
       try modelContext.save()
@@ -289,8 +299,7 @@ struct ContentView: View {
   
   private func nextOrderValue() -> Int {
     if modItems.isEmpty {
-      // If there are no items, start with 0
-      return 0
+      return 0  // If there are no items, start with 0
     } else {
       // Otherwise, find the maximum order and add 1
       return (modItems.max(by: { $0.order < $1.order })?.order ?? 0) + 1
@@ -301,7 +310,7 @@ struct ContentView: View {
     if let directoryPath = importModFolderAndReturnNewDirectoryPath(at: originalPath) {
       modItem.directoryPath = directoryPath
     } else {
-      Debug.log("Error: importModFolderAndUpdateModItemDirectoryPath")
+      Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
     }
   }
   
@@ -402,13 +411,16 @@ struct ModItemDetailView: View {
               Text("Debug Info").font(.headline)
                 .padding(.bottom, 10)
               
+              Text("PAK File String: \(item.pakFileString)").monoStyle()
+                .padding(.bottom, 5)
+              
               Text("Directory Path: \(item.directoryPath)").monoStyle()
                 .padding(.bottom, 5)
               
-              Text("Directory Contents:\n  \(item.directoryContents[0])\n  \(item.directoryContents[1])").monoStyle()
+              Text("Directory URL: \(item.directoryUrl.absoluteString)").monoStyle()
                 .padding(.bottom, 5)
               
-              Text("PAK File String: \(item.pakFileString)").monoStyle()
+              Text("Directory Contents:\n  \(item.directoryContents[0])\n  \(item.directoryContents[1])").monoStyle()
                 .padding(.bottom, 5)
             }
             
