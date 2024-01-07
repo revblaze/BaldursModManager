@@ -19,12 +19,12 @@ class ModItem {
   var modAuthor: String?
   var modCreatedDate: String?
   var modDescription: String?
-  var modFolder: String
+  var modFolder: String?
   var modGroup: String?
   var modName: String
   var modUuid: String
   var modVersion: String?
-  var modMd5: String
+  var modMd5: String?
   
   init(order: Int, directoryPath: String, directoryContents: [String], name: String, folder: String, uuid: String, md5: String) {
     self.order = order
