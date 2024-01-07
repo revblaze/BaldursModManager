@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181D72B4B1A8900B76A26 /* UserSettings.swift */; };
+		291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181DD2B4B278900B76A26 /* ViewExtensions.swift */; };
+		291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E02B4B2F9C00B76A26 /* FileUtility.swift */; };
 		29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */; };
 		29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EA2B4875EC003729AD /* ContentView.swift */; };
 		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
@@ -15,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		291181D72B4B1A8900B76A26 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		291181DD2B4B278900B76A26 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		291181E02B4B2F9C00B76A26 /* FileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtility.swift; sourceTree = "<group>"; };
 		29DD55E52B4875EC003729AD /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
 		29DD55EA2B4875EC003729AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,6 +41,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		291181D62B4B1A7A00B76A26 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				291181D72B4B1A8900B76A26 /* UserSettings.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		291181DC2B4B277700B76A26 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		291181DF2B4B2EB500B76A26 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				291181E02B4B2F9C00B76A26 /* FileUtility.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		29DD55DC2B4875EC003729AD = {
 			isa = PBXGroup;
 			children = (
@@ -54,6 +84,9 @@
 		29DD55E72B4875EC003729AD /* BaldursModManager */ = {
 			isa = PBXGroup;
 			children = (
+				291181DF2B4B2EB500B76A26 /* Utilities */,
+				291181DC2B4B277700B76A26 /* Views */,
+				291181D62B4B1A7A00B76A26 /* Settings */,
 				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
 				29DD55EC2B4875EC003729AD /* ModItem.swift */,
@@ -142,8 +175,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */,
 				29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */,
+				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
+				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
