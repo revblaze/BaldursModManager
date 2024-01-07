@@ -15,6 +15,7 @@ struct ContentView: View {
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItemOrderNumber: Int?
   @State private var showAlertForModDeletion = false
+  @State private var showPermissionsView = false
   // Properties to store deletion details
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
@@ -25,6 +26,15 @@ struct ContentView: View {
     FileUtility.createUserModsFolderIfNeeded()
     // Toggle file transfer UI debug elements
     Debug.fileTransferUI = false
+    
+    /*
+    if let contents = FileUtility.readFileContents(atPath: "/Users/jb/Documents/Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx") {
+      Debug.log(contents)
+    } else {
+      Debug.log("Unable to read file.")
+    }
+     */
+
   }
   
   var body: some View {
@@ -80,6 +90,16 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
+    }
+    .sheet(isPresented: $showPermissionsView) {
+      PermissionsView(onDismiss: {
+        self.showPermissionsView = false
+      })
+    }
+    .onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        self.showPermissionsView = true
+      }
     }
   }
   

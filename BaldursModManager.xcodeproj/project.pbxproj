@@ -11,6 +11,8 @@
 		291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181DD2B4B278900B76A26 /* ViewExtensions.swift */; };
 		291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E02B4B2F9C00B76A26 /* FileUtility.swift */; };
 		291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E22B4B3B3A00B76A26 /* SoundUtility.swift */; };
+		291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E62B4B4E8700B76A26 /* PermissionsView.swift */; };
+		291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */; };
 		29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */; };
 		29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EA2B4875EC003729AD /* ContentView.swift */; };
 		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
@@ -23,6 +25,8 @@
 		291181DD2B4B278900B76A26 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		291181E02B4B2F9C00B76A26 /* FileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtility.swift; sourceTree = "<group>"; };
 		291181E22B4B3B3A00B76A26 /* SoundUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundUtility.swift; sourceTree = "<group>"; };
+		291181E62B4B4E8700B76A26 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
+		291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsUtility.swift; sourceTree = "<group>"; };
 		29DD55E52B4875EC003729AD /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
 		29DD55EA2B4875EC003729AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -55,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
+				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -64,6 +69,7 @@
 			children = (
 				291181E02B4B2F9C00B76A26 /* FileUtility.swift */,
 				291181E22B4B3B3A00B76A26 /* SoundUtility.swift */,
+				291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -185,6 +191,8 @@
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
+				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
+				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
