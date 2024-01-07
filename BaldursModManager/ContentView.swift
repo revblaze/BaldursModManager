@@ -24,13 +24,14 @@ struct ContentView: View {
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
+
     /*
-    if let contents = FileUtility.readFileContents(atPath: "/Users/jb/Documents/Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx") {
+    if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
       Debug.log(contents)
     } else {
       Debug.log("Unable to read file.")
     }
-     */
+    */
   }
   
   var body: some View {
@@ -64,6 +65,11 @@ struct ContentView: View {
             }) {
               Label("Open UserMods", systemImage: "folder")
             }
+            Button(action: {
+              // preview modsettings.lsx
+            }) {
+              Label("Preview modsettings.lsx", systemImage: "command")
+            }
           }
         }
         ToolbarItem(placement: .principal) {
@@ -72,6 +78,7 @@ struct ContentView: View {
               .frame(width: 100)
               .opacity(fileTransferProgress > 0 ? 1 : 0)  // Fade out effect
           }
+          
         }
       }
     } detail: {
@@ -115,12 +122,10 @@ struct ContentView: View {
   private func moveItems(from source: IndexSet, to destination: Int) {
     var reorderedItems = modItems
     reorderedItems.move(fromOffsets: source, toOffset: destination)
-    
     // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
     }
-    
     // Save the context
     do {
       try modelContext.save()

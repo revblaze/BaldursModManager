@@ -50,6 +50,27 @@ struct FileUtility {
     }
     return nil
   }
+  
+  static func readFileFromDocumentsFolder(documentsFilePath: String) -> String? {
+    let fileManager = FileManager.default
+    
+    // Find the user's Documents directory
+    if let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+      let fileURL = documentsDirectory.appendingPathComponent(documentsFilePath)
+      
+      do {
+        let contents = try String(contentsOf: fileURL, encoding: .utf8)
+        return contents
+      } catch {
+        Debug.log("Error reading file at \(fileURL): \(error)")
+      }
+    } else {
+      Debug.log("Documents directory not found.")
+    }
+    
+    return nil
+  }
+  
 }
 
 
