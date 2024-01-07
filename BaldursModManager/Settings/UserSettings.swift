@@ -12,6 +12,7 @@ struct UserSettings {
   
   private let userDefaults = UserDefaults.standard
   private let keyMakeCopyOfModFolderOnImport = "makeCopyOfModFolderOnImport"
+  private var keyBaldursGateDocumentsDirectoryPath = "baldursGateDocumentsDirectoryPath"
   
   var makeCopyOfModFolderOnImport: Bool {
     get {
@@ -22,10 +23,22 @@ struct UserSettings {
     }
   }
   
+  /*
+  var baldursGateDocumentsDirectoryPath: String {
+    get {
+      userDefaults.string(forKey: keyBaldursGateDocumentsDirectoryPath)
+    }
+    set {
+      userDefaults.set(newValue, forKey: keyMakeCopyOfModFolderOnImport)
+    }
+  }
+   */
+  
   init() {
     if userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) == nil {
       // Set the default value on first launch
       userDefaults.set(true, forKey: keyMakeCopyOfModFolderOnImport)
+      //userDefaults.set("//", forKey: keyMakeCopyOfModFolderOnImport)
     }
   }
 }

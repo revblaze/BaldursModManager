@@ -362,7 +362,7 @@ struct ModItemDetailView: View {
                 Text("by \(author)").font(.footnote)
               }
               if let version = item.modVersion {
-                Text("(v\(version))").font(.system(.body, design: .monospaced))
+                Text("(v\(version))").monoStyle()
               }
             }
             
@@ -377,22 +377,39 @@ struct ModItemDetailView: View {
               .padding(.vertical, 10)
             
             HStack {
-              Text("Load Order Number: \(item.order)").font(.system(.body, design: .monospaced))
+              Text("Load Order Number: \(item.order)").monoStyle()
               if item.order == 0 {
-                Text("(top)").font(.system(.body, design: .monospaced))
+                Text("(top)").monoStyle()
               }
             }
             .padding(.bottom, 10)
             
             if let folder = item.modFolder {
-              Text("Folder: \(folder)").font(.system(.body, design: .monospaced))
+              Text("Folder: \(folder)").monoStyle()
                 .padding(.bottom, 10)
             }
             
-            Text("UUID: \(item.modUuid)").font(.system(.body, design: .monospaced))
+            Text("UUID: \(item.modUuid)").monoStyle()
             
             if let md5 = item.modMd5 {
-              Text("MD5:  \(md5)").font(.system(.body, design: .monospaced))
+              Text("MD5:  \(md5)").monoStyle()
+            }
+            
+            if Debug.isActive {
+              Divider()
+                .padding(.vertical, 10)
+              
+              Text("Debug Info").font(.headline)
+                .padding(.bottom, 10)
+              
+              Text("Directory Path: \(item.directoryPath)").monoStyle()
+                .padding(.bottom, 5)
+              
+              Text("Directory Contents:\n  \(item.directoryContents[0])\n  \(item.directoryContents[1])").monoStyle()
+                .padding(.bottom, 5)
+              
+              Text("PAK File String: \(item.pakFileString)").monoStyle()
+                .padding(.bottom, 5)
             }
             
             Spacer()
@@ -407,7 +424,7 @@ struct ModItemDetailView: View {
       HStack {
         if Debug.isActive {
           Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
-            .font(.system(.body, design: .monospaced))
+            .monoStyle()
         }
         Spacer()
         Button(action: { deleteAction(item) }) {
@@ -428,6 +445,12 @@ struct ModItemDetailView: View {
       item.isEnabled.toggle()
       try? modelContext.save()
     }
+  }
+}
+
+extension View {
+  func monoStyle() -> some View {
+    self.font(.system(.body, design: .monospaced))
   }
 }
 
