@@ -29,7 +29,38 @@ For pre-development planning, see the [Documentation](/Documentation/) section.
     - [ ] Use latest XML version/build tags for generation
   - [ ] Mod load order XML generation based on `isEnabled` status
   - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
-  
+- [ ] ModTypes
+  - [ ] `pakFile`
+  - [ ] `pakFileWithUuid`
+  - [x] `pakFileWithJson`
+  - [ ] `replaceFileStructure`
+
+## Mod Types
+```swift
+enum ModType {
+  case pakFile
+  case pakFileWithUuid
+  case pakFileWithJson
+  case replaceFileStructure
+}
+```
+
+`.pakFile` <i>ie. [Baldur's Gate 3 Mod Fixer](https://www.nexusmods.com/baldursgate3/mods/141)</i>
+  - Mod contents: PAK file
+  - PAK file simply needs to be placed in `Mods/` folder for it to work
+
+`.pakFileWithUuid` <i>ie. [UnlockLevelCurve](https://www.nexusmods.com/baldursgate3/mods/377)</i>
+  - Mod contents: PAK file
+  - Mod description contains UUID values per associated PAK file
+  - PAK file needs to be placed in `Mods/` folder; UUID key-value must be added to modsettings.lsx
+
+`.pakFileWithJson` <i>ie. [Faces of Faerun](https://www.nexusmods.com/baldursgate3/mods/429)</i>
+  - Mod contents: PAK file, info.json
+  - PAK file needs to be placed in `Mods/` folder; JSON contents must be parsed and added to modsettings.lsx
+
+`.replaceFileStructure` <i>ie. [Level 20 (Multiclass)](https://www.nexusmods.com/baldursgate3/mods/570)</i>
+  - Mod contents: file-folder structure that mimics game data files (`{MOD}/Data/Public/.../file`)
+  - Files need to replace existing files at their exact locations (`{MOD}/Data/Public/.../file` → `{GAME}/Data/Public/.../file`)
 
 ## Resources
 
@@ -39,5 +70,6 @@ For pre-development planning, see the [Documentation](/Documentation/) section.
 ## Credits
 
 ```
-u/Dapper-Ad3707, u/TheMetaHorde
+u/TheMetaHorde
+u/Dapper-Ad3707
 ```
