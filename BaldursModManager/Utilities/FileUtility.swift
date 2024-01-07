@@ -33,4 +33,44 @@ struct FileUtility {
       Debug.log("Error moving mod item to trash: \(error)")
     }
   }
+  
+  static func readFileContents(atPath path: String) -> String? {
+    let fileManager = FileManager.default
+    let filePath = path.replacingOccurrences(of: "\\", with: "")
+    
+    if fileManager.fileExists(atPath: filePath) {
+      do {
+        let contents = try String(contentsOfFile: filePath, encoding: .utf8)
+        return contents
+      } catch {
+        Debug.log("Error reading file at \(filePath): \(error)")
+      }
+    } else {
+      Debug.log("File does not exist at path: \(filePath)")
+    }
+    return nil
+  }
+  
+  static func readFileFromDocumentsFolder(documentsFilePath: String) -> String? {
+    let fileManager = FileManager.default
+    
+    // Find the user's Documents directory
+    if let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+      let fileURL = documentsDirectory.appendingPathComponent(documentsFilePath)
+      
+      do {
+        let contents = try String(contentsOf: fileURL, encoding: .utf8)
+        return contents
+      } catch {
+        Debug.log("Error reading file at \(fileURL): \(error)")
+      }
+    } else {
+      Debug.log("Documents directory not found.")
+    }
+    
+    return nil
+  }
+  
 }
+
+

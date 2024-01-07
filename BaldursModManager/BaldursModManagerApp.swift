@@ -34,7 +34,8 @@ struct BaldursModManagerApp: App {
 
 struct Debug {
   static var isActive = true
-  static var fileTransferUI = isActive
+  static var fileTransferUI = false
+  static var permissionsView = false
   
   static func log<T>(_ value: T) {
     if isActive {

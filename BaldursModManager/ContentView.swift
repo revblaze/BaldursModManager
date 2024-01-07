@@ -15,6 +15,7 @@ struct ContentView: View {
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItemOrderNumber: Int?
   @State private var showAlertForModDeletion = false
+  @State private var showPermissionsView = false
   // Properties to store deletion details
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
@@ -23,8 +24,14 @@ struct ContentView: View {
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
-    // Toggle file transfer UI debug elements
-    Debug.fileTransferUI = false
+
+    /*
+    if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
+      Debug.log(contents)
+    } else {
+      Debug.log("Unable to read file.")
+    }
+    */
   }
   
   var body: some View {
@@ -58,6 +65,11 @@ struct ContentView: View {
             }) {
               Label("Open UserMods", systemImage: "folder")
             }
+            Button(action: {
+              // preview modsettings.lsx
+            }) {
+              Label("Preview modsettings.lsx", systemImage: "command")
+            }
           }
         }
         ToolbarItem(placement: .principal) {
@@ -66,6 +78,7 @@ struct ContentView: View {
               .frame(width: 100)
               .opacity(fileTransferProgress > 0 ? 1 : 0)  // Fade out effect
           }
+          
         }
       }
     } detail: {
@@ -80,6 +93,18 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
+    }
+    .sheet(isPresented: $showPermissionsView) {
+      PermissionsView(onDismiss: {
+        self.showPermissionsView = false
+      })
+    }
+    .onAppear {
+      if Debug.permissionsView {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          self.showPermissionsView = true
+        }
+      }
     }
   }
   
@@ -97,12 +122,10 @@ struct ContentView: View {
   private func moveItems(from source: IndexSet, to destination: Int) {
     var reorderedItems = modItems
     reorderedItems.move(fromOffsets: source, toOffset: destination)
-    
     // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
     }
-    
     // Save the context
     do {
       try modelContext.save()
