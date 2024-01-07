@@ -22,4 +22,15 @@ struct FileUtility {
       }
     }
   }
+  
+  static func moveModItemToTrash(_ modItem: ModItem) {
+    let fileManager = FileManager.default
+    do {
+      let directoryURL = modItem.directoryUrl
+      try fileManager.trashItem(at: directoryURL, resultingItemURL: nil)
+      SoundUtility.play(systemSound: .trash)
+    } catch {
+      Debug.log("Error moving mod item to trash: \(error)")
+    }
+  }
 }

@@ -33,7 +33,8 @@ struct BaldursModManagerApp: App {
 }
 
 struct Debug {
-  static let isActive = true
+  static var isActive = true
+  static var fileTransferUI = isActive
   
   static func log<T>(_ value: T) {
     if isActive {
