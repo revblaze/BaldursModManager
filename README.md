@@ -10,10 +10,11 @@ Baldur's Gate 3 Mod Manager for macOS
 ## Table of Contents
 
 1. [TODO](#todo)
-2. [Mod Types](#mod-types)
-3. [System Requirements](#system-requirements)
-4. [Resources](#resources)
-5. [Credits](#credits)
+2. [How It Works](#how-it-works)
+3. [Mod Types](#mod-types)
+4. [System Requirements](#system-requirements)
+5. [Resources](#resources)
+6. [Credits](#credits)
 
 ## TODO
 
@@ -38,13 +39,47 @@ Baldur's Gate 3 Mod Manager for macOS
   - [ ] Mod load order XML generation based on `isEnabled` status
   - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
 
+## How It Works
+
+Upon downloading a mod package, you'll be given a mod folder with two files: `info.json` and some `.pak` file. Simply drag and drop that mod folder into the app to get started...
+
+<details>
+
+<summary><h4>Expand to Continue Reading</h4></summary>
+
+If the `info.json` file can be parsed (it contains the required fields `Name, Folder, UUID, MD5`) then the mod folder will be accepted. 
+
+From here, the mod folder will be stored in the app's `Application Support/` directory. Simultaneously, a new entry will be added to the app's local database that will include a reference to the mod folder directory, as well as the metadata parsed from the JSON file. Each new entry will also be added to the end of the load order list and given an order number based on its position in the list. 
+
+### Load Order
+
+Rearranging mods in the sidebar will update the order number of each mod, respective to their new position in the list.
+
+### Enabling / Disabling
+
+Newly added mods are disabled by default. 
+
+<b><i>Enabling</i></b> a mod will move that mod's `.pak` file to the BG3 `Mods/` directory. It will also queue the metadata (parsed from the JSON file) to be added to the `modsettings.lsx` file. 
+
+<b><i>Disabling</i></b> a mod will move the `.pak` file back to the mod folder (in the app's `Application Support/` directory), and will remove its associated metadata from the `modsettings.lsx` queue.
+
+### Saving / Restoring
+
+<b><i>Save Mod Settings</i></b> will backup the existing `modsettings.lsx` file and replace it with a new, identical file that includes the metadata of the enabled mods in your load order. The order in which these mods are added will depend on their order in the list. This new modsettings file will be given permissions that mimic the system's file-locking functionality, as seen in the Finder app.
+
+Adding new mods, enabling/disabling existings mods and/or modifying the load order–followed by <b><i>Save Mod Settings</i></b>–will simply replace the existing `modsettings.lsx` file with a newly generated one.
+
+<b><i>Restore Mod Settings</i></b> will replace any existing `modsettings.lsx` file with the one that was initially backed up from the first time you saved mod settings.
+
+</details>
+
 ## Mod Types
 
 <i>Initially, this mod manager will feature support for downloadable mod folders that contain a `.pak` file and an `info.json` file (`.pakFileWithJson`). This section is mostly for potential future plans.</i>
 
 <details>
 
-<summary><h4>Expand Section</h4></summary>
+<summary><h4>Expand to Continue Reading</h4></summary>
 
 ```swift
 enum ModType {
