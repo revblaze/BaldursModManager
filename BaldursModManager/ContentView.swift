@@ -85,7 +85,6 @@ struct ContentView: View {
     
     // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
-      // Assuming 'ModItem' is a managed object and 'order' is an attribute
       item.order = index
     }
     
@@ -93,11 +92,9 @@ struct ContentView: View {
     do {
       try modelContext.save()
     } catch {
-      // Handle the error, e.g., show an alert to the user
       Debug.log("Error saving context: \(error)")
     }
   }
-  
   
   private func selectFile() {
     let openPanel = NSOpenPanel()
@@ -120,13 +117,10 @@ struct ContentView: View {
         
         if let infoDict = parseJsonToDict(atPath: fullPath) {
           Debug.log("JSON contents: \n\(infoDict)")
-          
           createNewModItemFrom(infoDict: infoDict, infoJsonPath: fullPath, directoryContents: contents)
-          
         } else {
           Debug.log("Error parsing JSON content. Bring up manual entry screen.")
         }
-        
       } else {
         Debug.log("Error: Unable to locate info.json file of imported mod")
       }
@@ -136,59 +130,45 @@ struct ContentView: View {
   private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
     let directoryURL = URL(fileURLWithPath: infoJsonPath).deletingLastPathComponent()
     
-    // Required
-    var name: String?
-    var folder: String?
-    var uuid: String?
-    var md5: String?
-    
-    for (key, value) in infoDict {
-      switch key.lowercased() {
-      case "name":
-        name = value
-      case "folder":
-        folder = value
-      case "uuid":
-        uuid = value
-      case "md5":
-        md5 = value
-      default:
-        break
+    if let pakFileString = getPakFileString(fromDirectoryContents: directoryContents) {
+      // Required
+      var name, folder, uuid, md5: String?
+      for (key, value) in infoDict {
+        switch key.lowercased() {
+        case "name": name = value
+        case "folder": folder = value
+        case "uuid": uuid = value
+        case "md5": md5 = value
+        default: break
+        }
       }
-    }
-    
-    //if (name != nil) && (folder != nil) && (uuid != nil) && (md5 != nil) {
-    if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
-      let newOrderNumber = nextOrderValue()
-      withAnimation {
-        //let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, name: name!, folder: folder!, uuid: uuid!, md5: md5!)
-        let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, name: name, folder: folder, uuid: uuid, md5: md5)
-        // Check for optional keys
-        for (key, value) in infoDict {
-          switch key.lowercased() {
-          case "author":
-            newModItem.modAuthor = value
-          case "description":
-            newModItem.modDescription = value
-          case "created":
-            newModItem.modCreatedDate = value
-          case "group":
-            newModItem.modGroup = value
-          case "version":
-            newModItem.modVersion = value
-          default:
-            break
+      
+      if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
+        let newOrderNumber = nextOrderValue()
+        withAnimation {
+          let newModItem = ModItem(order: newOrderNumber, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
+          // Check for optional keys
+          for (key, value) in infoDict {
+            switch key.lowercased() {
+            case "author": newModItem.modAuthor = value
+            case "description": newModItem.modDescription = value
+            case "created": newModItem.modCreatedDate = value
+            case "group": newModItem.modGroup = value
+            case "version": newModItem.modVersion = value
+            default: break
+            }
+          }
+          modelContext.insert(newModItem)
+          
+          DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
+            selectedModItemOrderNumber = newOrderNumber
           }
         }
-        modelContext.insert(newModItem)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-          selectedModItemOrderNumber = newOrderNumber
-        }
-        
       }
+      
+    } else {
+      Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
-    
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
@@ -203,6 +183,14 @@ struct ContentView: View {
     return nil
   }
   
+  private func getPakFileString(fromDirectoryContents directoryContents: [String]) -> String? {
+    for file in directoryContents {
+      if file.lowercased().hasSuffix(".pak") {
+        return file
+      }
+    }
+    return nil
+  }
   
   func parseJsonToDict(atPath filePath: String) -> [String: String]? {
     if let data = try? Data(contentsOf: URL(fileURLWithPath: filePath)) {
@@ -309,6 +297,35 @@ struct ContentView: View {
     }
   }
   
+  private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem) {
+    if let directoryPath = importModFolderAndReturnNewDirectoryPath(at: originalPath) {
+      modItem.directoryPath = directoryPath
+    } else {
+      Debug.log("Error: importModFolderAndUpdateModItemDirectoryPath")
+    }
+  }
+  
+  private func importModFolderAndReturnNewDirectoryPath(at originalPath: URL) -> String? {
+    let fileManager = FileManager.default
+    if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+      let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      
+      do {
+        if UserSettings.shared.makeCopyOfModFolderOnImport {
+          try fileManager.copyItem(at: originalPath, to: destinationURL)
+        } else {
+          try fileManager.moveItem(at: originalPath, to: destinationURL)
+        }
+        
+        return destinationURL.path
+        
+      } catch {
+        Debug.log("Error handling mod folder: \(error)")
+      }
+    }
+    return nil
+  }
+  
 }
 
 #Preview {
@@ -323,7 +340,6 @@ struct ModItemDetailView: View {
   
   var body: some View {
     VStack {
-      
       HStack {
         Spacer()
         Button(action: { toggleEnabled() }) {
@@ -335,64 +351,64 @@ struct ModItemDetailView: View {
         .tint(item.isEnabled ? .green : .gray)
       }
       
-      HStack {
-        VStack(alignment: .leading) {
-          Text(item.modName).font(.title)
-            .padding(.bottom, 2)
-          
-          HStack {
-            if let author = item.modAuthor {
-              Text("by \(author)").font(.footnote)
+      ScrollView {
+        HStack {
+          VStack(alignment: .leading) {
+            Text(item.modName).font(.title)
+              .padding(.bottom, 2)
+            
+            HStack {
+              if let author = item.modAuthor {
+                Text("by \(author)").font(.footnote)
+              }
+              if let version = item.modVersion {
+                Text("(v\(version))").font(.system(.body, design: .monospaced))
+              }
             }
-            if let version = item.modVersion {
-              Spacer()
-              Text("v\(version)").font(.system(.body, design: .monospaced))
+            
+            if let summary = item.modDescription {
+              Divider()
+                .padding(.vertical, 10)
+              
+              Text(summary)
             }
-          }
-          
-          if let summary = item.modDescription {
+            
             Divider()
               .padding(.vertical, 10)
             
-            Text(summary)
-          }
-          
-          Divider()
-            .padding(.vertical, 10)
-          
-          HStack {
-            Text("Load Order Number: \(item.order)").font(.system(.body, design: .monospaced))
-            if item.order == 0 {
-              Text("(top)").font(.system(.body, design: .monospaced))
+            HStack {
+              Text("Load Order Number: \(item.order)").font(.system(.body, design: .monospaced))
+              if item.order == 0 {
+                Text("(top)").font(.system(.body, design: .monospaced))
+              }
             }
+            .padding(.bottom, 10)
+            
+            if let folder = item.modFolder {
+              Text("Folder: \(folder)").font(.system(.body, design: .monospaced))
+                .padding(.bottom, 10)
+            }
+            
+            Text("UUID: \(item.modUuid)").font(.system(.body, design: .monospaced))
+            
+            if let md5 = item.modMd5 {
+              Text("MD5:  \(md5)").font(.system(.body, design: .monospaced))
+            }
+            
+            Spacer()
+            
           }
-          .padding(.bottom, 10)
-          
-          if let folder = item.modFolder {
-            Text("Folder: \(folder)").font(.system(.body, design: .monospaced))
-              .padding(.bottom, 10)
-          }
-          
-          Text("UUID: \(item.modUuid)").font(.system(.body, design: .monospaced))
-          
-          if let md5 = item.modMd5 {
-            Text("MD5:  \(md5)").font(.system(.body, design: .monospaced))
-          }
-          
+          .padding()
           Spacer()
-          
-          if Debug.isActive {
-            Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
-              .font(.system(.body, design: .monospaced))
-          }
         }
-        .padding()
         Spacer()
       }
       
-      Spacer()
-      
       HStack {
+        if Debug.isActive {
+          Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
+            .font(.system(.body, design: .monospaced))
+        }
         Spacer()
         Button(action: { deleteAction(item) }) {
           Label("Remove", systemImage: "trash.circle.fill")
@@ -404,6 +420,7 @@ struct ModItemDetailView: View {
       }
     }
     .padding()
+    
   }
   
   private func toggleEnabled() {
