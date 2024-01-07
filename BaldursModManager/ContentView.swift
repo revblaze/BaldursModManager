@@ -448,13 +448,6 @@ struct ModItemDetailView: View {
   }
 }
 
-extension View {
-  func monoStyle() -> some View {
-    self.font(.system(.body, design: .monospaced))
-  }
-}
-
-
 struct WelcomeDetailView: View {
   var body: some View {
     Text("Welcome to BaldursModManager!")
