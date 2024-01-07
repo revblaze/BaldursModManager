@@ -18,11 +18,16 @@ struct ContentView: View {
   // Properties to store deletion details
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
+  @State private var isFileTransferInProgress = false
+  @State private var fileTransferProgress: Double = 0
+  @State private var progressViewOpacity = 1.0
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
+    // Toggle file transfer UI debug elements
+    //Debug.fileTransferUI = false
   }
-
+  
   var body: some View {
     NavigationSplitView {
       List(selection: $selectedModItemOrderNumber) {
@@ -54,6 +59,13 @@ struct ContentView: View {
             }) {
               Label("Open UserMods", systemImage: "folder")
             }
+          }
+        }
+        ToolbarItem(placement: .principal) {
+          if Debug.fileTransferUI || isFileTransferInProgress {
+            ProgressView(value: fileTransferProgress, total: 1.0)
+              .frame(width: 100)
+              .opacity(progressViewOpacity)
           }
         }
       }
@@ -179,7 +191,7 @@ struct ContentView: View {
       selectedModItemOrderNumber = orderNumber
     }
     
-    //importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem)
+    importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress)
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
@@ -306,33 +318,82 @@ struct ContentView: View {
     }
   }
   
-  private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem) {
-    if let directoryPath = importModFolderAndReturnNewDirectoryPath(at: originalPath) {
-      modItem.directoryPath = directoryPath
-    } else {
-      Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
+  private func importModFolderAndUpdateModItemDirectoryPath(
+    at originalPath: URL, modItem: ModItem, progress: Binding<Double>
+  ) {
+    // Mark transfer as started
+    DispatchQueue.main.async {
+      self.isFileTransferInProgress = true
     }
+    
+    importModFolderAndReturnNewDirectoryPath(
+      at: originalPath,
+      progressHandler: { progressValue in
+        DispatchQueue.main.async {
+          progress.wrappedValue = progressValue.fractionCompleted
+        }
+      },
+      completionHandler: { directoryPath in
+        DispatchQueue.main.async {
+          if let directoryPath = directoryPath {
+            modItem.directoryPath = directoryPath
+          } else {
+            Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
+          }
+          // Mark transfer as finished
+          self.isFileTransferInProgress = false
+          
+          // Fade out the ProgressView if fileTransferUI is not active
+          if !Debug.fileTransferUI {
+            withAnimation(.easeOut(duration: 1.5)) {
+              self.progressViewOpacity = 0
+            }
+            // Delay the reset of fileTransferProgress and isFileTransferInProgress
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+              self.fileTransferProgress = 0
+              self.isFileTransferInProgress = false
+            }
+          } else {
+            // If Debug.fileTransferUI is active, reset immediately
+            self.isFileTransferInProgress = false
+          }
+        }
+      }
+    )
   }
   
-  private func importModFolderAndReturnNewDirectoryPath(at originalPath: URL) -> String? {
-    let fileManager = FileManager.default
-    if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+  
+  private func importModFolderAndReturnNewDirectoryPath(at originalPath: URL, progressHandler: @escaping (Progress) -> Void, completionHandler: @escaping (String?) -> Void) {
+    DispatchQueue.global(qos: .userInitiated).async {
+      let fileManager = FileManager.default
+      guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        completionHandler(nil)
+        return
+      }
+      
       let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
       
       do {
         if UserSettings.shared.makeCopyOfModFolderOnImport {
+          progressHandler(progress)
           try fileManager.copyItem(at: originalPath, to: destinationURL)
         } else {
+          progressHandler(progress)
           try fileManager.moveItem(at: originalPath, to: destinationURL)
         }
         
-        return destinationURL.path
-        
+        progress.completedUnitCount = 1
+        DispatchQueue.main.async {
+          completionHandler(destinationURL.path)
+        }
       } catch {
-        Debug.log("Error handling mod folder: \(error)")
+        DispatchQueue.main.async {
+          Debug.log("Error handling mod folder: \(error)")
+          completionHandler(nil)
+        }
       }
     }
-    return nil
   }
   
 }
