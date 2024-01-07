@@ -11,12 +11,10 @@ import AVFoundation
 struct SoundUtility {
   
   static func play(systemSound: SystemSound) {
-    if UserSettings.shared.enableApplicationSounds {
-      if let sound = NSSound(contentsOfFile: systemSound.path, byReference: true) {
-        sound.play()
-      } else {
-        Debug.log("Failed to play system sound")
-      }
+    if let sound = NSSound(contentsOfFile: systemSound.path, byReference: true) {
+      sound.play()
+    } else {
+      Debug.log("Failed to play system sound")
     }
   }
   
