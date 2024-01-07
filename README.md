@@ -8,10 +8,12 @@ Baldur's Gate 3 Mod Manager for macOS
 <i>For pre-development planning, see the [Documentation](/Documentation/) section.</i>
 
 ## Table of Contents
+
 1. [TODO](#todo)
 2. [Mod Types](#mod-types)
-3. [Resources](#resources)
-4. [Credits](#credits)
+3. [System Requirements](#system-requirements)
+4. [Resources](#resources)
+5. [Credits](#credits)
 
 ## TODO
 
@@ -35,13 +37,15 @@ Baldur's Gate 3 Mod Manager for macOS
     - [ ] Use latest XML version/build tags for generation
   - [ ] Mod load order XML generation based on `isEnabled` status
   - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
-- [ ] ModTypes
-  - [ ] `pakFile`
-  - [ ] `pakFileWithUuid`
-  - [x] `pakFileWithJson`
-  - [ ] `replaceFileStructure`
 
 ## Mod Types
+
+<i>Initially, this mod manager will feature support for downloadable mod folders that contain a `.pak` file and an `info.json` file (`.pakFileWithJson`). This section is mostly for potential future plans.</i>
+
+<details>
+
+<summary><h4>Expand Section</h4></summary>
+
 ```swift
 enum ModType {
   case pakFile
@@ -66,7 +70,16 @@ enum ModType {
 
 `.replaceFileStructure` <i>ie. [Level 20 (Multiclass)](https://www.nexusmods.com/baldursgate3/mods/570)</i>
   - Mod contents: file-folder structure that mimics game data files (`{MOD}/Data/Public/.../file`)
-  - Files need to replace existing files at their exact locations (`{MOD}/Data/Public/.../file` → `{GAME}/Data/Public/.../file`)
+  - Files need to replace existing files at their exact locations
+  - `{MOD}/Data/Public/.../file` → `{GAME}/Data/Public/.../file`
+
+</details>
+
+## System Requirements
+
+Requires macOS 14+ (Sonoma and later).
+
+<sup>This requirement is mostly due to the [SwiftData](https://developer.apple.com/documentation/swiftdata) implementation. This was to ensure that the underlying code will be compatible with macOS for as long as possible. Due to the open source nature of this project, anyone is more than welcome to implement backwards compatibility with the [Core Data](https://developer.apple.com/documentation/coredata) framework.
 
 ## Resources
 
