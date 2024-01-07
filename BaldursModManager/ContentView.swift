@@ -43,6 +43,15 @@ struct ContentView: View {
             Label("Add Item", systemImage: "plus")
           }
         }
+        ToolbarItemGroup(placement: .navigation) {
+          if Debug.isActive {
+            Button(action: {
+              openUserModsFolder()
+            }) {
+              Label("Open UserMods", systemImage: "folder")
+            }
+          }
+        }
       }
     } detail: {
       WelcomeDetailView()
@@ -56,6 +65,13 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
+    }
+  }
+  
+  private func openUserModsFolder() {
+    if let appSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
+      let userModsURL = appSupportURL//.appendingPathComponent("UserMods")
+      NSWorkspace.shared.open(userModsURL)
     }
   }
   
@@ -324,8 +340,14 @@ struct ModItemDetailView: View {
           Text(item.modName).font(.title)
             .padding(.bottom, 2)
           
-          if let author = item.modAuthor {
-            Text("by \(author)").font(.footnote)
+          HStack {
+            if let author = item.modAuthor {
+              Text("by \(author)").font(.footnote)
+            }
+            if let version = item.modVersion {
+              Spacer()
+              Text("v\(version)").font(.system(.body, design: .monospaced))
+            }
           }
           
           if let summary = item.modDescription {
@@ -346,17 +368,23 @@ struct ModItemDetailView: View {
           }
           .padding(.bottom, 10)
           
-          Text("Folder: \(item.modFolder)").font(.system(.body, design: .monospaced))
-            .padding(.bottom, 10)
+          if let folder = item.modFolder {
+            Text("Folder: \(folder)").font(.system(.body, design: .monospaced))
+              .padding(.bottom, 10)
+          }
           
           Text("UUID: \(item.modUuid)").font(.system(.body, design: .monospaced))
-          Text("MD5:  \(item.modMd5)").font(.system(.body, design: .monospaced))
+          
+          if let md5 = item.modMd5 {
+            Text("MD5:  \(md5)").font(.system(.body, design: .monospaced))
+          }
           
           Spacer()
           
-          Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
-            .font(.system(.body, design: .monospaced))
-          
+          if Debug.isActive {
+            Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
+              .font(.system(.body, design: .monospaced))
+          }
         }
         .padding()
         Spacer()
