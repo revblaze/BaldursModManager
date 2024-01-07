@@ -179,7 +179,7 @@ struct ContentView: View {
       selectedModItemOrderNumber = orderNumber
     }
     
-    importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem)
+    //importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem)
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
