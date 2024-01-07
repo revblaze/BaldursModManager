@@ -24,9 +24,6 @@ struct ContentView: View {
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
-    // Toggle file transfer UI debug elements
-    Debug.fileTransferUI = false
-    
     /*
     if let contents = FileUtility.readFileContents(atPath: "/Users/jb/Documents/Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx") {
       Debug.log(contents)
