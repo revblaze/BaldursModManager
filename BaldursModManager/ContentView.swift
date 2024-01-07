@@ -20,12 +20,11 @@ struct ContentView: View {
   @State private var modItemToDelete: ModItem?
   @State private var isFileTransferInProgress = false
   @State private var fileTransferProgress: Double = 0
-  @State private var progressViewOpacity = 1.0
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
     // Toggle file transfer UI debug elements
-    //Debug.fileTransferUI = false
+    Debug.fileTransferUI = false
   }
   
   var body: some View {
@@ -65,7 +64,7 @@ struct ContentView: View {
           if Debug.fileTransferUI || isFileTransferInProgress {
             ProgressView(value: fileTransferProgress, total: 1.0)
               .frame(width: 100)
-              .opacity(progressViewOpacity)
+              .opacity(fileTransferProgress > 0 ? 1 : 0)  // Fade out effect
           }
         }
       }
@@ -263,7 +262,7 @@ struct ContentView: View {
   
   private func deleteModItems(at offsets: IndexSet? = nil, itemToDelete: ModItem? = nil) {
     var indexToSelect: Int?
-    
+
     withAnimation {
       if let offsets = offsets {
         let sortedOffsets = offsets.sorted()
@@ -272,17 +271,20 @@ struct ContentView: View {
         for index in sortedOffsets {
           let adjustedIndex = index - adjustment
           if adjustedIndex < modItems.count {
+            let modItem = modItems[adjustedIndex]
             indexToSelect = adjustedIndex
             modelContext.delete(modItems[adjustedIndex])
+            FileUtility.moveModItemToTrash(modItem)
             adjustment += 1
           }
         }
       } else if let item = itemToDelete, let index = modItems.firstIndex(of: item) {
         indexToSelect = index
         modelContext.delete(modItems[index])
+        FileUtility.moveModItemToTrash(item)
       }
-      try? modelContext.save()    // Save the context after deletion
-      updateOrderOfModItems()     // Update the order of remaining items
+      try? modelContext.save() // Save the context after deletion
+      updateOrderOfModItems()  // Update the order of remaining items
       
       offsetsToDelete = nil
       modItemToDelete = nil
@@ -336,26 +338,20 @@ struct ContentView: View {
       completionHandler: { directoryPath in
         DispatchQueue.main.async {
           if let directoryPath = directoryPath {
+            modItem.directoryUrl = URL(fileURLWithPath: directoryPath)
             modItem.directoryPath = directoryPath
           } else {
             Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
           }
           // Mark transfer as finished
           self.isFileTransferInProgress = false
+          SoundUtility.play(systemSound: .mount)
           
-          // Fade out the ProgressView if fileTransferUI is not active
+          // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
           if !Debug.fileTransferUI {
-            withAnimation(.easeOut(duration: 1.5)) {
-              self.progressViewOpacity = 0
-            }
-            // Delay the reset of fileTransferProgress and isFileTransferInProgress
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
-              self.isFileTransferInProgress = false
             }
-          } else {
-            // If Debug.fileTransferUI is active, reset immediately
-            self.isFileTransferInProgress = false
           }
         }
       }
