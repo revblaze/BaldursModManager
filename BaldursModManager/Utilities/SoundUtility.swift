@@ -9,13 +9,17 @@ import AppKit
 import AVFoundation
 
 struct SoundUtility {
+  
   static func play(systemSound: SystemSound) {
-    if let sound = NSSound(contentsOfFile: systemSound.path, byReference: true) {
-      sound.play()
-    } else {
-      Debug.log("Failed to play system sound")
+    if UserSettings.shared.enableApplicationSounds {
+      if let sound = NSSound(contentsOfFile: systemSound.path, byReference: true) {
+        sound.play()
+      } else {
+        Debug.log("Failed to play system sound")
+      }
     }
   }
+  
 }
 
 enum SystemSound {
