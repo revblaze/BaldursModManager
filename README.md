@@ -5,7 +5,13 @@ Baldur's Gate 3 Mod Manager for macOS
 
 <img width="843" alt="Screenshot 2024-01-05 at 3 52 30 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/d7af718f-4468-4894-9638-53864b1e00b6">
 
-For pre-development planning, see the [Documentation](/Documentation/) section.
+<i>For pre-development planning, see the [Documentation](/Documentation/) section.</i>
+
+## Table of Contents
+1. [TODO](#todo)
+2. [Mod Types](#mod-types)
+3. [Resources](#resources)
+4. [Credits](#credits)
 
 ## TODO
 
