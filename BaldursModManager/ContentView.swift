@@ -34,7 +34,6 @@ struct ContentView: View {
       Debug.log("Unable to read file.")
     }
      */
-
   }
   
   var body: some View {
@@ -97,8 +96,10 @@ struct ContentView: View {
       })
     }
     .onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-        self.showPermissionsView = true
+      if Debug.permissionsView {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          self.showPermissionsView = true
+        }
       }
     }
   }

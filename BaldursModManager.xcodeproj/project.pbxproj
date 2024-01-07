@@ -74,6 +74,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		291181EA2B4B63A100B76A26 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				29DD55EC2B4875EC003729AD /* ModItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		29DD55DC2B4875EC003729AD = {
 			isa = PBXGroup;
 			children = (
@@ -93,12 +101,12 @@
 		29DD55E72B4875EC003729AD /* BaldursModManager */ = {
 			isa = PBXGroup;
 			children = (
-				291181DF2B4B2EB500B76A26 /* Utilities */,
-				291181DC2B4B277700B76A26 /* Views */,
-				291181D62B4B1A7A00B76A26 /* Settings */,
 				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
-				29DD55EC2B4875EC003729AD /* ModItem.swift */,
+				291181DC2B4B277700B76A26 /* Views */,
+				291181EA2B4B63A100B76A26 /* Models */,
+				291181DF2B4B2EB500B76A26 /* Utilities */,
+				291181D62B4B1A7A00B76A26 /* Settings */,
 				29DD55EE2B4875ED003729AD /* Assets.xcassets */,
 				29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */,
 				29DD55F02B4875ED003729AD /* Preview Content */,
