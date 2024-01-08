@@ -15,6 +15,8 @@
 		291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */; };
 		291181EC2B4B691300B76A26 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181EB2B4B691300B76A26 /* Constants.swift */; };
 		291181EE2B4B7A3A00B76A26 /* ModItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181ED2B4B7A3A00B76A26 /* ModItemManager.swift */; };
+		291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181EF2B4B883900B76A26 /* LsxUtility.swift */; };
+		291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */; };
 		29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */; };
 		29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EA2B4875EC003729AD /* ContentView.swift */; };
 		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
@@ -31,6 +33,8 @@
 		291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsUtility.swift; sourceTree = "<group>"; };
 		291181EB2B4B691300B76A26 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		291181ED2B4B7A3A00B76A26 /* ModItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModItemManager.swift; sourceTree = "<group>"; };
+		291181EF2B4B883900B76A26 /* LsxUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxUtility.swift; sourceTree = "<group>"; };
+		291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModItemDetailView.swift; sourceTree = "<group>"; };
 		29DD55E52B4875EC003729AD /* BaldursModManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaldursModManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaldursModManagerApp.swift; sourceTree = "<group>"; };
 		29DD55EA2B4875EC003729AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +69,7 @@
 			children = (
 				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
 				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
+				291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -75,6 +80,7 @@
 				291181E02B4B2F9C00B76A26 /* FileUtility.swift */,
 				291181E22B4B3B3A00B76A26 /* SoundUtility.swift */,
 				291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */,
+				291181EF2B4B883900B76A26 /* LsxUtility.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -203,11 +209,13 @@
 				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
+				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
+				291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */,
 				291181EE2B4B7A3A00B76A26 /* ModItemManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
