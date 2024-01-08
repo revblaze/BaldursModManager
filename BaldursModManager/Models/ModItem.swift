@@ -41,14 +41,28 @@ class ModItem {
   }
 }
 
-/*
-extension ModItem {
-  static var mockData: [ModItem] {
-    [
-      ModItem(order: 0, directoryPath: "/path/to/mod1", directoryContents: ["file1", "file2"], pakFileString: "mod1.pak", name: "Mod One", folder: "Folder1", uuid: "UUID1", md5: "MD51"),
-      ModItem(order: 1, directoryPath: "/path/to/mod2", directoryContents: ["file3", "file4"], pakFileString: "mod2.pak", name: "Mod Two", folder: "Folder2", uuid: "UUID2", md5: "MD52"),
-      ModItem(order: 2, directoryPath: "/path/to/mod3", directoryContents: ["file5", "file6"], pakFileString: "mod3.pak", name: "Mod Three", folder: "Folder3", uuid: "UUID3", md5: "MD53")
-    ]
+
+class ModItemUtility {
+  static func logModItems(_ modItems: [ModItem]) {
+    for modItem in modItems {
+      Debug.log("ModItem Details:")
+      Debug.log("Order: \(modItem.order)")
+      Debug.log("Directory URL: \(modItem.directoryUrl)")
+      Debug.log("Directory Path: \(modItem.directoryPath)")
+      Debug.log("Directory Contents: \(modItem.directoryContents.joined(separator: ", "))")
+      Debug.log("PAK File String: \(modItem.pakFileString)")
+      Debug.log("Is Enabled: \(modItem.isEnabled)")
+      Debug.log("Is Installed In Mod Folder: \(modItem.isInstalledInModFolder)")
+      Debug.log("Mod Author: \(modItem.modAuthor ?? "N/A")")
+      Debug.log("Mod Created Date: \(modItem.modCreatedDate ?? "N/A")")
+      Debug.log("Mod Description: \(modItem.modDescription ?? "N/A")")
+      Debug.log("Mod Folder: \(modItem.modFolder ?? "N/A")")
+      Debug.log("Mod Group: \(modItem.modGroup ?? "N/A")")
+      Debug.log("Mod Name: \(modItem.modName)")
+      Debug.log("Mod UUID: \(modItem.modUuid)")
+      Debug.log("Mod Version: \(modItem.modVersion ?? "N/A")")
+      Debug.log("Mod MD5: \(modItem.modMd5 ?? "N/A")")
+      Debug.log("----------------------------------------------------")
+    }
   }
 }
-*/

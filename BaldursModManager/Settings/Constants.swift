@@ -11,6 +11,9 @@ struct Constants {
   static let ApplicationSupportFolderName = "BaldursModManager"
   static let ApplicationSwiftDataFileName = "default.store"
   
+  static let UserModsFolderName = "UserMods"
+  static let UserBackupsFolderName = "UserBackups"
+  
   static let defaultModSettingsFileFromDocumentsRelativePath = "Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx"
   static let defaultModFolderFromDocumentsRelativePath = "Larian Studios/Baldur's Gate 3/Mods"
 }

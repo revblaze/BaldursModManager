@@ -67,9 +67,9 @@
 		291181DC2B4B277700B76A26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
-				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
 				291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */,
+				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
+				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

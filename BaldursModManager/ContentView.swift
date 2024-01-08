@@ -23,15 +23,16 @@ struct ContentView: View {
   @State private var fileTransferProgress: Double = 0
   
   init() {
-    FileUtility.createUserModsFolderIfNeeded()
+    FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
-    /*
-     if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
-     Debug.log(contents)
-     } else {
-     Debug.log("Unable to read file.")
-     }
-     */
+    // Backup modsettingsLxs; parse
+    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
+      let lsxDict = LsxUtility.parseFileContents(modsettingsLsxFile)
+      Debug.log(lsxDict)
+    }
+    
+    
+    
   }
   
   private let modItemManager = ModItemManager.shared
@@ -408,8 +409,7 @@ struct ContentView: View {
         return
       }
       
-      //let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
-      let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName).appendingPathComponent(originalPath.lastPathComponent)
       let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
       
       do {

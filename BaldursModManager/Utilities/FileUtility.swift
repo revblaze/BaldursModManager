@@ -8,16 +8,24 @@
 import Foundation
 
 struct FileUtility {
-  static func createUserModsFolderIfNeeded() {
+  static func createUserModsAndBackupFoldersIfNeeded() {
     let fileManager = FileManager.default
     if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
-      let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent("UserMods")
+      let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName)
+      let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
       
       if !fileManager.fileExists(atPath: userModsURL.path) {
         do {
           try fileManager.createDirectory(at: userModsURL, withIntermediateDirectories: true, attributes: nil)
         } catch {
           Debug.log("Error creating UserMods directory: \(error)")
+        }
+      }
+      if !fileManager.fileExists(atPath: userBackupsURL.path) {
+        do {
+          try fileManager.createDirectory(at: userBackupsURL, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+          Debug.log("Error creating UserBackups directory: \(error)")
         }
       }
     }
