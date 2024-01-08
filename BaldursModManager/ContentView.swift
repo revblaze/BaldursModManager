@@ -22,7 +22,25 @@ struct ContentView: View {
   @State private var isFileTransferInProgress = false
   @State private var fileTransferProgress: Double = 0
   
-  init() {
+  private let modItemManager = ModItemManager.shared
+  
+  private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
+    let predicate = #Predicate { (modItem: ModItem) in
+      modItem.isEnabled == true
+    }
+    let sortDescriptor = SortDescriptor(\ModItem.order)
+    let fetchDescriptor = FetchDescriptor<ModItem>(predicate: predicate, sortBy: [sortDescriptor])
+    
+    do {
+      let modItems = try modelContext.fetch(fetchDescriptor)
+      return modItems
+    } catch {
+      Debug.log("Failed to load ModItem model: \(error)")
+      return []
+    }
+  }
+  
+  private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
     // Backup modsettingsLxs; parse
@@ -31,11 +49,8 @@ struct ContentView: View {
       Debug.log(lsxDict)
     }
     
-    
-    
+    ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
   }
-  
-  private let modItemManager = ModItemManager.shared
   
   var body: some View {
     NavigationSplitView {
@@ -85,6 +100,7 @@ struct ContentView: View {
         ToolbarItem(placement: .principal) {
           Button(action: {
             // restore modsettings.lsx
+            ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
           }) {
             Label("Restore", systemImage: "gobackward")
           }
@@ -116,6 +132,7 @@ struct ContentView: View {
       })
     }
     .onAppear {
+      performInitialSetup()
       if Debug.permissionsView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           self.showPermissionsView = true
