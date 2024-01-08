@@ -43,13 +43,9 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
-    // Backup modsettingsLxs; parse
-    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
-      let lsxDict = LsxUtility.parseFileContents(modsettingsLsxFile)
-      Debug.log(lsxDict)
-    }
-    
     ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
+    
+    LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
   }
   
   var body: some View {
