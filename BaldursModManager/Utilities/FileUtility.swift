@@ -11,7 +11,7 @@ struct FileUtility {
   static func createUserModsFolderIfNeeded() {
     let fileManager = FileManager.default
     if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
-      let userModsURL = appSupportURL.appendingPathComponent("UserMods")
+      let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent("UserMods")
       
       if !fileManager.fileExists(atPath: userModsURL.path) {
         do {
@@ -73,4 +73,40 @@ struct FileUtility {
   
 }
 
-
+extension FileUtility {
+  
+  static func moveSwiftDataStoreFiles() {
+    let fileManager = FileManager.default
+    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+      Debug.log("Application Support directory not found.")
+      return
+    }
+    
+    let swiftDataFiles = ["default.store", "default.store-shm", "default.store-wal"]
+    let destinationSubfolderURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName, isDirectory: true)
+    
+    // Create the destination subfolder if it doesn't exist
+    if !fileManager.fileExists(atPath: destinationSubfolderURL.path) {
+      do {
+        try fileManager.createDirectory(at: destinationSubfolderURL, withIntermediateDirectories: true)
+      } catch {
+        Debug.log("Error creating directory: \(error)")
+        return
+      }
+    }
+    
+    for fileName in swiftDataFiles {
+      let sourceURL = appSupportURL.appendingPathComponent(fileName)
+      if fileManager.fileExists(atPath: sourceURL.path) {
+        let destinationURL = destinationSubfolderURL.appendingPathComponent(fileName)
+        do {
+          try fileManager.moveItem(at: sourceURL, to: destinationURL)
+          Debug.log("Moved \(fileName) to \(destinationURL.path)")
+        } catch {
+          Debug.log("Failed to move \(fileName): \(error)")
+        }
+      }
+    }
+  }
+  
+}
