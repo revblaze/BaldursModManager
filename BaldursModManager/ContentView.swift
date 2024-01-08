@@ -24,14 +24,16 @@ struct ContentView: View {
   
   init() {
     FileUtility.createUserModsFolderIfNeeded()
-
+    
+    //FileUtility.moveFilesToSubfolders()
+    //FileUtility.moveSwiftDataStoreFiles()
     /*
-    if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
-      Debug.log(contents)
-    } else {
-      Debug.log("Unable to read file.")
-    }
-    */
+     if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
+     Debug.log(contents)
+     } else {
+     Debug.log("Unable to read file.")
+     }
+     */
   }
   
   var body: some View {
@@ -110,7 +112,7 @@ struct ContentView: View {
   
   private func openUserModsFolder() {
     if let appSupportURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
-      let userModsURL = appSupportURL//.appendingPathComponent("UserMods")
+      let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName)
       NSWorkspace.shared.open(userModsURL)
     }
   }
@@ -285,7 +287,7 @@ struct ContentView: View {
   
   private func deleteModItems(at offsets: IndexSet? = nil, itemToDelete: ModItem? = nil) {
     var indexToSelect: Int?
-
+    
     withAnimation {
       if let offsets = offsets {
         let sortedOffsets = offsets.sorted()
@@ -390,7 +392,8 @@ struct ContentView: View {
         return
       }
       
-      let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      //let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
       let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
       
       do {
@@ -543,5 +546,42 @@ struct ModItemDetailView: View {
 struct WelcomeDetailView: View {
   var body: some View {
     Text("Welcome to BaldursModManager!")
+  }
+}
+
+
+
+extension ContentView {
+  func toggleModItem(_ modItem: ModItem) {
+    let fileManager = FileManager.default
+    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Documents directory.")
+      return
+    }
+    
+    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    let modItemPakFilePath = URL(fileURLWithPath: modItem.directoryPath).appendingPathComponent(modItem.pakFileString)
+    
+    if modItem.isEnabled {
+      // Move the .pak file to the mod folder in Documents
+      let destinationPath = modFolderPath.appendingPathComponent(modItem.pakFileString)
+      moveFile(from: modItemPakFilePath, to: destinationPath)
+    } else {
+      // Move the .pak file back to the original directory
+      moveFile(from: modFolderPath.appendingPathComponent(modItem.pakFileString), to: modItemPakFilePath)
+    }
+  }
+  
+  private func moveFile(from sourceURL: URL, to destinationURL: URL) {
+    let fileManager = FileManager.default
+    do {
+      if fileManager.fileExists(atPath: destinationURL.path) {
+        try fileManager.removeItem(at: destinationURL)
+      }
+      try fileManager.moveItem(at: sourceURL, to: destinationURL)
+      Debug.log("File moved successfully from \(sourceURL.path) to \(destinationURL.path)")
+    } catch {
+      Debug.log("Failed to move file: \(error.localizedDescription)")
+    }
   }
 }

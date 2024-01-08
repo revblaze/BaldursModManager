@@ -10,25 +10,36 @@ import SwiftData
 
 @main
 struct BaldursModManagerApp: App {
+  var container: ModelContainer
   
-  var sharedModelContainer: ModelContainer = {
-    let schema = Schema([
-      ModItem.self,
-    ])
-    let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-    
+  init() {
     do {
-      return try ModelContainer(for: schema, configurations: [modelConfiguration])
+      let fileManager = FileManager.default
+      guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        fatalError("Application Support directory not found.")
+      }
+      let storeURL = appSupportURL
+        .appendingPathComponent(Constants.ApplicationSupportFolderName)
+        .appendingPathComponent(Constants.ApplicationSwiftDataFileName)
+      
+      // Create the subfolder if it doesn't exist
+      let subfolderURL = storeURL.deletingLastPathComponent()
+      if !fileManager.fileExists(atPath: subfolderURL.path) {
+        try fileManager.createDirectory(at: subfolderURL, withIntermediateDirectories: true)
+      }
+      
+      let config = ModelConfiguration(url: storeURL)
+      container = try ModelContainer(for: ModItem.self, configurations: config)
     } catch {
-      fatalError("Could not create ModelContainer: \(error)")
+      fatalError("Failed to configure SwiftData container: \(error)")
     }
-  }()
+  }
   
   var body: some Scene {
     WindowGroup {
       ContentView()
     }
-    .modelContainer(sharedModelContainer)
+    .modelContainer(container)
   }
 }
 
