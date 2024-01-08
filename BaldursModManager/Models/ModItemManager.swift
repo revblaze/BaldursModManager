@@ -1,0 +1,59 @@
+//
+//  ModItemManager.swift
+//  BaldursModManager
+//
+//  Created by Justin Bush on 1/7/24.
+//
+
+import Foundation
+
+class ModItemManager {
+  static let shared = ModItemManager()
+  
+  func toggleModItem(_ modItem: ModItem) {
+    Debug.log("Toggling ModItem: \(modItem.modName), isEnabled: \(modItem.isEnabled)")
+    
+    let fileManager = FileManager.default
+    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Documents directory.")
+      return
+    }
+    
+    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    let modItemOriginalFolderPath = URL(fileURLWithPath: modItem.directoryPath)
+    let modItemPakFilePath = modItemOriginalFolderPath.appendingPathComponent(modItem.pakFileString)
+    
+    // Ensure the Mods folder exists
+    if !fileManager.fileExists(atPath: modFolderPath.path) {
+      do {
+        try fileManager.createDirectory(at: modFolderPath, withIntermediateDirectories: true)
+      } catch {
+        Debug.log("Failed to create Mods folder: \(error.localizedDescription)")
+        return
+      }
+    }
+    
+    // Determine the correct source and destination paths
+    let (sourcePath, destinationPath) = modItem.isEnabled ?
+    (modItemPakFilePath, modFolderPath.appendingPathComponent(modItem.pakFileString)) :
+    (modFolderPath.appendingPathComponent(modItem.pakFileString), modItemPakFilePath)
+    
+    // Move the file
+    moveFile(from: sourcePath, to: destinationPath)
+  }
+  
+  private func moveFile(from sourceURL: URL, to destinationURL: URL) {
+    Debug.log("Attempting to move file from \(sourceURL.path) to \(destinationURL.path)")
+    
+    let fileManager = FileManager.default
+    do {
+      if fileManager.fileExists(atPath: destinationURL.path) {
+        try fileManager.removeItem(at: destinationURL)
+      }
+      try fileManager.moveItem(at: sourceURL, to: destinationURL)
+      Debug.log("File moved successfully from \(sourceURL.path) to \(destinationURL.path)")
+    } catch {
+      Debug.log("Failed to move file: \(error.localizedDescription)")
+    }
+  }
+}

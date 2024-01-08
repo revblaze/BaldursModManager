@@ -36,6 +36,8 @@ struct ContentView: View {
      */
   }
   
+  private let modItemManager = ModItemManager.shared
+  
   var body: some View {
     NavigationSplitView {
       List(selection: $selectedModItemOrderNumber) {
@@ -430,6 +432,8 @@ struct ModItemDetailView: View {
   let item: ModItem
   let deleteAction: (ModItem) -> Void
   
+  private let modItemManager = ModItemManager.shared
+  
   var body: some View {
     VStack {
       HStack {
@@ -536,52 +540,17 @@ struct ModItemDetailView: View {
   }
   
   private func toggleEnabled() {
+    Debug.log("toggleEnabled()")
     withAnimation {
       item.isEnabled.toggle()
       try? modelContext.save()
     }
+    modItemManager.toggleModItem(item)
   }
 }
 
 struct WelcomeDetailView: View {
   var body: some View {
     Text("Welcome to BaldursModManager!")
-  }
-}
-
-
-
-extension ContentView {
-  func toggleModItem(_ modItem: ModItem) {
-    let fileManager = FileManager.default
-    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-      Debug.log("Unable to find the Documents directory.")
-      return
-    }
-    
-    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
-    let modItemPakFilePath = URL(fileURLWithPath: modItem.directoryPath).appendingPathComponent(modItem.pakFileString)
-    
-    if modItem.isEnabled {
-      // Move the .pak file to the mod folder in Documents
-      let destinationPath = modFolderPath.appendingPathComponent(modItem.pakFileString)
-      moveFile(from: modItemPakFilePath, to: destinationPath)
-    } else {
-      // Move the .pak file back to the original directory
-      moveFile(from: modFolderPath.appendingPathComponent(modItem.pakFileString), to: modItemPakFilePath)
-    }
-  }
-  
-  private func moveFile(from sourceURL: URL, to destinationURL: URL) {
-    let fileManager = FileManager.default
-    do {
-      if fileManager.fileExists(atPath: destinationURL.path) {
-        try fileManager.removeItem(at: destinationURL)
-      }
-      try fileManager.moveItem(at: sourceURL, to: destinationURL)
-      Debug.log("File moved successfully from \(sourceURL.path) to \(destinationURL.path)")
-    } catch {
-      Debug.log("Failed to move file: \(error.localizedDescription)")
-    }
   }
 }
