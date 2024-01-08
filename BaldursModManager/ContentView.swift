@@ -22,19 +22,35 @@ struct ContentView: View {
   @State private var isFileTransferInProgress = false
   @State private var fileTransferProgress: Double = 0
   
-  init() {
-    FileUtility.createUserModsFolderIfNeeded()
+  private let modItemManager = ModItemManager.shared
+  
+  private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
+    let predicate = #Predicate { (modItem: ModItem) in
+      modItem.isEnabled == true
+    }
+    let sortDescriptor = SortDescriptor(\ModItem.order)
+    let fetchDescriptor = FetchDescriptor<ModItem>(predicate: predicate, sortBy: [sortDescriptor])
     
-    /*
-     if let contents = FileUtility.readFileFromDocumentsFolder(documentsFilePath: Constants.defaultModSettingsFileFromDocumentsRelativePath) {
-     Debug.log(contents)
-     } else {
-     Debug.log("Unable to read file.")
-     }
-     */
+    do {
+      let modItems = try modelContext.fetch(fetchDescriptor)
+      return modItems
+    } catch {
+      Debug.log("Failed to load ModItem model: \(error)")
+      return []
+    }
   }
   
-  private let modItemManager = ModItemManager.shared
+  private func performInitialSetup() {
+    FileUtility.createUserModsAndBackupFoldersIfNeeded()
+    
+    // Backup modsettingsLxs; parse
+    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
+      let lsxDict = LsxUtility.parseFileContents(modsettingsLsxFile)
+      Debug.log(lsxDict)
+    }
+    
+    ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
+  }
   
   var body: some View {
     NavigationSplitView {
@@ -84,6 +100,7 @@ struct ContentView: View {
         ToolbarItem(placement: .principal) {
           Button(action: {
             // restore modsettings.lsx
+            ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
           }) {
             Label("Restore", systemImage: "gobackward")
           }
@@ -115,6 +132,7 @@ struct ContentView: View {
       })
     }
     .onAppear {
+      performInitialSetup()
       if Debug.permissionsView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           self.showPermissionsView = true
@@ -408,8 +426,7 @@ struct ContentView: View {
         return
       }
       
-      //let destinationURL = appSupportURL.appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
-      let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent("UserMods").appendingPathComponent(originalPath.lastPathComponent)
+      let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName).appendingPathComponent(originalPath.lastPathComponent)
       let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
       
       do {

@@ -39,10 +39,13 @@ class ModItemManager {
     (modFolderPath.appendingPathComponent(modItem.pakFileString), modItemPakFilePath)
     
     // Move the file
-    moveFile(from: sourcePath, to: destinationPath)
+    let success = moveFile(from: sourcePath, to: destinationPath)
+    
+    // Update isInstalledInModFolder based on operation success
+    modItem.isInstalledInModFolder = modItem.isEnabled && success
   }
   
-  private func moveFile(from sourceURL: URL, to destinationURL: URL) {
+  private func moveFile(from sourceURL: URL, to destinationURL: URL) -> Bool {
     Debug.log("Attempting to move file from \(sourceURL.path) to \(destinationURL.path)")
     
     let fileManager = FileManager.default
@@ -52,8 +55,10 @@ class ModItemManager {
       }
       try fileManager.moveItem(at: sourceURL, to: destinationURL)
       Debug.log("File moved successfully from \(sourceURL.path) to \(destinationURL.path)")
+      return true
     } catch {
       Debug.log("Failed to move file: \(error.localizedDescription)")
+      return false
     }
   }
   
@@ -70,6 +75,11 @@ class ModItemManager {
     let sourcePath = modFolderPath.appendingPathComponent(modItem.pakFileString)
     
     // Move the .pak file back to the original directory
-    ModItemManager.shared.moveFile(from: sourcePath, to: modItemPakFilePath)
+    let success = ModItemManager.shared.moveFile(from: sourcePath, to: modItemPakFilePath)
+    if success {
+        Debug.log("File successfully moved back to original location.")
+    } else {
+        Debug.log("Failed to move file back to original location.")
+    }
   }
 }
