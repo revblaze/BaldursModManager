@@ -41,6 +41,7 @@ class LsxParserDelegate: NSObject, XMLParserDelegate {
 }
 
 extension FileUtility {
+  
   static func backupModSettingsLsxFile() -> URL? {
     let fileManager = FileManager.default
     
@@ -66,10 +67,8 @@ extension FileUtility {
     // Determine the backup file URL
     var backupFileURL = userBackupsURL.appendingPathComponent(modSettingsLsxFileURL.lastPathComponent)
     if fileManager.fileExists(atPath: backupFileURL.path) {
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "yyyyMMddHHmmss"
-      let timestamp = dateFormatter.string(from: Date())
-      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent)_\(timestamp).\(modSettingsLsxFileURL.pathExtension)")
+      let timestamp = formattedCurrentTimestamp()
+      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent).\(modSettingsLsxFileURL.pathExtension) \(timestamp)")
     }
     
     // Perform the backup
@@ -81,5 +80,16 @@ extension FileUtility {
       Debug.log("Failed to backup file: \(error.localizedDescription)")
       return nil
     }
+  }
+  
+  private static func formattedCurrentTimestamp() -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let datePart = dateFormatter.string(from: Date())
+    
+    dateFormatter.dateFormat = "h.mm.ss a"
+    let timePart = dateFormatter.string(from: Date())
+    
+    return "\(datePart) at \(timePart)"
   }
 }
