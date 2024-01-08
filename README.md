@@ -11,11 +11,12 @@ Baldur's Gate 3 Mod Manager for macOS
 
 1. [TODO](#todo)
 2. [How It Works](#how-it-works)
-3. [APFS Permissions](#apfs-permissions)
-4. [Mod Types](#mod-types)
-5. [System Requirements](#system-requirements)
-6. [Resources](#resources)
-7. [Credits](#credits)
+3. [File Management](#file-management)
+4. [APFS Permissions](#apfs-permissions)
+5. [Mod Types](#mod-types)
+6. [System Requirements](#system-requirements)
+7. [Resources](#resources)
+8. [Credits](#credits)
 
 ## TODO
 
@@ -71,6 +72,35 @@ Newly added mods are disabled by default.
 Adding new mods, enabling/disabling existings mods and/or modifying the load order–followed by <b><i>Save Mod Settings</i></b>–will simply replace the existing `modsettings.lsx` file with a newly generated one.
 
 <b><i>Restore Mod Settings</i></b> will replace any existing `modsettings.lsx` file with the one that was initially backed up from the first time you saved mod settings.
+
+</details>
+
+## File Management
+
+Mod path management, async file transfers, version control, etc.
+
+<details>
+
+<summary><h4>Expand to Continue Reading</h4></summary>
+
+### Application Support Overview
+
+```
+BaldursModManager/
+    default.store
+    UserBackups/
+        modsettings.lsx {timestamp}
+    UserMods/
+        mod-folder/
+            info.json
+            mod-file.pak
+```
+
+### `modsettings.lsx` backups
+
+Stored in the Application Support `UserBackups/` directory.
+
+<img width="1042" alt="Screenshot 2024-01-08 at 7 40 03 AM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/56e5936b-ba62-4180-b02a-1919978c3215">
 
 </details>
 
