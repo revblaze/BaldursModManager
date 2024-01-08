@@ -79,11 +79,7 @@ Adding new mods, enabling/disabling existings mods and/or modifying the load ord
 
 Mod path management, async file transfers, version control, etc.
 
-<details>
-
-<summary><h4>Expand to Continue Reading</h4></summary>
-
-### Application Support Overview
+### Application Support Structure
 
 ```
 BaldursModManager/
@@ -96,7 +92,11 @@ BaldursModManager/
             mod-file.pak
 ```
 
-### `modsettings.lsx` backups
+<details>
+
+<summary><h4>Expand to Continue Reading</h4></summary>
+
+### `modsettings.lsx` Backup Management
 
 Stored in the Application Support `UserBackups/` directory.
 
