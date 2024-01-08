@@ -220,6 +220,8 @@ Output:
 <attribute id="Version64" type="int64" value="36028797018963968"/>
 ```
 
+Refer to the specific [pull request](https://github.com/revblaze/BaldursModManager/pull/19) for more details on this implementation.
+
 </details>
 
 ## APFS Permissions
