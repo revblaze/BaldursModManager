@@ -15,7 +15,7 @@ class ModItem {
   var directoryPath: String
   var directoryContents: [String]
   var pakFileString: String
-  //var isEnabled: Bool = false
+  var isEnabled: Bool = false
   var isInstalledInModFolder: Bool = false
   // Mod Metadata Required: [Name, Folder, UUID, MD5]
   var modAuthor: String?
@@ -27,12 +27,6 @@ class ModItem {
   var modUuid: String
   var modVersion: String?
   var modMd5: String?
-  
-  var isEnabled: Bool = false {
-    didSet {
-      ContentView().toggleModItem(self)
-    }
-  }
   
   init(order: Int, directoryUrl: URL, directoryPath: String, directoryContents: [String], pakFileString: String, name: String, folder: String, uuid: String, md5: String) {
     self.order = order
