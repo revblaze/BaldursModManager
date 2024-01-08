@@ -292,23 +292,26 @@ struct ContentView: View {
     
     withAnimation {
       if let offsets = offsets {
-        let sortedOffsets = offsets.sorted()
-        var adjustment = 0
-        
-        for index in sortedOffsets {
-          let adjustedIndex = index - adjustment
-          if adjustedIndex < modItems.count {
-            let modItem = modItems[adjustedIndex]
-            indexToSelect = adjustedIndex
-            modelContext.delete(modItems[adjustedIndex])
+        for index in offsets.sorted().reversed() {
+          if index < modItems.count {
+            let modItem = modItems[index]
+            if modItem.isEnabled {
+              modItemManager.movePakFileToOriginalLocation(modItem)
+            }
+            indexToSelect = index
+            modelContext.delete(modItem)
             FileUtility.moveModItemToTrash(modItem)
-            adjustment += 1
           }
         }
-      } else if let item = itemToDelete, let index = modItems.firstIndex(of: item) {
-        indexToSelect = index
-        modelContext.delete(modItems[index])
-        FileUtility.moveModItemToTrash(item)
+      } else if let modItem = itemToDelete {
+        if modItem.isEnabled {
+          modItemManager.movePakFileToOriginalLocation(modItem)
+        }
+        if let index = modItems.firstIndex(of: modItem) {
+          indexToSelect = index
+          modelContext.delete(modItem)
+          FileUtility.moveModItemToTrash(modItem)
+        }
       }
       try? modelContext.save() // Save the context after deletion
       updateOrderOfModItems()  // Update the order of remaining items

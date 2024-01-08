@@ -56,4 +56,20 @@ class ModItemManager {
       Debug.log("Failed to move file: \(error.localizedDescription)")
     }
   }
+  
+  // Before a mod item is removed, move the pak file back to its original directory
+  func movePakFileToOriginalLocation(_ modItem: ModItem) {
+    let fileManager = FileManager.default
+    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Documents directory.")
+      return
+    }
+    
+    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    let modItemPakFilePath = URL(fileURLWithPath: modItem.directoryPath).appendingPathComponent(modItem.pakFileString)
+    let sourcePath = modFolderPath.appendingPathComponent(modItem.pakFileString)
+    
+    // Move the .pak file back to the original directory
+    ModItemManager.shared.moveFile(from: sourcePath, to: modItemPakFilePath)
+  }
 }
