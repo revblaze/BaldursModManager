@@ -10,41 +10,36 @@ import SwiftData
 
 @main
 struct BaldursModManagerApp: App {
+  var container: ModelContainer
   
-  var sharedModelContainer: ModelContainer = {
-    // Ensure SwiftData store files are in the correct location before initializing the ModelContainer
-    FileUtility.moveSwiftDataStoreFiles()
-    
-    let schema = Schema([
-      ModItem.self,
-    ])
-    
-    // Get the path for the SwiftData store file in the Application Support directory
-    let fileManager = FileManager.default
-    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-      fatalError("Application Support directory not found.")
-    }
-    let swiftDataStorePath = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.ApplicationSwiftDataFileName).path
-    let swiftDataStoreURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.ApplicationSwiftDataFileName)
-    
-    // Initialize the ModelConfiguration with the new store file path
-    let modelConfiguration = ModelConfiguration(schema: schema, url: swiftDataStoreURL)
-    //let modelConfig = ModelConfiguration(schema: schema, url: swiftDataStoreURL)
-    //let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, allowsSave: true, groupContainer: Constants.ApplicationSupportFolderName, cloudKitDatabase: nil)
-    // Note: adjust the parameters for ModelConfiguration based on your specific requirements and the API documentation of SwiftData
-    
+  init() {
     do {
-      return try ModelContainer(for: schema, configurations: [modelConfiguration])
+      let fileManager = FileManager.default
+      guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+        fatalError("Application Support directory not found.")
+      }
+      let storeURL = appSupportURL
+        .appendingPathComponent(Constants.ApplicationSupportFolderName)
+        .appendingPathComponent(Constants.ApplicationSwiftDataFileName)
+      
+      // Create the subfolder if it doesn't exist
+      let subfolderURL = storeURL.deletingLastPathComponent()
+      if !fileManager.fileExists(atPath: subfolderURL.path) {
+        try fileManager.createDirectory(at: subfolderURL, withIntermediateDirectories: true)
+      }
+      
+      let config = ModelConfiguration(url: storeURL)
+      container = try ModelContainer(for: ModItem.self, configurations: config)
     } catch {
-      fatalError("Could not create ModelContainer: \(error)")
+      fatalError("Failed to configure SwiftData container: \(error)")
     }
-  }()
+  }
   
   var body: some Scene {
     WindowGroup {
       ContentView()
     }
-    .modelContainer(sharedModelContainer)
+    .modelContainer(container)
   }
 }
 
