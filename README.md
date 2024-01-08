@@ -30,9 +30,9 @@ Baldur's Gate 3 Mod Manager for macOS
   - [x] Toggle modItem's `isEnabled` state
 - [ ] File management
   - [ ] UserSettings: Option for copy or move on mod import 
-  - [ ] Copy/move mod folder to Application Support/Documents on import
-  - [ ] Handling of `.pak` file location based on `isEnabled` status
-  - [ ] Remove mod folder contents on Delete
+  - [x] Copy/move mod folder to Application Support/Documents on import
+  - [x] Handling of `.pak` file location based on `isEnabled` status
+  - [x] Remove mod folder contents on Delete
 - [ ] `modsettings.lsx`
   - [ ] modsettings XML version/build check on launch
     - [ ] Backup default modsettings file for restore (remove all mods) functionality
