@@ -7,26 +7,50 @@
 
 import Foundation
 
-struct FileUtility {
+class FileUtility {
+  /// Creates user mods and backup folders if they don't already exist.
+  /// It also creates a default file in the default files directory.
   static func createUserModsAndBackupFoldersIfNeeded() {
     let fileManager = FileManager.default
     if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
-      let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName)
-      let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
-      
-      if !fileManager.fileExists(atPath: userModsURL.path) {
-        do {
-          try fileManager.createDirectory(at: userModsURL, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-          Debug.log("Error creating UserMods directory: \(error)")
-        }
+      let baseFolderURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName)
+      _ = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.UserModsFolderName), withFileManager: fileManager)
+      _ = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.UserBackupsFolderName), withFileManager: fileManager)
+      let defaultFilesURL = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.DefaultFilesFolderName), withFileManager: fileManager)
+      createDefaultSettingsFileIfNeeded(in: defaultFilesURL, withFileManager: fileManager)
+    }
+  }
+  
+  /// Creates a directory at the specified URL if it does not exist.
+  ///
+  /// - Parameters:
+  ///   - url: The URL where the directory should be created.
+  ///   - fileManager: The FileManager instance to use for file operations.
+  /// - Returns: The URL where the directory was created or supposed to be.
+  private static func createDirectoryIfNeeded(at url: URL, withFileManager fileManager: FileManager) -> URL {
+    if !fileManager.fileExists(atPath: url.path) {
+      do {
+        try fileManager.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+      } catch {
+        Debug.log("Error creating directory at \(url.path): \(error)")
       }
-      if !fileManager.fileExists(atPath: userBackupsURL.path) {
-        do {
-          try fileManager.createDirectory(at: userBackupsURL, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-          Debug.log("Error creating UserBackups directory: \(error)")
-        }
+    }
+    return url
+  }
+  
+  /// Creates a default settings file if it does not exist.
+  ///
+  /// - Parameters:
+  ///   - directoryURL: The URL of the directory where the file should be created.
+  ///   - fileManager: The FileManager instance to use for file operations.
+  private static func createDefaultSettingsFileIfNeeded(in directoryURL: URL, withFileManager fileManager: FileManager) {
+    let settingsFileURL = directoryURL.appendingPathComponent("modsettings.lsx")
+    if !fileManager.fileExists(atPath: settingsFileURL.path) {
+      let contents = getDefaultModSettingsLsxContents()
+      do {
+        try contents.write(to: settingsFileURL, atomically: true, encoding: .utf8)
+      } catch {
+        Debug.log("Error writing to modsettings.lsx: \(error)")
       }
     }
   }

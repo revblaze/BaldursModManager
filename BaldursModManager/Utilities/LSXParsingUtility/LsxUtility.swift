@@ -25,7 +25,6 @@ class LsxUtility {
 
 
 struct LsxUtilityTest {
-  
   static func testXmlGenerationFromModSettingsLsxBackup() {
     if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
       if let xmlAttrs = LsxUtility.parseFileContents(modsettingsLsxFile) {

@@ -22,7 +22,11 @@ struct ContentView: View {
   @State private var isFileTransferInProgress = false
   @State private var fileTransferProgress: Double = 0
   
+  @State private var showXmlPreview = false
+  @State private var previewXmlContent = ""
+  
   private let modItemManager = ModItemManager.shared
+  @ObservedObject var debug = Debug.shared
   
   private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
     let predicate = #Predicate { (modItem: ModItem) in
@@ -43,9 +47,11 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
-    ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
-    
-    LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
+    if debug.isActive {
+      ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
+      
+      LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
+    }
   }
   
   var body: some View {
@@ -73,17 +79,22 @@ struct ContentView: View {
           }
         }
         ToolbarItemGroup(placement: .navigation) {
-          if Debug.isActive {
+          if debug.isActive {
             Button(action: {
               openUserModsFolder()
             }) {
               Label("Open UserMods", systemImage: "folder")
             }
-            Button(action: {
-              // preview modsettings.lsx
-            }) {
-              Label("Preview modsettings.lsx", systemImage: "command")
-            }
+          }
+          Button(action: {
+            // preview modsettings.lsx
+            previewModSettingsLsx()
+          }) {
+            Label("Preview modsettings.lsx", systemImage: "eye") // "command"
+          }
+          .sheet(isPresented: $showXmlPreview) {
+            // Custom view for displaying the XML content
+            XMLPreviewView(xmlContent: $previewXmlContent)
           }
         }
         ToolbarItem(placement: .principal) {
@@ -94,18 +105,21 @@ struct ContentView: View {
           }
         }
         ToolbarItem(placement: .principal) {
-          Button(action: {
-            // restore modsettings.lsx
-            ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
-          }) {
-            Label("Restore", systemImage: "gobackward")
-          }
-        }
-        ToolbarItem(placement: .principal) {
-          Button(action: {
-            // generate and save modsettings.lsx
-          }) {
-            Label("Save", systemImage: "arrow.triangle.2.circlepath")
+          HStack {
+            
+            Button(action: {
+              restoreDefaultModSettingsLsx()
+            }) {
+              Label("Restore", systemImage: "gobackward")
+              //IconLabelView(icon: "gobackward", label: "Restore")
+            }//.buttonStyle(ToolbarButtonStyle())
+            
+            Button(action: {
+              generateAndSaveModSettingsLsx()
+            }) {
+              Label("Sync", systemImage: "arrow.triangle.2.circlepath")
+              //IconLabelView(icon: "arrow.triangle.2.circlepath", label: "Save")
+            }//.buttonStyle(ToolbarButtonStyle())
           }
         }
       }
@@ -134,6 +148,40 @@ struct ContentView: View {
           self.showPermissionsView = true
         }
       }
+    }
+  }
+  
+  private func generateAndSaveModSettingsLsx() {
+    Debug.log("User did select generateAndSaveModSettingsLsx()")
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let modItems = fetchEnabledModItemsSortedByOrder()
+      
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+      let xmlString = xmlBuilder.buildXMLString()
+      Debug.log(xmlString)
+      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
+    }
+    
+    
+  }
+  
+  private func restoreDefaultModSettingsLsx() {
+    Debug.log("User did select restoreDefaultModSettingsLsx()")
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: [])
+      let xmlString = xmlBuilder.buildXMLString()
+      Debug.log(xmlString)
+      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
+    }
+  }
+  
+  private func previewModSettingsLsx() {
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let modItems = fetchEnabledModItemsSortedByOrder()
+      
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+      previewXmlContent = xmlBuilder.buildXMLString()
+      showXmlPreview = true
     }
   }
   
@@ -456,8 +504,60 @@ struct ContentView: View {
 
 
 
-struct WelcomeDetailView: View {
+
+
+struct XMLPreviewView: View {
+  @Binding var xmlContent: String
+  @Environment(\.presentationMode) var presentationMode
+  
   var body: some View {
-    Text("Welcome to BaldursModManager!")
+    ZStack(alignment: .bottomTrailing) {
+      ScrollView {
+        Text(xmlContent)
+          .font(.system(.body, design: .monospaced))
+          .padding(.bottom, 50)  // Extra padding for the dismiss button
+          .padding()
+      }
+      
+      // Dismiss Button
+      Button(action: {
+        presentationMode.wrappedValue.dismiss()
+      }) {
+        Image(systemName: "xmark.circle.fill")
+          .font(.title)
+          .padding(.horizontal, 2)
+          .padding(.vertical, 8)
+      }
+      //.background(Circle().fill(Color.white))
+      .shadow(radius: 4)
+      .padding()
+    }
+    .frame(width: 860, height: 600)
+  }
+}
+
+struct ToolbarButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(3)
+      .background(configuration.isPressed ? Color.gray.opacity(0.2) : Color.clear)
+      .cornerRadius(5)
+  }
+}
+
+
+struct IconLabelView: View {
+  let icon: String
+  let label: String
+  
+  var body: some View {
+    VStack {
+      Image(systemName: icon)
+        .font(.system(size: 18))
+        .opacity(0.75)
+      Text(label)
+        .font(.system(size: 10))
+        .opacity(0.75)
+    }
   }
 }

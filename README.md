@@ -1,9 +1,20 @@
 # BaldursModManager
 Baldur's Gate 3 Mod Manager for macOS
 
-<sup>This mod manager is currently in active development and does not function as expected. I will update the [Releases](https://github.com/revblaze/BaldursModManager/releases) page once there is something to test!</sup>
+<sup>This mod manager is currently in active development and may not function as expected. Please submit [issues](https://github.com/revblaze/BaldursModManager/issues) for the most recent build available.</sup>
 
-<img width="843" alt="Screenshot 2024-01-05 at 3 52 30 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/d7af718f-4468-4894-9638-53864b1e00b6">
+To download the latest version, check [Releases](https://github.com/revblaze/BaldursModManager/releases).
+
+<img width="913" alt="Screenshot 2024-01-08 at 9 18 16 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/2504bdb3-a766-435b-a70d-40f9f97d981a">
+
+<details>
+
+<summary><h4>Expand to See Screenshots</h4></summary>
+
+<img width="913" alt="Screenshot 2024-01-08 at 9 18 33 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/463dec79-6fc8-4fee-998b-a19b15faecf2">
+<img width="972" alt="Screenshot 2024-01-08 at 9 19 16 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/129b03c3-4531-4179-8cb1-e81aaeef9050">
+
+</details>
 
 <i>For pre-development planning, see the [Documentation](/Documentation/) section.</i>
 

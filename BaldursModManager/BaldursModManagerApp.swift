@@ -38,19 +38,35 @@ struct BaldursModManagerApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
+        .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 600)
     }
     .modelContainer(container)
+    .commands {
+      CommandMenu("Debug") {
+        Button(Debug.shared.isActive ? "Disable Debug" : "Enable Debug") {
+          Debug.shared.isActive.toggle()
+        }
+        .keyboardShortcut("D", modifiers: [.command, .shift]) // Shortcut for toggling
+      }
+    }
   }
 }
 
-struct Debug {
-  static var isActive = true
+class Debug: ObservableObject {
+  static let shared = Debug()
+  @Published var isActive = false
   static var fileTransferUI = false
   static var permissionsView = false
   
-  static func log<T>(_ value: T) {
+  // Instance method for logging
+  func logInstance<T>(_ value: T) {
     if isActive {
       print(value)
     }
+  }
+  
+  // Static method interface
+  static func log<T>(_ value: T) {
+    Debug.shared.logInstance(value)
   }
 }
