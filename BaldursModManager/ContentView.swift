@@ -30,12 +30,6 @@ struct ContentView: View {
   @State private var showConfirmationText = false
   @State private var confirmationMessage = ""
   
-  @State private var selectedDetailView: DetailViewSelection = .modItems
-  
-  enum DetailViewSelection {
-    case modItems, welcome
-  }
-  
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
   
@@ -65,7 +59,7 @@ struct ContentView: View {
     
     // Backup modsettings.lsx on startup
     if let backupUrl = FileUtility.backupModSettingsLsxFile() {
-      Debug.log("Successfully backed up modsettings.lsx")
+      Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
     }
   }
   
