@@ -104,21 +104,21 @@ struct ContentView: View {
           }
         }
         ToolbarItem(placement: .principal) {
-          Button(action: {
-            // restore modsettings.lsx
-            restoreDefaultModSettingsLsx()
-          }) {
-            Text("Restore")
-            //Label("Restore", systemImage: "gobackward")
-          }
-        }
-        ToolbarItem(placement: .principal) {
-          Button(action: {
-            // generate and save modsettings.lsx
-            generateAndSaveModSettingsLsx()
-          }) {
-            Text("Save")
-            //Label("Save", systemImage: "arrow.triangle.2.circlepath")
+          HStack {
+            
+            Button(action: {
+              restoreDefaultModSettingsLsx()
+            }) {
+              Label("Restore", systemImage: "gobackward")
+              //IconLabelView(icon: "gobackward", label: "Restore")
+            }//.buttonStyle(ToolbarButtonStyle())
+            
+            Button(action: {
+              generateAndSaveModSettingsLsx()
+            }) {
+              Label("Sync", systemImage: "arrow.triangle.2.circlepath")
+              //IconLabelView(icon: "arrow.triangle.2.circlepath", label: "Save")
+            }//.buttonStyle(ToolbarButtonStyle())
           }
         }
       }
@@ -511,6 +511,7 @@ struct WelcomeDetailView: View {
   var body: some View {
     VStack {
       Spacer()
+      
       if let appVersion = appVersion {
         Text("Welcome to BaldursModManager v\(appVersion)!")
       } else {
@@ -520,24 +521,42 @@ struct WelcomeDetailView: View {
       Text("It's a working title!").italic().font(.subheadline)
         .padding(2)
       
+      Spacer()
+      
       Divider()
         .padding()
         .padding(.horizontal, 40)
       
       VStack(alignment: .leading) {
-        Text("1. Select a mod folder to import using the + button")
-          .padding(2)
-        Text("2. Enable the mods you wish to add to your load order")
-          .padding(2)
-        Text("3. Click Save to add those mods to modsettings.lsx")
-          .padding(2)
+        HStack {
+          Text("1. Select a mod folder to import using the add")
+          Image(systemName: "plus")
+          Text("button")
+        }
+        .padding(.vertical, 2)
+        HStack {
+          Text("2. Enable")
+          Image(systemName: "checkmark.circle.fill")
+          Text("the mods you wish to add to your load order")
+        }
+        .padding(.vertical, 3)
+        HStack {
+          Text("3. Click Sync")
+          Image(systemName: "arrow.triangle.2.circlepath")
+          Text("to add those mods to modsettings.lsx")
+            .padding(.vertical, 2)
+        }
       }
       
       Divider()
         .padding()
         .padding(.horizontal, 40)
       
-      Text("Click Restore to revert the changes made")
+      HStack {
+        Text("Click Restore")
+        Image(systemName: "gobackward")
+        Text("to revert the changes made")
+      }
       
       Spacer()
       
@@ -580,5 +599,31 @@ struct XMLPreviewView: View {
       .padding()
     }
     .frame(width: 860, height: 600)
+  }
+}
+
+struct ToolbarButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(3)
+      .background(configuration.isPressed ? Color.gray.opacity(0.2) : Color.clear)
+      .cornerRadius(5)
+  }
+}
+
+
+struct IconLabelView: View {
+  let icon: String
+  let label: String
+  
+  var body: some View {
+    VStack {
+      Image(systemName: icon)
+        .font(.system(size: 18))
+        .opacity(0.75)
+      Text(label)
+        .font(.system(size: 10))
+        .opacity(0.75)
+    }
   }
 }

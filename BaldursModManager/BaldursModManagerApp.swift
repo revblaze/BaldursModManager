@@ -38,6 +38,7 @@ struct BaldursModManagerApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
+        .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 600)
     }
     .modelContainer(container)
   }
