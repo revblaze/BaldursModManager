@@ -28,7 +28,7 @@ To download the latest version, check [Releases](https://github.com/revblaze/Bal
 6. [Mod Types](#mod-types)
 7. [System Requirements](#system-requirements)
 8. [Resources](#resources)
-9. [Credits](#credits)
+9. [Acknowledgements](#acknowledgements)
 
 ## TODO
 
