@@ -13,6 +13,7 @@ struct ModItemDetailView: View {
   let deleteAction: (ModItem) -> Void
   
   private let modItemManager = ModItemManager.shared
+  @ObservedObject var debug = Debug.shared
   
   var body: some View {
     VStack {
@@ -71,7 +72,7 @@ struct ModItemDetailView: View {
               Text("MD5:  \(md5)").monoStyle()
             }
             
-            if Debug.isActive {
+            if debug.isActive {
               Divider()
                 .padding(.vertical, 10)
               
@@ -101,7 +102,7 @@ struct ModItemDetailView: View {
       }
       
       HStack {
-        if Debug.isActive {
+        if debug.isActive {
           Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
             .monoStyle()
         }

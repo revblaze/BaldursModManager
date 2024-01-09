@@ -26,6 +26,7 @@ struct ContentView: View {
   @State private var previewXmlContent = ""
   
   private let modItemManager = ModItemManager.shared
+  @ObservedObject var debug = Debug.shared
   
   private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
     let predicate = #Predicate { (modItem: ModItem) in
@@ -46,7 +47,7 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
-    if Debug.isActive {
+    if debug.isActive {
       ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
       
       LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
@@ -78,22 +79,22 @@ struct ContentView: View {
           }
         }
         ToolbarItemGroup(placement: .navigation) {
-          if Debug.isActive {
+          if debug.isActive {
             Button(action: {
               openUserModsFolder()
             }) {
               Label("Open UserMods", systemImage: "folder")
             }
-            Button(action: {
-              // preview modsettings.lsx
-              previewModSettingsLsx()
-            }) {
-              Label("Preview modsettings.lsx", systemImage: "eye") // "command"
-            }
-            .sheet(isPresented: $showXmlPreview) {
-              // Custom view for displaying the XML content
-              XMLPreviewView(xmlContent: $previewXmlContent)
-            }
+          }
+          Button(action: {
+            // preview modsettings.lsx
+            previewModSettingsLsx()
+          }) {
+            Label("Preview modsettings.lsx", systemImage: "eye") // "command"
+          }
+          .sheet(isPresented: $showXmlPreview) {
+            // Custom view for displaying the XML content
+            XMLPreviewView(xmlContent: $previewXmlContent)
           }
         }
         ToolbarItem(placement: .principal) {
@@ -503,73 +504,6 @@ struct ContentView: View {
 
 
 
-struct WelcomeDetailView: View {
-  var appVersion: String? {
-    Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-  }
-  
-  var body: some View {
-    VStack {
-      Spacer()
-      
-      if let appVersion = appVersion {
-        Text("Welcome to BaldursModManager v\(appVersion)!")
-      } else {
-        Text("Welcome to BaldursModManager!")
-      }
-      
-      Text("It's a working title!").italic().font(.subheadline)
-        .padding(2)
-      
-      Spacer()
-      
-      Divider()
-        .padding()
-        .padding(.horizontal, 40)
-      
-      VStack(alignment: .leading) {
-        HStack {
-          Text("1. Select a mod folder to import using the add")
-          Image(systemName: "plus")
-          Text("button")
-        }
-        .padding(.vertical, 2)
-        HStack {
-          Text("2. Enable")
-          Image(systemName: "checkmark.circle.fill")
-          Text("the mods you wish to add to your load order")
-        }
-        .padding(.vertical, 3)
-        HStack {
-          Text("3. Click Sync")
-          Image(systemName: "arrow.triangle.2.circlepath")
-          Text("to add those mods to modsettings.lsx")
-            .padding(.vertical, 2)
-        }
-      }
-      
-      Divider()
-        .padding()
-        .padding(.horizontal, 40)
-      
-      HStack {
-        Text("Click Restore")
-        Image(systemName: "gobackward")
-        Text("to revert the changes made")
-      }
-      
-      Spacer()
-      
-      HStack {
-        Text("Click the eye")
-        Image(systemName: "eye")
-        Text("to preview your modsettings.lsx file")
-      }
-      .font(.subheadline)
-    }
-    .padding()
-  }
-}
 
 
 struct XMLPreviewView: View {
