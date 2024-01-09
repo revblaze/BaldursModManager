@@ -9,6 +9,9 @@ import Foundation
 
 extension FileUtility {
   
+  /// Returns the default contents for the modsettings.lsx file.
+  ///
+  /// - Returns: A string containing the default XML contents for the mod settings.
   static func getDefaultModSettingsLsxContents() -> String {
 """
 <?xml version="1.0" encoding="UTF-8"?>
