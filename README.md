@@ -12,11 +12,12 @@ Baldur's Gate 3 Mod Manager for macOS
 1. [TODO](#todo)
 2. [How It Works](#how-it-works)
 3. [File Management](#file-management)
-4. [APFS Permissions](#apfs-permissions)
-5. [Mod Types](#mod-types)
-6. [System Requirements](#system-requirements)
-7. [Resources](#resources)
-8. [Credits](#credits)
+4. [XML-LSX Parsing](#xml-lsx-parsing)
+5. [APFS Permissions](#apfs-permissions)
+6. [Mod Types](#mod-types)
+7. [System Requirements](#system-requirements)
+8. [Resources](#resources)
+9. [Credits](#credits)
 
 ## TODO
 
@@ -37,7 +38,7 @@ Baldur's Gate 3 Mod Manager for macOS
 - [ ] `modsettings.lsx`
   - [ ] modsettings XML version/build check on launch
     - [ ] Backup default modsettings file for restore (remove all mods) functionality
-    - [ ] Use latest XML version/build tags for generation
+    - [x] Use latest XML version/build tags for generation
   - [ ] Mod load order XML generation based on `isEnabled` status
   - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
 
@@ -101,6 +102,125 @@ BaldursModManager/
 Stored in the Application Support `UserBackups/` directory.
 
 <img width="1042" alt="Screenshot 2024-01-08 at 7 40 03 AM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/56e5936b-ba62-4180-b02a-1919978c3215">
+
+</details>
+
+## XML-LSX Parsing
+
+Alongside creating a backup of each modsettings.lsx file, we also need to parse its contents for attribute values. We not only need to do this on first backup, but every backup henceforth due to the possibility that BG3 may update these values with future patches. Finally, we also need to replicate the GustavDev embedded attributes within the ModuleShortDesc as its values may change as well–this goes especially for associated values to attribute IDs UUID and Version64.
+
+<details>
+
+<summary><h4>Expand to Continue Reading</h4></summary>
+
+This current version of the parser is extremely hacky and specifically designed to work with the `modsettings.lsx` file structure. I welcome any help on this front, as I'm no XML parsing expert. For the meantime, this solution should at least work for our purposes.
+
+Input sample (default) `modsettings.lsx` from BG3 version 4.1.1.4251417:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="4" revision="0" build="300"/>
+    <region id="ModuleSettings">
+        <node id="root">
+            <children>
+                <node id="ModOrder"/>
+                <node id="Mods">
+                    <children>
+                        <node id="ModuleShortDesc">
+                            <attribute id="Folder" type="LSString" value="GustavDev"/>
+                            <attribute id="MD5" type="LSString" value=""/>
+                            <attribute id="Name" type="LSString" value="GustavDev"/>
+                            <attribute id="UUID" type="FixedString" value="28ac9ce2-2aba-8cda-b3b5-6e922f71b6b8"/>
+                            <attribute id="Version64" type="int64" value="36028797018963968"/>
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </region>
+</save>
+```
+
+We'll need to create our own XMLAttributes structure to store these values:
+
+```swift
+struct XMLAttributes {
+  var version: Version
+  var moduleShortDesc: ModuleShortDesc
+  
+  struct Version {
+    var majorString: String
+    var minorString: String
+    var revisionString: String
+    var buildString: String
+  }
+  
+  struct ModuleShortDesc {
+    var folder: Attribute
+    var md5: Attribute
+    var name: Attribute
+    var uuid: Attribute
+    var version64: Attribute
+    
+    struct Attribute {
+      var typeString: String
+      var valueString: String
+    }
+  }
+}
+```
+
+Our LsxParserDelegate class will then extract this data, storing them as (kinda) "type-safe(ish)" variables. From there, we can call them as such to help re-generate the modsettings.lsx file anew:
+
+### XML `version` Header
+
+```swift
+let majorVersion = xmlAttrs.version.majorString
+let minorVersion = xmlAttrs.version.minorString
+let revisionVersion = xmlAttrs.version.revisionString
+let buildVersion = xmlAttrs.version.buildString
+
+let versionXmlString = 
+"""
+<version major="\(majorVersion)" minor="\(minorVersion)" revision="\(revisionVersion)" build="\(buildVersion)"/>
+"""
+
+print(versionXmlString)
+```
+
+Output:
+
+```xml
+<version major="4" minor="4" revision="0" build="300"/>
+```
+
+### XML `ModuleShortDesc` Child Nodes
+
+```swift
+let gustavDevGeneratedAttributes = 
+"""
+<attribute id="Folder" type="\(gustavDevModule.folder.typeString)" value="\(gustavDevModule.folder.valueString)"/>
+<attribute id="MD5" type="\(gustavDevModule.md5.typeString)" value="\(gustavDevModule.md5.valueString)"/>
+<attribute id="Name" type="\(gustavDevModule.name.typeString)" value="\(gustavDevModule.name.valueString)"/>
+<attribute id="UUID" type="\(gustavDevModule.uuid.typeString)" value="\(gustavDevModule.uuid.valueString)"/>
+<attribute id="Version64" type="\(gustavDevModule.version64.typeString)" value="\(gustavDevModule.version64.valueString)"/>
+"""
+
+print(gustavDevGeneratedAttributes)
+```
+
+Output:
+
+```xml
+<attribute id="Folder" type="LSString" value="GustavDev"/>
+<attribute id="MD5" type="LSString" value=""/>
+<attribute id="Name" type="LSString" value="GustavDev"/>
+<attribute id="UUID" type="FixedString" value="28ac9ce2-2aba-8cda-b3b5-6e922f71b6b8"/>
+<attribute id="Version64" type="int64" value="36028797018963968"/>
+```
+
+Refer to the specific [pull request](https://github.com/revblaze/BaldursModManager/pull/19) for more details on this implementation.
 
 </details>
 
