@@ -9,6 +9,29 @@ import Foundation
 
 extension FileUtility {
   
+  /// Retrieves the URL for the default mod settings LSX file.
+  /// If the file does not exist, it creates the necessary directories and default file.
+  ///
+  /// - Returns: A URL pointing to the modsettings.lsx file.
+  static func getDefaultModSettingsLsxFile() -> URL {
+    let fileManager = FileManager.default
+    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+      fatalError("Could not find the application support directory")
+    }
+    
+    let defaultFilesURL = appSupportURL
+      .appendingPathComponent(Constants.ApplicationSupportFolderName)
+      .appendingPathComponent(Constants.DefaultFilesFolderName)
+    
+    let modSettingsFileURL = defaultFilesURL.appendingPathComponent(Constants.ModSettingsLsxFileName)
+    
+    if !fileManager.fileExists(atPath: modSettingsFileURL.path) {
+      createUserModsAndBackupFoldersIfNeeded()
+    }
+    
+    return modSettingsFileURL
+  }
+  
   /// Returns the default contents for the modsettings.lsx file.
   ///
   /// - Returns: A string containing the default XML contents for the mod settings.

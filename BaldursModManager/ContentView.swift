@@ -22,6 +22,9 @@ struct ContentView: View {
   @State private var isFileTransferInProgress = false
   @State private var fileTransferProgress: Double = 0
   
+  @State private var showXmlPreview = false
+  @State private var previewXmlContent = ""
+  
   private let modItemManager = ModItemManager.shared
   
   private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
@@ -83,8 +86,13 @@ struct ContentView: View {
             }
             Button(action: {
               // preview modsettings.lsx
+              previewModSettingsLsx()
             }) {
-              Label("Preview modsettings.lsx", systemImage: "command")
+              Label("Preview modsettings.lsx", systemImage: "eye") // "command"
+            }
+            .sheet(isPresented: $showXmlPreview) {
+              // Custom view for displaying the XML content
+              XMLPreviewView(xmlContent: $previewXmlContent)
             }
           }
         }
@@ -98,9 +106,10 @@ struct ContentView: View {
         ToolbarItem(placement: .principal) {
           Button(action: {
             // restore modsettings.lsx
-            ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
+            restoreDefaultModSettingsLsx()
           }) {
-            Label("Restore", systemImage: "gobackward")
+            Text("Restore")
+            //Label("Restore", systemImage: "gobackward")
           }
         }
         ToolbarItem(placement: .principal) {
@@ -108,7 +117,8 @@ struct ContentView: View {
             // generate and save modsettings.lsx
             generateAndSaveModSettingsLsx()
           }) {
-            Label("Save", systemImage: "arrow.triangle.2.circlepath")
+            Text("Save")
+            //Label("Save", systemImage: "arrow.triangle.2.circlepath")
           }
         }
       }
@@ -140,31 +150,37 @@ struct ContentView: View {
     }
   }
   
-  let defaultLsxAttributes = XMLAttributes(version: defaultXmlAttributesVersion, moduleShortDesc: defaultXmlAttributesModule)
-  
   private func generateAndSaveModSettingsLsx() {
     Debug.log("User did select generateAndSaveModSettingsLsx()")
-    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
-      if let xmlAttributes = LsxUtility.parseFileContents(modsettingsLsxFile) {
-        let modItems = fetchEnabledModItemsSortedByOrder()
-        
-        let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
-        let xmlString = xmlBuilder.buildXMLString()
-        Debug.log(xmlString)
-      }
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let modItems = fetchEnabledModItemsSortedByOrder()
+      
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+      let xmlString = xmlBuilder.buildXMLString()
+      Debug.log(xmlString)
+      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
     }
+    
+    
   }
   
   private func restoreDefaultModSettingsLsx() {
     Debug.log("User did select restoreDefaultModSettingsLsx()")
-    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
-      if let xmlAttributes = LsxUtility.parseFileContents(modsettingsLsxFile) {
-        let modItems = fetchEnabledModItemsSortedByOrder()
-        
-        let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
-        let xmlString = xmlBuilder.buildXMLString()
-        Debug.log(xmlString)
-      }
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: [])
+      let xmlString = xmlBuilder.buildXMLString()
+      Debug.log(xmlString)
+      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
+    }
+  }
+  
+  private func previewModSettingsLsx() {
+    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+      let modItems = fetchEnabledModItemsSortedByOrder()
+      
+      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+      previewXmlContent = xmlBuilder.buildXMLString()
+      showXmlPreview = true
     }
   }
   
@@ -488,7 +504,81 @@ struct ContentView: View {
 
 
 struct WelcomeDetailView: View {
+  var appVersion: String? {
+    Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+  }
+  
   var body: some View {
-    Text("Welcome to BaldursModManager!")
+    VStack {
+      Spacer()
+      if let appVersion = appVersion {
+        Text("Welcome to BaldursModManager v\(appVersion)!")
+      } else {
+        Text("Welcome to BaldursModManager!")
+      }
+      
+      Text("It's a working title!").italic().font(.subheadline)
+        .padding(2)
+      
+      Divider()
+        .padding()
+        .padding(.horizontal, 40)
+      
+      VStack(alignment: .leading) {
+        Text("1. Select a mod folder to import using the + button")
+          .padding(2)
+        Text("2. Enable the mods you wish to add to your load order")
+          .padding(2)
+        Text("3. Click Save to add those mods to modsettings.lsx")
+          .padding(2)
+      }
+      
+      Divider()
+        .padding()
+        .padding(.horizontal, 40)
+      
+      Text("Click Restore to revert the changes made")
+      
+      Spacer()
+      
+      HStack {
+        Text("Click the eye")
+        Image(systemName: "eye")
+        Text("to preview your modsettings.lsx file")
+      }
+      .font(.subheadline)
+    }
+    .padding()
+  }
+}
+
+
+struct XMLPreviewView: View {
+  @Binding var xmlContent: String
+  @Environment(\.presentationMode) var presentationMode
+  
+  var body: some View {
+    ZStack(alignment: .bottomTrailing) {
+      ScrollView {
+        Text(xmlContent)
+          .font(.system(.body, design: .monospaced))
+          .padding(.bottom, 50)  // Extra padding for the dismiss button
+          .padding()
+      }
+      
+      // Dismiss Button
+      Button(action: {
+        presentationMode.wrappedValue.dismiss()
+      }) {
+        Image(systemName: "xmark.circle.fill")
+          .font(.title)
+          .padding(.horizontal, 2)
+          .padding(.vertical, 8)
+      }
+      //.background(Circle().fill(Color.white))
+      .shadow(radius: 4)
+      .padding()
+    }
+    .frame(width: 860, height: 600)
   }
 }
