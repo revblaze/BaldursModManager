@@ -20,17 +20,18 @@ To download the latest version, check [Releases](https://github.com/revblaze/Bal
 
 ## Table of Contents
 
-1. [TODO](#todo)
-2. [How It Works](#how-it-works)
-3. [File Management](#file-management)
-4. [XML-LSX Parsing](#xml-lsx-parsing)
-5. [APFS Permissions](#apfs-permissions)
-6. [Mod Types](#mod-types)
-7. [System Requirements](#system-requirements)
-8. [Resources](#resources)
-9. [Acknowledgements](#acknowledgements)
+1. [How It Works](#how-it-works)
+2. [File Management](#file-management)
+3. [XML-LSX Parsing](#xml-lsx-parsing)
+4. [APFS Permissions](#apfs-permissions)
+5. [Mod Types](#mod-types)
+6. [System Requirements](#system-requirements)
+7. [Resources](#resources)
+8. [Acknowledgements](#acknowledgements)
 
-## TODO
+<details>
+
+<summary><h4>TODO (Archived)</h4></summary>
 
 - [x] SwiftData implementation
 - [x] JSON mod metadata parsing (`info.json`)
@@ -41,17 +42,19 @@ To download the latest version, check [Releases](https://github.com/revblaze/Bal
 - [x] ModItemDetailView (detail)
   - [x] Populate with metadata from parsed JSON
   - [x] Toggle modItem's `isEnabled` state
-- [ ] File management
-  - [ ] UserSettings: Option for copy or move on mod import 
+- [x] File management
+  - [x] UserSettings: Option for copy or move on mod import 
   - [x] Copy/move mod folder to Application Support/Documents on import
   - [x] Handling of `.pak` file location based on `isEnabled` status
   - [x] Remove mod folder contents on Delete
-- [ ] `modsettings.lsx`
+- [x] `modsettings.lsx`
   - [ ] modsettings XML version/build check on launch
     - [ ] Backup default modsettings file for restore (remove all mods) functionality
     - [x] Use latest XML version/build tags for generation
-  - [ ] Mod load order XML generation based on `isEnabled` status
-  - [ ] Save Load Order button action → backup lsx (rename), generate new lsx
+  - [x] Mod load order XML generation based on `isEnabled` status
+  - [x] Save Load Order button action → backup lsx (rename), generate new lsx
+     
+ </details>
 
 ## How It Works
 
