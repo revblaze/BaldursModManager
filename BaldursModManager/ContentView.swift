@@ -43,9 +43,11 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
-    ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
-    
-    LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
+    if Debug.isActive {
+      ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
+      
+      LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
+    }
   }
   
   var body: some View {
@@ -104,6 +106,7 @@ struct ContentView: View {
         ToolbarItem(placement: .principal) {
           Button(action: {
             // generate and save modsettings.lsx
+            generateAndSaveModSettingsLsx()
           }) {
             Label("Save", systemImage: "arrow.triangle.2.circlepath")
           }
@@ -133,6 +136,19 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           self.showPermissionsView = true
         }
+      }
+    }
+  }
+  
+  private func generateAndSaveModSettingsLsx() {
+    Debug.log("User did select generateAndSaveModSettingsLsx()")
+    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
+      if let xmlAttributes = LsxUtility.parseFileContents(modsettingsLsxFile) {
+        let modItems = fetchEnabledModItemsSortedByOrder()
+        
+        let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+        let xmlString = xmlBuilder.buildXMLString()
+        Debug.log(xmlString)
       }
     }
   }
