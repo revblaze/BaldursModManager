@@ -13,6 +13,7 @@ struct FileUtility {
     if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
       let userModsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName)
       let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
+      let defaultFilesURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.DefaultFilesFolderName)
       
       if !fileManager.fileExists(atPath: userModsURL.path) {
         do {
@@ -26,6 +27,13 @@ struct FileUtility {
           try fileManager.createDirectory(at: userBackupsURL, withIntermediateDirectories: true, attributes: nil)
         } catch {
           Debug.log("Error creating UserBackups directory: \(error)")
+        }
+      }
+      if !fileManager.fileExists(atPath: defaultFilesURL.path) {
+        do {
+          try fileManager.createDirectory(at: defaultFilesURL, withIntermediateDirectories: true, attributes: nil)
+        } catch {
+          Debug.log("Error creating defaultFilesURL directory: \(error)")
         }
       }
     }

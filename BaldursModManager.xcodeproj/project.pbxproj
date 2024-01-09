@@ -18,6 +18,7 @@
 		291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181EF2B4B883900B76A26 /* LsxUtility.swift */; };
 		291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */; };
 		2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B37D2B4CD4B90074AF2D /* XMLBuilder.swift */; };
+		2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
 		2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */; };
 		2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */; };
@@ -40,6 +41,7 @@
 		291181EF2B4B883900B76A26 /* LsxUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxUtility.swift; sourceTree = "<group>"; };
 		291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModItemDetailView.swift; sourceTree = "<group>"; };
 		2912B37D2B4CD4B90074AF2D /* XMLBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLBuilder.swift; sourceTree = "<group>"; };
+		2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+DefaultModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
 		2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxParserDelegate.swift; sourceTree = "<group>"; };
 		2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+BackupModSettingsLsx.swift"; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			children = (
 				291181E02B4B2F9C00B76A26 /* FileUtility.swift */,
 				2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */,
+				2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */,
 			);
 			path = FileUtility;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */,
 				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
+				2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,

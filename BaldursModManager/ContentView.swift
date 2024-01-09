@@ -140,8 +140,23 @@ struct ContentView: View {
     }
   }
   
+  let defaultLsxAttributes = XMLAttributes(version: defaultXmlAttributesVersion, moduleShortDesc: defaultXmlAttributesModule)
+  
   private func generateAndSaveModSettingsLsx() {
     Debug.log("User did select generateAndSaveModSettingsLsx()")
+    if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
+      if let xmlAttributes = LsxUtility.parseFileContents(modsettingsLsxFile) {
+        let modItems = fetchEnabledModItemsSortedByOrder()
+        
+        let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+        let xmlString = xmlBuilder.buildXMLString()
+        Debug.log(xmlString)
+      }
+    }
+  }
+  
+  private func restoreDefaultModSettingsLsx() {
+    Debug.log("User did select restoreDefaultModSettingsLsx()")
     if let modsettingsLsxFile = FileUtility.backupModSettingsLsxFile() {
       if let xmlAttributes = LsxUtility.parseFileContents(modsettingsLsxFile) {
         let modItems = fetchEnabledModItemsSortedByOrder()
