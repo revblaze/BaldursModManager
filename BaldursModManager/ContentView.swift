@@ -25,6 +25,11 @@ struct ContentView: View {
   @State private var showXmlPreview = false
   @State private var previewXmlContent = ""
   
+  @State private var showCheckmarkForRestore = false
+  @State private var showCheckmarkForSync = false
+  @State private var showConfirmationText = false
+  @State private var confirmationMessage = ""
+  
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
   
@@ -106,20 +111,33 @@ struct ContentView: View {
         }
         ToolbarItem(placement: .principal) {
           HStack {
-            
-            Button(action: {
-              restoreDefaultModSettingsLsx()
-            }) {
-              Label("Restore", systemImage: "gobackward")
-              //IconLabelView(icon: "gobackward", label: "Restore")
-            }//.buttonStyle(ToolbarButtonStyle())
+              Button(action: {
+                  restoreDefaultModSettingsLsx()
+                  showCheckmarkForRestore = true
+                  confirmationMessage = "Restored!"
+                showConfirmationText = true
+                resetButtonAndMessage()
+              }) {
+                Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+              }
+            // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
             
             Button(action: {
               generateAndSaveModSettingsLsx()
+              showCheckmarkForSync = true
+              confirmationMessage = "Saved!"
+              showConfirmationText = true
+              resetButtonAndMessage()
             }) {
-              Label("Sync", systemImage: "arrow.triangle.2.circlepath")
-              //IconLabelView(icon: "arrow.triangle.2.circlepath", label: "Save")
-            }//.buttonStyle(ToolbarButtonStyle())
+              Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
+            }
+            // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
+            
+            if showConfirmationText {
+              Text(confirmationMessage)
+                .opacity(showConfirmationText ? 1 : 0)
+                .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+            }
           }
         }
       }
@@ -147,6 +165,16 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           self.showPermissionsView = true
         }
+      }
+    }
+  }
+  
+  private func resetButtonAndMessage() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Adjust the time as needed
+      showCheckmarkForRestore = false
+      showCheckmarkForSync = false
+      withAnimation {
+        showConfirmationText = false
       }
     }
   }
