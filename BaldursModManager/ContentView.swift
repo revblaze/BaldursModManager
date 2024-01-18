@@ -547,8 +547,9 @@ struct XMLPreviewView: View {
       ScrollView {
         Text(xmlContent)
           .font(.system(.body, design: .monospaced))
-          .padding(.bottom, 50)  // Extra padding for the dismiss button
+          .padding(.bottom, 50)
           .padding()
+          .textSelection(.enabled)
       }
       
       // Dismiss Button
@@ -560,7 +561,6 @@ struct XMLPreviewView: View {
           .padding(.horizontal, 2)
           .padding(.vertical, 8)
       }
-      //.background(Circle().fill(Color.white))
       .shadow(radius: 4)
       .padding()
     }
