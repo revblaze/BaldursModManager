@@ -30,9 +30,6 @@ struct ContentView: View {
   @State private var showConfirmationText = false
   @State private var confirmationMessage = ""
   
-  @State private var showReplaceModAlert = false
-  @State private var replacingModItem: ModItem?
-  
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
   
@@ -157,21 +154,6 @@ struct ContentView: View {
         message: Text("Are you sure you want to remove this mod? It will be moved to the trash."),
         primaryButton: .destructive(Text("Move to Trash")) {
           deleteModItems(at: offsetsToDelete, itemToDelete: modItemToDelete)
-        },
-        secondaryButton: .cancel()
-      )
-    }
-    .alert(isPresented: $showReplaceModAlert) {
-      Alert(
-        title: Text("Replace Mod"),
-        message: Text("Another version of this mod already exists. Would you like to replace it with this new mod?"),
-        primaryButton: .destructive(Text("Replace")) {
-          if let replacingModItem = replacingModItem {
-            let success = deleteModItem(byUuid: replacingModItem.modUuid)
-            if success {
-              addNewModItemLogic(name: replacingModItem.modName, folder: replacingModItem.modFolder, uuid: replacingModItem.modUuid, md5: replacingModItem.modMd5, directoryURL: replacingModItem.directoryUrl, directoryContents: replacingModItem.directoryContents)
-            }
-          }
         },
         secondaryButton: .cancel()
       )
@@ -311,9 +293,13 @@ struct ContentView: View {
       return false
     }
   }
-
+  
   private func modWithUuidAlreadyExists(uuid: String) -> Bool {
     return modItems.contains { $0.modUuid == uuid }
+  }
+  
+  private func getModItem(byUuid uuid: String) -> ModItem? {
+    return modItems.first(where: { $0.modUuid == uuid })
   }
   
   private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
@@ -334,11 +320,18 @@ struct ContentView: View {
       
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
         var newOrderNumber = nextOrderValue()
+        var replaceWithOrderNumber: Int?
         
-        if modWithUuidAlreadyExists(uuid: uuid) {
-          // show alert "Another version of this mod already exists. Would you like to replace it with this new mod?" Cancel, Replace
-          
-          // if replaceAlert returns true: set newOrderNumber to be equal to the existing mod's UUID, then deleteModItem(byUuid: uuid)
+        if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
+          replaceWithOrderNumber = modItemNeedsReplacing.order
+          let success = deleteModItem(byUuid: uuid)
+          if success {
+            if let oldOrderNumber = replaceWithOrderNumber {
+              newOrderNumber = oldOrderNumber
+            }
+          } else {
+            Debug.log("Error: Unable to delete mod \(modItemNeedsReplacing.modName)")
+          }
         }
         
         withAnimation {
@@ -362,20 +355,6 @@ struct ContentView: View {
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
-  }
-  
-  private func addNewModItemLogic(name: String, folder: String, uuid: String, md5: String, directoryURL: URL, directoryContents: [String], pakFileString: String) {
-    let newOrderNumber = nextOrderValue()
-    withAnimation {
-      let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
-      // Check for optional keys
-      // Additional properties setting...
-      addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
-    }
-  }
-  
-  private func addNewModItemLogic(name: String, folder: String, uuid: String, md5: String, directoryURL: URL, directoryContents: [String]) {
-    
   }
   
   private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL) {
