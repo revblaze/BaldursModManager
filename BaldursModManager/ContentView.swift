@@ -274,32 +274,26 @@ struct ContentView: View {
     }
   }
   
+  private func getModItem(byUuid uuid: String) -> ModItem? {
+    return modItems.first(where: { $0.modUuid == uuid })
+  }
+  
   private func deleteModItem(byUuid uuid: String) -> Bool {
-    // Find the first ModItem that matches the given UUID
-    if let modItemToDelete = modItems.first(where: { $0.modUuid == uuid }) {
+    if let modItemToDelete = getModItem(byUuid: uuid) {
       withAnimation {
         if modItemToDelete.isEnabled {
           modItemManager.movePakFileToOriginalLocation(modItemToDelete)
         }
         modelContext.delete(modItemToDelete)
         FileUtility.moveModItemToTrash(modItemToDelete)
-        try? modelContext.save() // Save the context after deletion
-        updateOrderOfModItems() // Update the order of remaining items
+        try? modelContext.save()
+        updateOrderOfModItems()
       }
       return true
     } else {
-      // Log an error if no matching ModItem is found
       Debug.log("Error: No ModItem found with UUID: \(uuid)")
       return false
     }
-  }
-  
-  private func modWithUuidAlreadyExists(uuid: String) -> Bool {
-    return modItems.contains { $0.modUuid == uuid }
-  }
-  
-  private func getModItem(byUuid uuid: String) -> ModItem? {
-    return modItems.first(where: { $0.modUuid == uuid })
   }
   
   private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
