@@ -38,8 +38,12 @@ struct ModItemDetailView: View {
               if let author = item.modAuthor {
                 Text("by \(author)").font(.footnote)
               }
-              if let version = item.modVersion {
-                Text("(v\(version))").monoStyle()
+              if !Debug.shared.isActive {
+                if let version = item.modVersion {
+                  Text("•")
+                  Text("v\(version)")
+                    .font(.footnote)
+                }
               }
             }
             
@@ -136,7 +140,7 @@ struct ModItemDetailView: View {
 
 extension ModItem {
   static var mock: ModItem {
-    ModItem(order: 1,
+    let modItem = ModItem(order: 1,
             directoryUrl: URL(fileURLWithPath: "/path/to/modItem"),
             directoryPath: "/path/to/modItem",
             directoryContents: ["file1.pak", "file2.pak"],
@@ -145,5 +149,8 @@ extension ModItem {
             folder: "MockFolder",
             uuid: "1234-5678",
             md5: "9abcdef0")
+    modItem.modAuthor = "Author Name"
+    modItem.modVersion = "1029827398120932190813"
+    return modItem
   }
 }
