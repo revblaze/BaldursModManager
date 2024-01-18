@@ -1,3 +1,5 @@
+<p align="center"><img width="150px" height="150px" src="https://github.com/revblaze/BaldursModManager/blob/main/BaldursModManager/Assets.xcassets/AppIcon.appiconset/icon_1024.png?raw=true" /></p>
+
 # BaldursModManager
 Baldur's Gate 3 Mod Manager for macOS
 
