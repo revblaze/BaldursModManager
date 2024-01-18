@@ -21,6 +21,7 @@
 		2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */; };
 		2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */; };
 		2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */; };
+		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
 		2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */; };
 		2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */; };
@@ -46,6 +47,7 @@
 		2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+DefaultModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+ReplaceModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDetailView.swift; sourceTree = "<group>"; };
+		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
 		2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxParserDelegate.swift; sourceTree = "<group>"; };
 		2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+BackupModSettingsLsx.swift"; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */,
 				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
 				291181DD2B4B278900B76A26 /* ViewExtensions.swift */,
+				295CF2C92B59D4890058767F /* XMLPreviewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */,
+				295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */,
 				291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */,
 				29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */,
 				2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */,
