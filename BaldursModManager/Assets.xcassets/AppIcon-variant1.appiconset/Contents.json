@@ -1,4 +1,8 @@
 {
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  },
   "images" : [
     {
       "idiom" : "ios-marketing",
@@ -66,9 +70,5 @@
       "filename" : "icon_1024.png",
       "size" : "512x512"
     }
-  ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
-  }
+  ]
 }
