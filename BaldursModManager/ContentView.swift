@@ -30,6 +30,9 @@ struct ContentView: View {
   @State private var showConfirmationText = false
   @State private var confirmationMessage = ""
   
+  @State private var showReplaceModAlert = false
+  @State private var replacingModItem: ModItem?
+  
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
   
@@ -158,6 +161,21 @@ struct ContentView: View {
         secondaryButton: .cancel()
       )
     }
+    .alert(isPresented: $showReplaceModAlert) {
+      Alert(
+        title: Text("Replace Mod"),
+        message: Text("Another version of this mod already exists. Would you like to replace it with this new mod?"),
+        primaryButton: .destructive(Text("Replace")) {
+          if let replacingModItem = replacingModItem {
+            let success = deleteModItem(byUuid: replacingModItem.modUuid)
+            if success {
+              addNewModItemLogic(name: replacingModItem.modName, folder: replacingModItem.modFolder, uuid: replacingModItem.modUuid, md5: replacingModItem.modMd5, directoryURL: replacingModItem.directoryUrl, directoryContents: replacingModItem.directoryContents)
+            }
+          }
+        },
+        secondaryButton: .cancel()
+      )
+    }
     .sheet(isPresented: $showPermissionsView) {
       PermissionsView(onDismiss: {
         self.showPermissionsView = false
@@ -274,6 +292,30 @@ struct ContentView: View {
     }
   }
   
+  private func deleteModItem(byUuid uuid: String) -> Bool {
+    // Find the first ModItem that matches the given UUID
+    if let modItemToDelete = modItems.first(where: { $0.modUuid == uuid }) {
+      withAnimation {
+        if modItemToDelete.isEnabled {
+          modItemManager.movePakFileToOriginalLocation(modItemToDelete)
+        }
+        modelContext.delete(modItemToDelete)
+        FileUtility.moveModItemToTrash(modItemToDelete)
+        try? modelContext.save() // Save the context after deletion
+        updateOrderOfModItems() // Update the order of remaining items
+      }
+      return true
+    } else {
+      // Log an error if no matching ModItem is found
+      Debug.log("Error: No ModItem found with UUID: \(uuid)")
+      return false
+    }
+  }
+
+  private func modWithUuidAlreadyExists(uuid: String) -> Bool {
+    return modItems.contains { $0.modUuid == uuid }
+  }
+  
   private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
     let directoryURL = URL(fileURLWithPath: infoJsonPath).deletingLastPathComponent()
     
@@ -291,7 +333,14 @@ struct ContentView: View {
       }
       
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
-        let newOrderNumber = nextOrderValue()
+        var newOrderNumber = nextOrderValue()
+        
+        if modWithUuidAlreadyExists(uuid: uuid) {
+          // show alert "Another version of this mod already exists. Would you like to replace it with this new mod?" Cancel, Replace
+          
+          // if replaceAlert returns true: set newOrderNumber to be equal to the existing mod's UUID, then deleteModItem(byUuid: uuid)
+        }
+        
         withAnimation {
           let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
           // Check for optional keys
@@ -313,6 +362,20 @@ struct ContentView: View {
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
+  }
+  
+  private func addNewModItemLogic(name: String, folder: String, uuid: String, md5: String, directoryURL: URL, directoryContents: [String], pakFileString: String) {
+    let newOrderNumber = nextOrderValue()
+    withAnimation {
+      let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
+      // Check for optional keys
+      // Additional properties setting...
+      addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
+    }
+  }
+  
+  private func addNewModItemLogic(name: String, folder: String, uuid: String, md5: String, directoryURL: URL, directoryContents: [String]) {
+    
   }
   
   private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL) {
