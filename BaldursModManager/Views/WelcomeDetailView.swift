@@ -16,6 +16,10 @@ struct WelcomeDetailView: View {
     VStack {
       Spacer()
       
+      Image("red-tiefling")
+        .resizable()
+        .frame(width: 120, height: 120)
+      
       if let appVersion = appVersion {
         Text("Welcome to BaldursModManager v\(appVersion)")
       } else {
