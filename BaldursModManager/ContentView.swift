@@ -115,15 +115,15 @@ struct ContentView: View {
         }
         ToolbarItem(placement: .principal) {
           HStack {
-              Button(action: {
-                  restoreDefaultModSettingsLsx()
-                  showCheckmarkForRestore = true
-                  confirmationMessage = "Restored!"
-                showConfirmationText = true
-                resetButtonAndMessage()
-              }) {
-                Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
-              }
+            Button(action: {
+              restoreDefaultModSettingsLsx()
+              showCheckmarkForRestore = true
+              confirmationMessage = "Restored!"
+              showConfirmationText = true
+              resetButtonAndMessage()
+            }) {
+              Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+            }
             // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
             
             Button(action: {
@@ -542,7 +542,6 @@ struct ToolbarButtonStyle: ButtonStyle {
       .cornerRadius(5)
   }
 }
-
 
 struct IconLabelView: View {
   let icon: String
