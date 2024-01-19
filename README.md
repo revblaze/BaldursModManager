@@ -7,7 +7,7 @@ Baldur's Gate 3 Mod Manager for macOS
 
 To download the latest version, check [Releases](https://github.com/revblaze/BaldursModManager/releases).
 
-<img width="913" alt="Screenshot 2024-01-08 at 9 18 16 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/2504bdb3-a766-435b-a70d-40f9f97d981a">
+<img width="936" alt="Screenshot 2024-01-18 at 3 13 29 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/f19ee471-c5e3-45ba-8f7d-74b7aeed3a06">
 
 <details>
 

@@ -46,7 +46,7 @@ struct BaldursModManagerApp: App {
         Button(Debug.shared.isActive ? "Disable Debug" : "Enable Debug") {
           Debug.shared.isActive.toggle()
         }
-        .keyboardShortcut("D", modifiers: [.command, .shift]) // Shortcut for toggling
+        //.keyboardShortcut("D", modifiers: [.command, .shift]) // Shortcut for toggling
       }
     }
   }
