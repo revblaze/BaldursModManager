@@ -174,10 +174,10 @@ struct ContentView: View {
     .toast(isPresenting: $showUnableToReplaceExistingModToast, duration: 6) {
       AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Unable to replace existing mod with newer version")
     }
-    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 4) {
+    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 3) {
       AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod added")
     }
-    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 4) {
+    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 3) {
       AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod successfully updated")
     }
     .toast(isPresenting: $showModSettingsSavedSuccessfullyToast, duration: 4) {
