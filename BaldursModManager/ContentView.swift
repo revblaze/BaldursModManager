@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import AlertToast
 
 let UIDELAY: CGFloat = 0.01
 
@@ -29,6 +30,14 @@ struct ContentView: View {
   @State private var showCheckmarkForSync = false
   @State private var showConfirmationText = false
   @State private var confirmationMessage = ""
+  
+  @State private var showUnableToFindInfoJsonFileToast = false
+  @State private var showUnableToReplaceExistingModToast = false
+  @State private var showModSuccessfullyAddedToast = false
+  @State private var showModSuccessfullyUpdatedToast = false
+  
+  @State private var showModSettingsSavedSuccessfullyToast = false
+  @State private var showModSettingsRevertedSuccessfullyToast = false
   
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
@@ -81,6 +90,7 @@ struct ContentView: View {
         .onMove(perform: moveItems)
       }
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
+      // MARK: Toolbar
       .toolbar {
         ToolbarItem {
           Button(action: addItem) {
@@ -135,8 +145,6 @@ struct ContentView: View {
             }) {
               Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
             }
-            // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
-            
             if showConfirmationText {
               Text(confirmationMessage)
                 .opacity(showConfirmationText ? 1 : 0)
@@ -148,6 +156,7 @@ struct ContentView: View {
     } detail: {
       WelcomeDetailView()
     }
+    // MARK: Alerts
     .alert(isPresented: $showAlertForModDeletion) {
       Alert(
         title: Text("Remove Mod"),
@@ -157,6 +166,25 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
+    }
+    // MARK: Toasts
+    .toast(isPresenting: $showUnableToFindInfoJsonFileToast, duration: 6) {
+      AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Invalid mod folder: Unable to locate Info.json file")
+    }
+    .toast(isPresenting: $showUnableToReplaceExistingModToast, duration: 6) {
+      AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Unable to replace existing mod with newer version")
+    }
+    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 4) {
+      AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod added")
+    }
+    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 4) {
+      AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod successfully updated")
+    }
+    .toast(isPresenting: $showModSettingsSavedSuccessfullyToast, duration: 4) {
+      AlertToast(type: .complete(.green), title: "Mods have been applied successfully")
+    }
+    .toast(isPresenting: $showModSettingsRevertedSuccessfullyToast, duration: 4) {
+      AlertToast(type: .complete(.gray), title: "Mods have been reverted")
     }
     .sheet(isPresented: $showPermissionsView) {
       PermissionsView(onDismiss: {
@@ -192,9 +220,8 @@ struct ContentView: View {
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
+      showModSettingsSavedSuccessfullyToast = true
     }
-    
-    
   }
   
   private func restoreDefaultModSettingsLsx() {
@@ -204,6 +231,7 @@ struct ContentView: View {
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
+      showModSettingsRevertedSuccessfullyToast = true
     }
   }
   
@@ -270,6 +298,7 @@ struct ContentView: View {
         }
       } else {
         Debug.log("Error: Unable to locate info.json file of imported mod")
+        showUnableToFindInfoJsonFileToast = true
       }
     }
   }
@@ -316,15 +345,19 @@ struct ContentView: View {
         var newOrderNumber = nextOrderValue()
         var replaceWithOrderNumber: Int?
         
+        // TODO: Prompt user for confirmation on replacement
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
           let success = deleteModItem(byUuid: uuid)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
+              showModSuccessfullyUpdatedToast = true
             }
           } else {
             Debug.log("Error: Unable to delete mod \(modItemNeedsReplacing.modName)")
+            showUnableToReplaceExistingModToast = true
+            return
           }
         }
         
@@ -517,6 +550,8 @@ struct ContentView: View {
           // Mark transfer as finished
           self.isFileTransferInProgress = false
           SoundUtility.play(systemSound: .mount)
+          
+          showModSuccessfullyAddedToast = true
           
           // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
           if !Debug.fileTransferUI {
