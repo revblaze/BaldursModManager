@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftData
 
 class ModItemManager {
   static let shared = ModItemManager()
