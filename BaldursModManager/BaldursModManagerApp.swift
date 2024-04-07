@@ -46,6 +46,13 @@ struct BaldursModManagerApp: App {
     .modelContainer(container)
     .commands {
       CommandGroup(replacing: .newItem) {}
+      CommandGroup(before: .importExport) {
+        Button("Import Mod...") {
+          print("import")
+        }
+        .keyboardShortcut("O", modifiers: [.command])
+      }
+      
       CommandMenu("Debug") {
         Button(Debug.shared.isActive ? "Disable Debug" : "Enable Debug") {
           Debug.shared.isActive.toggle()
