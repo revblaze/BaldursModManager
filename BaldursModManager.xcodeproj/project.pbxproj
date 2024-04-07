@@ -22,6 +22,7 @@
 		2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */; };
 		2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */; };
 		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
+		297196572B716784000F7960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297196562B716784000F7960 /* Debug.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
 		2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */; };
 		2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */; };
@@ -49,6 +50,7 @@
 		2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+ReplaceModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDetailView.swift; sourceTree = "<group>"; };
 		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
+		297196562B716784000F7960 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
 		2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxParserDelegate.swift; sourceTree = "<group>"; };
 		2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+BackupModSettingsLsx.swift"; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				291181D72B4B1A8900B76A26 /* UserSettings.swift */,
 				291181EB2B4B691300B76A26 /* Constants.swift */,
+				297196562B716784000F7960 /* Debug.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -223,7 +226,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					29DD55E42B4875EC003729AD = {
 						CreatedOnToolsVersion = 15.1;
@@ -281,6 +284,7 @@
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
 				2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */,
+				297196572B716784000F7960 /* Debug.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
@@ -329,6 +333,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -392,6 +397,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -421,7 +427,8 @@
 				CODE_SIGN_ENTITLEMENTS = BaldursModManager/BaldursModManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 200;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"BaldursModManager/Preview Content\"";
 				DEVELOPMENT_TEAM = 85N3S3DG8M;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -434,7 +441,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -450,7 +457,8 @@
 				CODE_SIGN_ENTITLEMENTS = BaldursModManager/BaldursModManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 200;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"BaldursModManager/Preview Content\"";
 				DEVELOPMENT_TEAM = 85N3S3DG8M;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -463,7 +471,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

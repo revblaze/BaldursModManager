@@ -51,22 +51,3 @@ struct BaldursModManagerApp: App {
     }
   }
 }
-
-class Debug: ObservableObject {
-  static let shared = Debug()
-  @Published var isActive = false
-  static var fileTransferUI = false
-  static var permissionsView = false
-  
-  // Instance method for logging
-  func logInstance<T>(_ value: T) {
-    if isActive {
-      print(value)
-    }
-  }
-  
-  // Static method interface
-  static func log<T>(_ value: T) {
-    Debug.shared.logInstance(value)
-  }
-}
