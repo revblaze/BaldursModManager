@@ -83,7 +83,9 @@ struct ContentView: View {
               Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
               Text("\(item.order).")
                 .foregroundStyle(.secondary)
-                .fontDesign(.monospaced)
+                .monoStyle()
+                .frame(minWidth: 26)
+              
               Text(item.modName)
             }
           }
