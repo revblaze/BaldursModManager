@@ -81,6 +81,9 @@ struct ContentView: View {
           } label: {
             HStack {
               Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
+              Text("\(item.order).")
+                .foregroundStyle(.secondary)
+                .fontDesign(.monospaced)
               Text(item.modName)
             }
           }
