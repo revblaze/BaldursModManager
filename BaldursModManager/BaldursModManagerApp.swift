@@ -38,10 +38,14 @@ struct BaldursModManagerApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView()
-        .frame(minWidth: 600, idealWidth: 800, minHeight: 400, idealHeight: 600)
+        .frame(minWidth: 600, idealWidth: 1200, minHeight: 400, idealHeight: 900)
+        .onAppear {
+          NSWindow.allowsAutomaticWindowTabbing = false
+        }
     }
     .modelContainer(container)
     .commands {
+      CommandGroup(replacing: .newItem) {}
       CommandMenu("Debug") {
         Button(Debug.shared.isActive ? "Disable Debug" : "Enable Debug") {
           Debug.shared.isActive.toggle()
