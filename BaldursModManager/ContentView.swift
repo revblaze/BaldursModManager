@@ -83,12 +83,13 @@ struct ContentView: View {
     NavigationSplitView {
       List(selection: $selectedModItem) {
         ForEach(modItems) { item in
-          NavigationLink(value: item) {
-            SidebarItemView(item: item) {
-              selectModItem(item)
+          NavigationLink {
+            ModItemDetailView(item: item, deleteAction: deleteItem)
+          } label: {
+            HStack {
+              SidebarItemView(item: item)
             }
           }
-          .contentShape(Rectangle())
           .tag(item)
         }
         .onDelete(perform: deleteItems)
@@ -97,6 +98,7 @@ struct ContentView: View {
       .onChange(of: selectedModItem) {
         selectModItem(selectedModItem)
       }
+      .listStyle(.sidebar)
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
       // MARK: Toolbar
       .toolbar {
@@ -389,7 +391,7 @@ struct ContentView: View {
             uuid: uuid,
             md5: md5
           )
-          newModItem.isEnabled = isEnabled // Preserve isEnabled state on mod update
+          newModItem.isEnabled = isEnabled
           
           // Check for optional keys
           for (key, value) in infoDict {

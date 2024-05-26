@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SidebarItemView: View {
   let item: ModItem
-  let onSelect: () -> Void
 
   var body: some View {
     HStack {
@@ -20,10 +19,6 @@ struct SidebarItemView: View {
         .frame(minWidth: 26)
       
       Text(item.modName)
-    }
-    .contentShape(Rectangle())
-    .onTapGesture {
-      onSelect()
     }
   }
 }
