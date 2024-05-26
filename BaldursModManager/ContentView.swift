@@ -135,46 +135,62 @@ struct ContentView: View {
             XMLPreviewView(xmlContent: $previewXmlContent)
           }
         }
-        ToolbarItem(placement: .principal) {
-          if Debug.fileTransferUI || isFileTransferInProgress {
-            ProgressView(value: fileTransferProgress, total: 1.0)
-              .frame(width: 100)
-              .opacity(fileTransferProgress > 0 ? 1 : 0)  // Fade out effect
-          }
-        }
-        ToolbarItem(placement: .principal) {
-          HStack {
-            Button(action: {
-              restoreDefaultModSettingsLsx()
-              showCheckmarkForRestore = true
-              confirmationMessage = "Restored!"
-              showConfirmationText = true
-              resetButtonAndMessage()
-            }) {
-              Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
-            }
-            Button(action: {
-              generateAndSaveModSettingsLsx()
-              showCheckmarkForSync = true
-              confirmationMessage = "Saved!"
-              showConfirmationText = true
-              resetButtonAndMessage()
-            }) {
-              Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
-            }
-            if showConfirmationText {
-              Text(confirmationMessage)
-                .opacity(showConfirmationText ? 1 : 0)
-                .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
-            }
-          }
-        }
       }
     } detail: {
       if let selectedModItem {
         ModItemDetailView(item: selectedModItem, deleteAction: deleteItem, saveAction: save)
       } else {
         WelcomeDetailView()
+      }
+    }
+    .navigationTitle("Baldur's Mod Manager")
+    .toolbar {
+      ToolbarItem {
+        if Debug.fileTransferUI || isFileTransferInProgress {
+          ProgressView(value: fileTransferProgress, total: 1.0)
+            .frame(width: 100)
+            .opacity(fileTransferProgress > 0 ? 1 : 0)
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          restoreDefaultModSettingsLsx()
+          showCheckmarkForRestore = true
+          confirmationMessage = "Restored!"
+          showConfirmationText = true
+          resetButtonAndMessage()
+        }) {
+          Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          generateAndSaveModSettingsLsx()
+          showCheckmarkForSync = true
+          confirmationMessage = "Saved!"
+          showConfirmationText = true
+          resetButtonAndMessage()
+        }) {
+          Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
+        }
+      }
+      
+      ToolbarItem {
+        if showConfirmationText {
+          Text(confirmationMessage)
+            .opacity(showConfirmationText ? 1 : 0)
+            .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          // open settings
+        }) {
+          Label("Sync", systemImage: "gear")
+        }
       }
     }
     .navigationDestination(for: ModItem.self) { item in
