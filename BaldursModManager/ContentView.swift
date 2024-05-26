@@ -288,13 +288,7 @@ struct ContentView: View {
       item.order = index
       Debug.log("Updated mod item order: \(item.modName) to \(index)")
     }
-    // Save the context
-    do {
-      save()
-      Debug.log("Successfully saved context after moving items")
-    } catch {
-      Debug.log("Error saving context: \(error)")
-    }
+    save()
   }
   
   private func selectFile() {
