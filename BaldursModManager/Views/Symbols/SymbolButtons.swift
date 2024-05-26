@@ -72,16 +72,26 @@ struct AccessorySymbolButton: View {
 struct ToolbarSymbolButton: View {
   let title: String
   let symbol: SFSymbol
+  let tint: Color
   let action: () -> Void
+  
+  init(title: String, symbol: SFSymbol, tint: Color = .secondary, action: @escaping () -> Void) {
+    self.title = title
+    self.symbol = symbol
+    self.action = action
+    self.tint = tint
+  }
   
   var body: some View {
     Button(action: {
       action()
     }) {
       Label(title, systemImage: symbol.name)
+        .foregroundColor(tint)
     }
   }
 }
+
 
 
 struct SymbolButtons: View {
