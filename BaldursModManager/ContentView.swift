@@ -84,20 +84,11 @@ struct ContentView: View {
       List(selection: $selectedModItem) {
         ForEach(modItems) { item in
           NavigationLink(value: item) {
-            HStack {
-              Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
-              Text("\(item.order).")
-                .foregroundStyle(.secondary)
-                .monoStyle()
-                .frame(minWidth: 26)
-              
-              Text(item.modName)
-            }
-            .contentShape(Rectangle())
-            .onTapGesture {
+            SidebarItemView(item: item) {
               selectModItem(item)
             }
           }
+          .contentShape(Rectangle())
           .tag(item)
         }
         .onDelete(perform: deleteItems)
