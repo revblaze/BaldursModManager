@@ -27,13 +27,14 @@ enum SFSymbol: String {
   case lock
   case star
   
-  case code = "chevron.left.forwardslash.chevron.right"
-  
   case solidLock = "lock.fill"
   case solidLockSlash = "lock.slash.fill"
   case search = "magnifyingglass"
   
+  case house
+  case plus
   case folder
+  case code = "chevron.left.forwardslash.chevron.right"
   
   case tabBar = "character.textbox"
   case tabGallery = "square.on.square"
