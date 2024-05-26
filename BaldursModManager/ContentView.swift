@@ -14,7 +14,7 @@ let UIDELAY: CGFloat = 0.01
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
-  @State private var selectedModItemOrderNumber: Int?
+  @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
   // Properties to store deletion details
@@ -58,6 +58,15 @@ struct ContentView: View {
     }
   }
   
+  func save() {
+    Debug.log("Attempting to save...")
+    do {
+      try modelContext.save()
+    } catch {
+      print("Failed to save: \(error.localizedDescription)")
+    }
+  }
+  
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
@@ -72,31 +81,33 @@ struct ContentView: View {
     }
   }
   
+  private func selectModItem(_ item: ModItem?) {
+    selectedModItem = item
+    if let item = item {
+      Debug.log("Selected mod item with order: \(item.order), name: \(item.modName)")
+    }
+  }
+  
   var body: some View {
     NavigationSplitView {
-      List(selection: $selectedModItemOrderNumber) {
+      List(selection: $selectedModItem) {
         ForEach(modItems) { item in
           NavigationLink {
-            ModItemDetailView(item: item, deleteAction: deleteItem)
+            ModItemDetailView(item: item, deleteAction: deleteItem, saveAction: save)
           } label: {
             HStack {
-              Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
-              Text("\(item.order).")
-                .foregroundStyle(.secondary)
-                .monoStyle()
-                .frame(minWidth: 26)
-              
-              Text(item.modName)
+              SidebarItemView(item: item)
             }
           }
-          .tag(item.order)
-          .onTapGesture {
-            Debug.log("Selected mod item with order: \(item.order), name: \(item.modName)")
-          }
+          .tag(item)
         }
         .onDelete(perform: deleteItems)
         .onMove(perform: moveItems)
       }
+      .onChange(of: selectedModItem) {
+        selectModItem(selectedModItem)
+      }
+      .listStyle(.sidebar)
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
       // MARK: Toolbar
       .toolbar {
@@ -124,45 +135,66 @@ struct ContentView: View {
             XMLPreviewView(xmlContent: $previewXmlContent)
           }
         }
-        ToolbarItem(placement: .principal) {
-          if Debug.fileTransferUI || isFileTransferInProgress {
-            ProgressView(value: fileTransferProgress, total: 1.0)
-              .frame(width: 100)
-              .opacity(fileTransferProgress > 0 ? 1 : 0)  // Fade out effect
-          }
-        }
-        ToolbarItem(placement: .principal) {
-          HStack {
-            Button(action: {
-              restoreDefaultModSettingsLsx()
-              showCheckmarkForRestore = true
-              confirmationMessage = "Restored!"
-              showConfirmationText = true
-              resetButtonAndMessage()
-            }) {
-              Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
-            }
-            // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
-            
-            Button(action: {
-              generateAndSaveModSettingsLsx()
-              showCheckmarkForSync = true
-              confirmationMessage = "Saved!"
-              showConfirmationText = true
-              resetButtonAndMessage()
-            }) {
-              Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
-            }
-            if showConfirmationText {
-              Text(confirmationMessage)
-                .opacity(showConfirmationText ? 1 : 0)
-                .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
-            }
-          }
-        }
       }
     } detail: {
-      WelcomeDetailView()
+      if let selectedModItem {
+        ModItemDetailView(item: selectedModItem, deleteAction: deleteItem, saveAction: save)
+      } else {
+        WelcomeDetailView()
+      }
+    }
+    .navigationTitle("Baldur's Mod Manager")
+    .toolbar {
+      ToolbarItem {
+        if Debug.fileTransferUI || isFileTransferInProgress {
+          ProgressView(value: fileTransferProgress, total: 1.0)
+            .frame(width: 100)
+            .opacity(fileTransferProgress > 0 ? 1 : 0)
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          restoreDefaultModSettingsLsx()
+          showCheckmarkForRestore = true
+          confirmationMessage = "Restored!"
+          showConfirmationText = true
+          resetButtonAndMessage()
+        }) {
+          Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          generateAndSaveModSettingsLsx()
+          showCheckmarkForSync = true
+          confirmationMessage = "Saved!"
+          showConfirmationText = true
+          resetButtonAndMessage()
+        }) {
+          Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
+        }
+      }
+      
+      ToolbarItem {
+        if showConfirmationText {
+          Text(confirmationMessage)
+            .opacity(showConfirmationText ? 1 : 0)
+            .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+        }
+      }
+      
+      ToolbarItem {
+        Button(action: {
+          // open settings
+        }) {
+          Label("Sync", systemImage: "gear")
+        }
+      }
+    }
+    .navigationDestination(for: ModItem.self) { item in
+      ModItemDetailView(item: item, deleteAction: deleteItem, saveAction: save)
     }
     // MARK: Alerts
     .alert(isPresented: $showAlertForModDeletion) {
@@ -272,13 +304,7 @@ struct ContentView: View {
       item.order = index
       Debug.log("Updated mod item order: \(item.modName) to \(index)")
     }
-    // Save the context
-    do {
-      try modelContext.save()
-      Debug.log("Successfully saved context after moving items")
-    } catch {
-      Debug.log("Error saving context: \(error)")
-    }
+    save()
   }
   
   private func selectFile() {
@@ -317,7 +343,7 @@ struct ContentView: View {
     return modItems.first(where: { $0.modUuid == uuid })
   }
   
-  private func deleteModItem(byUuid uuid: String) -> Bool {
+  private func deleteModItem(byUuid uuid: String, forUpdateReplacement willReplaceUpdate: Bool = false) -> Bool {
     if let modItemToDelete = getModItem(byUuid: uuid) {
       withAnimation {
         if modItemToDelete.isEnabled {
@@ -325,8 +351,10 @@ struct ContentView: View {
         }
         modelContext.delete(modItemToDelete)
         FileUtility.moveModItemToTrash(modItemToDelete)
-        try? modelContext.save()
-        updateOrderOfModItems()
+        save()
+        if willReplaceUpdate == false {
+          updateOrderOfModItems()
+        }
       }
       return true
     } else {
@@ -335,11 +363,10 @@ struct ContentView: View {
     }
   }
   
-  private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
+  private func createNewModItemFrom(infoDict: [String: String], infoJsonPath: String, directoryContents: [String]) {
     let directoryURL = URL(fileURLWithPath: infoJsonPath).deletingLastPathComponent()
     
     if let pakFileString = getPakFileString(fromDirectoryContents: directoryContents) {
-      // Required
       var name, folder, uuid, md5: String?
       for (key, value) in infoDict {
         switch key.lowercased() {
@@ -354,11 +381,13 @@ struct ContentView: View {
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
         var newOrderNumber = nextOrderValue()
         var replaceWithOrderNumber: Int?
+        var isEnabled = false
         
-        // TODO: Prompt user for confirmation on replacement
+        // Check if the mod item needs replacing
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
-          let success = deleteModItem(byUuid: uuid)
+          isEnabled = modItemNeedsReplacing.isEnabled
+          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true) //deleteModItem(byUuid: uuid)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
@@ -372,7 +401,19 @@ struct ContentView: View {
         }
         
         withAnimation {
-          let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
+          let newModItem = ModItem(
+            order: newOrderNumber,
+            directoryUrl: directoryURL,
+            directoryPath: directoryURL.path,
+            directoryContents: directoryContents,
+            pakFileString: pakFileString,
+            name: name,
+            folder: folder,
+            uuid: uuid,
+            md5: md5
+          )
+          //newModItem.isEnabled = isEnabled
+          
           // Check for optional keys
           for (key, value) in infoDict {
             switch key.lowercased() {
@@ -384,25 +425,35 @@ struct ContentView: View {
             default: break
             }
           }
-          
           Debug.log("Adding new mod item with order: \(newOrderNumber), name: \(name)")
-          addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
+          addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL) {
+            if isEnabled {
+              withAnimation {
+                newModItem.isEnabled.toggle()
+                modItemManager.toggleModItem(newModItem)
+                save()
+                updateOrderOfModItems()
+              }
+            }
+          }
         }
       }
-      
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
   }
   
-  private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL) {
+  private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL, completion: @escaping () -> Void) {
     modelContext.insert(modItem)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-      selectedModItemOrderNumber = orderNumber
+      selectModItem(modItem)
+      Debug.log("Added new mod item with order: \(orderNumber), name: \(modItem.modName)")
+      
+      importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress) {
+        completion()
+      }
     }
-    
-    importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress)
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
@@ -500,16 +551,16 @@ struct ContentView: View {
           Debug.log("Deleted mod item with order: \(modItem.order), name: \(modItem.modName)")
         }
       }
-      try? modelContext.save() // Save the context after deletion
-      updateOrderOfModItems()  // Update the order of remaining items
+      save()
+      updateOrderOfModItems()
       
       offsetsToDelete = nil
       modItemToDelete = nil
       
       if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-          selectedModItemOrderNumber = index - 1
-          Debug.log("Selected mod item order after deletion: \(selectedModItemOrderNumber ?? -1)")
+          selectModItem(modItems[index - 1])
+          Debug.log("Selected mod item order after deletion: \(modItems[index - 1])")
         }
       }
     }
@@ -540,9 +591,7 @@ struct ContentView: View {
     }
   }
   
-  private func importModFolderAndUpdateModItemDirectoryPath(
-    at originalPath: URL, modItem: ModItem, progress: Binding<Double>
-  ) {
+  private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem, progress: Binding<Double>, completion: @escaping () -> Void) {
     // Mark transfer as started
     DispatchQueue.main.async {
       self.isFileTransferInProgress = true
@@ -570,22 +619,25 @@ struct ContentView: View {
           showModSuccessfullyAddedToast = true
           
           // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
-          if !Debug.fileTransferUI {
+          if (!Debug.fileTransferUI) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
             }
           }
+          
+          completion()
         }
       }
     )
   }
   
-  
   private func importModFolderAndReturnNewDirectoryPath(at originalPath: URL, progressHandler: @escaping (Progress) -> Void, completionHandler: @escaping (String?) -> Void) {
     DispatchQueue.global(qos: .userInitiated).async {
       let fileManager = FileManager.default
       guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-        completionHandler(nil)
+        DispatchQueue.main.async {
+          completionHandler(nil)
+        }
         return
       }
       
@@ -613,7 +665,6 @@ struct ContentView: View {
       }
     }
   }
-  
 }
 
 #Preview {
