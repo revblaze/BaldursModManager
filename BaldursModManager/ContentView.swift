@@ -12,12 +12,12 @@ import AlertToast
 let UIDELAY: CGFloat = 0.01
 
 struct ContentView: View {
+  @Environment(\.global) var global
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
-  @State private var showSettingsView = false
   // Properties to store deletion details
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
@@ -68,9 +68,9 @@ struct ContentView: View {
     }
     
     if !UserSettings.shared.enableMods {
-      restoreDefaultModSettingsLsx()
+      restoreDefaultModSettingsLsx(withToast: false)
     } else if UserSettings.shared.saveModsAutomatically {
-      generateAndSaveModSettingsLsx()
+      generateAndSaveModSettingsLsx(withToast: false)
     }
   }
   
@@ -96,6 +96,7 @@ struct ContentView: View {
   }
   
   var body: some View {
+    @Bindable var global = global
     NavigationSplitView {
       List(selection: $selectedModItem) {
         ForEach(modItems) { item in
@@ -115,32 +116,22 @@ struct ContentView: View {
         selectModItem(selectedModItem)
       }
       .listStyle(.sidebar)
-      .navigationSplitViewColumnWidth(min: 200, ideal: 350)
+      .navigationSplitViewColumnWidth(min: 200, ideal: 260)
       // MARK: Navigation Toolbar
       .toolbar {
         ToolbarItem {
-          Button(action: addItem) {
-            Label("Add Item", systemImage: "plus")
-          }
-        }
-        
-        ToolbarItem(placement: .navigation) {
-          if debug.isActive {
-            Button(action: {
-              openUserModsFolder()
-            }) {
-              Label("Open UserMods", systemImage: "folder")
+          ToolbarSymbolButton(title: "Import Mod", symbol: .plus, action: addItem)
+            .onChange(of: global.showImportModPanel) {
+              if global.showImportModPanel { addItem() }
             }
+        }
+        ToolbarItem(placement: .navigation) {
+          ToolbarSymbolButton(title: "Home", symbol: .house, tint: selectedModItem == nil ? .blue : .secondary) {
+            selectedModItem = nil
           }
         }
-        
-        ToolbarItem(placement: .navigation) {
-          ToolbarSymbolButton(title: "Preview LSX", symbol: .code) {
-            previewModSettingsLsx()
-          }
-          .sheet(isPresented: $showXmlPreview) {
-            XMLPreviewView(xmlContent: $previewXmlContent)
-          }
+        ToolbarItem(placement: .principal) {
+          Spacer()
         }
       }
     } detail: {
@@ -161,11 +152,19 @@ struct ContentView: View {
       }
       
       if !UserSettings.shared.saveModsAutomatically {
+        if showConfirmationText {
+          ToolbarItem {
+            Text(confirmationMessage)
+              .opacity(showConfirmationText ? 1 : 0)
+              .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+          }
+        }
+        
         ToolbarItem {
           Button(action: {
             restoreDefaultModSettingsLsx()
             showCheckmarkForRestore = true
-            confirmationMessage = "Restored!"
+            confirmationMessage = "Restored"
             showConfirmationText = true
             resetButtonAndMessage()
           }) {
@@ -177,26 +176,33 @@ struct ContentView: View {
           Button(action: {
             generateAndSaveModSettingsLsx()
             showCheckmarkForSync = true
-            confirmationMessage = "Saved!"
+            confirmationMessage = "Saved"
             showConfirmationText = true
             resetButtonAndMessage()
           }) {
             Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
           }
         }
+        ToolbarItem {
+          HStack {
+            Divider()
+          }
+        }
       }
       
       ToolbarItem {
-        if showConfirmationText && UserSettings.shared.saveModsAutomatically {
-          Text(confirmationMessage)
-            .opacity(showConfirmationText ? 1 : 0)
-            .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+        Menu {
+          MenuButton(title: "Preview LSX", action: previewModSettingsLsx)
+          MenuButton(title: "Open Mod Folder", action: openUserModsFolder)
+          
+        } label: {
+          Label("Actions", systemImage: "ellipsis.circle")
         }
       }
       
       ToolbarItem {
         Button(action: {
-          showSettingsView = true
+          global.showSettingsView = true
         }) {
           Label("Settings", systemImage: "gear")
         }
@@ -215,6 +221,9 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
+    }
+    .sheet(isPresented: $showXmlPreview) {
+      XMLPreviewView(xmlContent: $previewXmlContent)
     }
     // MARK: Toasts
     .toast(isPresenting: $showUnableToFindInfoJsonFileToast, duration: 6) {
@@ -240,8 +249,8 @@ struct ContentView: View {
         self.showPermissionsView = false
       })
     }
-    .sheet(isPresented: $showSettingsView) {
-      SettingsView(isPresented: $showSettingsView)
+    .sheet(isPresented: $global.showSettingsView) {
+      SettingsView(isPresented: $global.showSettingsView)
         .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
     }
     .onAppear {
@@ -264,7 +273,7 @@ struct ContentView: View {
     }
   }
   
-  private func generateAndSaveModSettingsLsx() {
+  private func generateAndSaveModSettingsLsx(withToast toast: Bool = true) {
     Debug.log("User did select generateAndSaveModSettingsLsx()")
     if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let modItems = fetchEnabledModItemsSortedByOrder()
@@ -273,18 +282,18 @@ struct ContentView: View {
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsSavedSuccessfullyToast = true
+      showModSettingsSavedSuccessfullyToast = toast
     }
   }
   
-  private func restoreDefaultModSettingsLsx() {
+  private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {
     Debug.log("User did select restoreDefaultModSettingsLsx()")
     if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: [])
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsRevertedSuccessfullyToast = true
+      showModSettingsRevertedSuccessfullyToast = toast
     }
   }
   
