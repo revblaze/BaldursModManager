@@ -90,6 +90,9 @@ struct ContentView: View {
             }
           }
           .tag(item.order)
+          .onTapGesture {
+            Debug.log("Selected mod item with order: \(item.order), name: \(item.modName)")
+          }
         }
         .onDelete(perform: deleteItems)
         .onMove(perform: moveItems)
@@ -267,10 +270,12 @@ struct ContentView: View {
     // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
+      Debug.log("Updated mod item order: \(item.modName) to \(index)")
     }
     // Save the context
     do {
       try modelContext.save()
+      Debug.log("Successfully saved context after moving items")
     } catch {
       Debug.log("Error saving context: \(error)")
     }
@@ -380,6 +385,7 @@ struct ContentView: View {
             }
           }
           
+          Debug.log("Adding new mod item with order: \(newOrderNumber), name: \(name)")
           addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
         }
       }
@@ -480,6 +486,7 @@ struct ContentView: View {
             indexToSelect = index
             modelContext.delete(modItem)
             FileUtility.moveModItemToTrash(modItem)
+            Debug.log("Deleted mod item with order: \(modItem.order), name: \(modItem.modName)")
           }
         }
       } else if let modItem = itemToDelete {
@@ -490,6 +497,7 @@ struct ContentView: View {
           indexToSelect = index
           modelContext.delete(modItem)
           FileUtility.moveModItemToTrash(modItem)
+          Debug.log("Deleted mod item with order: \(modItem.order), name: \(modItem.modName)")
         }
       }
       try? modelContext.save() // Save the context after deletion
@@ -501,6 +509,7 @@ struct ContentView: View {
       if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
           selectedModItemOrderNumber = index - 1
+          Debug.log("Selected mod item order after deletion: \(selectedModItemOrderNumber ?? -1)")
         }
       }
     }
@@ -510,11 +519,13 @@ struct ContentView: View {
     var updatedOrder = 0
     for item in modItems.sorted(by: { $0.order < $1.order }) {
       item.order = updatedOrder
+      Debug.log("Updated order for item \(item.modName) to \(updatedOrder)")
       updatedOrder += 1
     }
     // Save the context after reordering
     do {
       try modelContext.save()
+      Debug.log("Successfully saved context after reordering items")
     } catch {
       Debug.log("Error saving context after reordering: \(error)")
     }
