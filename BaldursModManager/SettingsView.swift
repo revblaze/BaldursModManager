@@ -9,9 +9,10 @@ import SwiftUI
 
 struct SettingsView: View {
   @Binding var isPresented: Bool
-  @State private var makeCopyOfModFolderOnImport = UserSettings.shared.makeCopyOfModFolderOnImport
   @State private var enableMods = UserSettings.shared.enableMods
   @State private var saveModsAutomatically = UserSettings.shared.saveModsAutomatically
+  @State private var enableModOnImport = UserSettings.shared.saveModsAutomatically
+  @State private var makeCopyOfModFolderOnImport = UserSettings.shared.makeCopyOfModFolderOnImport
   
   var body: some View {
     VStack {
@@ -20,16 +21,20 @@ struct SettingsView: View {
           Text("Settings")
             .font(.system(size: 20, weight: .semibold, design: .rounded))
             .padding()
-          ToggleWithHeader(isToggled: $enableMods, header: "Enable Mods", description: "Enable or disable mods. When enabled, mods will be activated within the game.", showAllDescriptions: true)
-          ToggleWithHeader(isToggled: $saveModsAutomatically, header: "Automatically Save Mods", description: "Save your mods automatically to prevent data loss. Ensures that changes are not lost when the application closes unexpectedly.", showAllDescriptions: true)
-          ToggleWithHeader(isToggled: $makeCopyOfModFolderOnImport, header: "Copy Mod Folder on Import", description: "Create a backup copy of the mod folder upon import to safeguard your original mod files.", showAllDescriptions: true)
+          ToggleWithHeader(isToggled: $enableMods, header: "Enable Mods", description: "When disabled, the ModSettings.lsx file will be replaced with the no-mod setup. All mods will be deactived in Baldur's Gate 3.", showAllDescriptions: true)
+          ToggleWithHeader(isToggled: $saveModsAutomatically, header: "Automatically Save Mods", description: "All mod management operations are handled for you. Disabling this option will revert to the legacy app setup where saving mod files must be done manually.", showAllDescriptions: true)
+            .disabled(!enableMods)
+          ToggleWithHeader(isToggled: $enableMods, header: "Enable Mods on Import", description: "When a mod is imported into BaldursModManager, automatically install it and add it to the ModSettings.lsx file for me.", showAllDescriptions: true)
+            .disabled(!enableMods)
+          ToggleWithHeader(isToggled: $makeCopyOfModFolderOnImport, header: "Copy Mod Folder on Import", description: "When a mod folder is imported, a copy will be made of the original folder. If this is disabled, BaldursModManager will import the original folder instead.", showAllDescriptions: true)
+            .disabled(!enableMods)
         }
         .padding(20)
       }
       VStack {
         HStack {
           OutlineButton(title: "Restore Defaults") {
-            userSettings.restoreDefaults()
+            UserSettings.shared.restoreDefaults()
           }
           Spacer()
           BlueButton(title: "Done") {
@@ -42,16 +47,6 @@ struct SettingsView: View {
       .background(Color(NSColor.windowBackgroundColor))
     }
     .navigationTitle("Settings")
-    .toolbar {
-      ToolbarItem(placement: .cancellationAction) {
-        Button("Dismiss") {
-          UserSettings.shared.enableMods = enableMods
-          UserSettings.shared.saveModsAutomatically = saveModsAutomatically
-          UserSettings.shared.makeCopyOfModFolderOnImport = makeCopyOfModFolderOnImport
-          isPresented = false
-        }
-      }
-    }
   }
   
   func saveSettings() {
@@ -84,7 +79,7 @@ struct ToggleWithHeader: View {
         Text(header)
           .font(.system(size: 14, weight: .semibold, design: .default))
           .underline()
-          .padding(.bottom, 2) // Adjust padding to better align the header with the toggle
+          .padding(.bottom, 2)
 
         if showAllDescriptions {
           Text(description)
@@ -93,7 +88,7 @@ struct ToggleWithHeader: View {
             .fixedSize(horizontal: false, vertical: true)
         }
       }
-      .layoutPriority(1) // Ensures that this VStack doesn't get squeezed unnecessarily
+      .layoutPriority(1)
 
       Spacer()
     }
