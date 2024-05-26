@@ -14,7 +14,7 @@ let UIDELAY: CGFloat = 0.01
 struct ContentView: View {
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
-  @State private var selectedModItemOrderNumber: Int?
+  @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
   // Properties to store deletion details
@@ -72,13 +72,18 @@ struct ContentView: View {
     }
   }
   
+  private func selectModItem(_ item: ModItem?) {
+    selectedModItem = item
+    if let item = item {
+      Debug.log("Selected mod item with order: \(item.order), name: \(item.modName)")
+    }
+  }
+  
   var body: some View {
     NavigationSplitView {
-      List(selection: $selectedModItemOrderNumber) {
+      List(selection: $selectedModItem) {
         ForEach(modItems) { item in
-          NavigationLink {
-            ModItemDetailView(item: item, deleteAction: deleteItem)
-          } label: {
+          NavigationLink(value: item) {
             HStack {
               Image(systemName: item.isEnabled ? "checkmark.circle.fill" : "circle")
               Text("\(item.order).")
@@ -88,14 +93,18 @@ struct ContentView: View {
               
               Text(item.modName)
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+              selectModItem(item)
+            }
           }
-          .tag(item.order)
-          .onTapGesture {
-            Debug.log("Selected mod item with order: \(item.order), name: \(item.modName)")
-          }
+          .tag(item)
         }
         .onDelete(perform: deleteItems)
         .onMove(perform: moveItems)
+      }
+      .onChange(of: selectedModItem) {
+        selectModItem(selectedModItem)
       }
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
       // MARK: Toolbar
@@ -142,8 +151,6 @@ struct ContentView: View {
             }) {
               Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
             }
-            // .buttonStyle(ToolbarButtonStyle()) // if you have a custom button style
-            
             Button(action: {
               generateAndSaveModSettingsLsx()
               showCheckmarkForSync = true
@@ -162,7 +169,14 @@ struct ContentView: View {
         }
       }
     } detail: {
-      WelcomeDetailView()
+      if let selectedModItem {
+        ModItemDetailView(item: selectedModItem, deleteAction: deleteItem)
+      } else {
+        WelcomeDetailView()
+      }
+    }
+    .navigationDestination(for: ModItem.self) { item in
+      ModItemDetailView(item: item, deleteAction: deleteItem)
     }
     // MARK: Alerts
     .alert(isPresented: $showAlertForModDeletion) {
@@ -339,7 +353,6 @@ struct ContentView: View {
     let directoryURL = URL(fileURLWithPath: infoJsonPath).deletingLastPathComponent()
     
     if let pakFileString = getPakFileString(fromDirectoryContents: directoryContents) {
-      // Required
       var name, folder, uuid, md5: String?
       for (key, value) in infoDict {
         switch key.lowercased() {
@@ -399,7 +412,8 @@ struct ContentView: View {
     modelContext.insert(modItem)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-      selectedModItemOrderNumber = orderNumber
+      selectModItem(modItem)
+      Debug.log("Added new mod item with order: \(orderNumber), name: \(modItem.modName)")
     }
     
     importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress)
@@ -508,8 +522,8 @@ struct ContentView: View {
       
       if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-          selectedModItemOrderNumber = index - 1
-          Debug.log("Selected mod item order after deletion: \(selectedModItemOrderNumber ?? -1)")
+          selectModItem(modItems[index - 1])
+          Debug.log("Selected mod item order after deletion: \(modItems[index - 1])")
         }
       }
     }
@@ -570,7 +584,7 @@ struct ContentView: View {
           showModSuccessfullyAddedToast = true
           
           // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
-          if !Debug.fileTransferUI {
+          if (!Debug.fileTransferUI) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
             }
@@ -613,7 +627,6 @@ struct ContentView: View {
       }
     }
   }
-  
 }
 
 #Preview {
