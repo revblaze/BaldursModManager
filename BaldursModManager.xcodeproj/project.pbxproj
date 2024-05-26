@@ -26,6 +26,8 @@
 		292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D92C03E3DA001F9FDE /* Buttons.swift */; };
 		292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710DB2C03E402001F9FDE /* ButtonStyles.swift */; };
 		292710DF2C03EB46001F9FDE /* ToggleWithHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */; };
+		292710E32C03EEAD001F9FDE /* SFSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E02C03EEAC001F9FDE /* SFSymbol.swift */; };
+		292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E12C03EEAC001F9FDE /* SymbolButtons.swift */; };
 		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
 		297196572B716784000F7960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297196562B716784000F7960 /* Debug.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
@@ -59,6 +61,8 @@
 		292710D92C03E3DA001F9FDE /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		292710DB2C03E402001F9FDE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleWithHeader.swift; sourceTree = "<group>"; };
+		292710E02C03EEAC001F9FDE /* SFSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSymbol.swift; sourceTree = "<group>"; };
+		292710E12C03EEAC001F9FDE /* SymbolButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolButtons.swift; sourceTree = "<group>"; };
 		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
 		297196562B716784000F7960 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 		291181DC2B4B277700B76A26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				292710E22C03EEAC001F9FDE /* Symbols */,
 				292710DD2C03EB37001F9FDE /* Components */,
 				292710D82C03E3D0001F9FDE /* Buttons */,
 				2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */,
@@ -153,6 +158,15 @@
 				292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		292710E22C03EEAC001F9FDE /* Symbols */ = {
+			isa = PBXGroup;
+			children = (
+				292710E02C03EEAC001F9FDE /* SFSymbol.swift */,
+				292710E12C03EEAC001F9FDE /* SymbolButtons.swift */,
+			);
+			path = Symbols;
 			sourceTree = "<group>";
 		};
 		2979B3F82B4CA85700F3A227 /* XMLAttributesObject */ = {
@@ -313,11 +327,13 @@
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
 				2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */,
 				292710D72C03D744001F9FDE /* SettingsView.swift in Sources */,
+				292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
 				2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */,
 				297196572B716784000F7960 /* Debug.swift in Sources */,
+				292710E32C03EEAD001F9FDE /* SFSymbol.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */,
 				292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */,
