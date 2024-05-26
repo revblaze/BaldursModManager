@@ -340,7 +340,7 @@ struct ContentView: View {
     }
   }
   
-  private func createNewModItemFrom(infoDict: [String:String], infoJsonPath: String, directoryContents: [String]) {
+  private func createNewModItemFrom(infoDict: [String: String], infoJsonPath: String, directoryContents: [String]) {
     let directoryURL = URL(fileURLWithPath: infoJsonPath).deletingLastPathComponent()
     
     if let pakFileString = getPakFileString(fromDirectoryContents: directoryContents) {
@@ -358,10 +358,12 @@ struct ContentView: View {
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
         var newOrderNumber = nextOrderValue()
         var replaceWithOrderNumber: Int?
+        var isEnabled = false
         
-        // TODO: Prompt user for confirmation on replacement
+        // Check if the mod item needs replacing
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
+          isEnabled = modItemNeedsReplacing.isEnabled
           let success = deleteModItem(byUuid: uuid)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
@@ -376,7 +378,19 @@ struct ContentView: View {
         }
         
         withAnimation {
-          let newModItem = ModItem(order: newOrderNumber, directoryUrl: directoryURL, directoryPath: directoryURL.path, directoryContents: directoryContents, pakFileString: pakFileString, name: name, folder: folder, uuid: uuid, md5: md5)
+          let newModItem = ModItem(
+            order: newOrderNumber,
+            directoryUrl: directoryURL,
+            directoryPath: directoryURL.path,
+            directoryContents: directoryContents,
+            pakFileString: pakFileString,
+            name: name,
+            folder: folder,
+            uuid: uuid,
+            md5: md5
+          )
+          newModItem.isEnabled = isEnabled // Preserve isEnabled state on mod update
+          
           // Check for optional keys
           for (key, value) in infoDict {
             switch key.lowercased() {
@@ -388,12 +402,10 @@ struct ContentView: View {
             default: break
             }
           }
-          
           Debug.log("Adding new mod item with order: \(newOrderNumber), name: \(name)")
           addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
         }
       }
-      
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
     }
