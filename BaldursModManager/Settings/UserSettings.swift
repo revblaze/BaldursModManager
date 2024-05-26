@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 class UserSettings {
   static var shared = UserSettings()
   
@@ -16,49 +17,33 @@ class UserSettings {
   private let keySaveModsAutomatically = "saveModsAutomatically"
   private let keyEnableModOnImport = "enableModOnImport"
   
-  var makeCopyOfModFolderOnImport: Bool {
-    get { userDefaults.bool(forKey: keyMakeCopyOfModFolderOnImport) }
-    set { userDefaults.set(newValue, forKey: keyMakeCopyOfModFolderOnImport) }
-  }
-  
   var enableMods: Bool {
-    get { userDefaults.bool(forKey: keyEnableMods) }
-    set { userDefaults.set(newValue, forKey: keyEnableMods) }
+    didSet { userDefaults.set(enableMods, forKey: keyEnableMods) }
   }
   
   var saveModsAutomatically: Bool {
-    get { userDefaults.bool(forKey: keySaveModsAutomatically) }
-    set { userDefaults.set(newValue, forKey: keySaveModsAutomatically) }
+    didSet { userDefaults.set(saveModsAutomatically, forKey: keySaveModsAutomatically) }
   }
-
+  
   var enableModOnImport: Bool {
-    get { userDefaults.bool(forKey: keyEnableModOnImport) }
-    set { userDefaults.set(newValue, forKey: keyEnableModOnImport) }
+    didSet { userDefaults.set(enableModOnImport, forKey: keyEnableModOnImport) }
+  }
+  
+  var makeCopyOfModFolderOnImport: Bool {
+    didSet { userDefaults.set(makeCopyOfModFolderOnImport, forKey: keyMakeCopyOfModFolderOnImport) }
   }
   
   init() {
-    restoreDefaultsIfNeeded()
+    self.makeCopyOfModFolderOnImport = userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) as? Bool ?? true
+    self.enableMods = userDefaults.object(forKey: keyEnableMods) as? Bool ?? true
+    self.saveModsAutomatically = userDefaults.object(forKey: keySaveModsAutomatically) as? Bool ?? true
+    self.enableModOnImport = userDefaults.object(forKey: keyEnableModOnImport) as? Bool ?? true
   }
   
-  private func restoreDefaultsIfNeeded() {
-    if userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) == nil {
-      userDefaults.set(true, forKey: keyMakeCopyOfModFolderOnImport)
-    }
-    if userDefaults.object(forKey: keyEnableMods) == nil {
-      userDefaults.set(true, forKey: keyEnableMods)
-    }
-    if userDefaults.object(forKey: keySaveModsAutomatically) == nil {
-      userDefaults.set(true, forKey: keySaveModsAutomatically)
-    }
-    if userDefaults.object(forKey: keyEnableModOnImport) == nil {
-      userDefaults.set(true, forKey: keyEnableModOnImport)
-    }
-  }
-
   func restoreDefaults() {
-    userDefaults.set(true, forKey: keyMakeCopyOfModFolderOnImport)
-    userDefaults.set(true, forKey: keyEnableMods)
-    userDefaults.set(true, forKey: keySaveModsAutomatically)
-    userDefaults.set(true, forKey: keyEnableModOnImport)
+    self.makeCopyOfModFolderOnImport = true
+    self.enableMods = true
+    self.saveModsAutomatically = true
+    self.enableModOnImport = true
   }
 }
