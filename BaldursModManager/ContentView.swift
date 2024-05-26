@@ -17,6 +17,7 @@ struct ContentView: View {
   @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
+  @State private var showSettingsView = false
   // Properties to store deletion details
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
@@ -187,9 +188,9 @@ struct ContentView: View {
       
       ToolbarItem {
         Button(action: {
-          // open settings
+          showSettingsView = true
         }) {
-          Label("Sync", systemImage: "gear")
+          Label("Settings", systemImage: "gear")
         }
       }
     }
@@ -230,6 +231,10 @@ struct ContentView: View {
       PermissionsView(onDismiss: {
         self.showPermissionsView = false
       })
+    }
+    .sheet(isPresented: $showSettingsView) {
+      SettingsView(isPresented: $showSettingsView)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 320, maxHeight: 700)
     }
     .onAppear {
       performInitialSetup()

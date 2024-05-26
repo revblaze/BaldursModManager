@@ -22,6 +22,9 @@
 		2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */; };
 		2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */; };
 		292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D42C03B100001F9FDE /* SidebarItemView.swift */; };
+		292710D72C03D744001F9FDE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D62C03D744001F9FDE /* SettingsView.swift */; };
+		292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D92C03E3DA001F9FDE /* Buttons.swift */; };
+		292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710DB2C03E402001F9FDE /* ButtonStyles.swift */; };
 		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
 		297196572B716784000F7960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297196562B716784000F7960 /* Debug.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
@@ -51,6 +54,9 @@
 		2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+ReplaceModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDetailView.swift; sourceTree = "<group>"; };
 		292710D42C03B100001F9FDE /* SidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItemView.swift; sourceTree = "<group>"; };
+		292710D62C03D744001F9FDE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		292710D92C03E3DA001F9FDE /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		292710DB2C03E402001F9FDE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
 		297196562B716784000F7960 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
@@ -90,6 +96,7 @@
 		291181DC2B4B277700B76A26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				292710D82C03E3D0001F9FDE /* Buttons */,
 				2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */,
 				291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */,
 				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
@@ -126,6 +133,15 @@
 				2912B37D2B4CD4B90074AF2D /* XMLBuilder.swift */,
 			);
 			path = XMLUtilities;
+			sourceTree = "<group>";
+		};
+		292710D82C03E3D0001F9FDE /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				292710D92C03E3DA001F9FDE /* Buttons.swift */,
+				292710DB2C03E402001F9FDE /* ButtonStyles.swift */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		2979B3F82B4CA85700F3A227 /* XMLAttributesObject */ = {
@@ -179,6 +195,7 @@
 				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
 				292710D42C03B100001F9FDE /* SidebarItemView.swift */,
+				292710D62C03D744001F9FDE /* SettingsView.swift */,
 				291181DC2B4B277700B76A26 /* Views */,
 				291181EA2B4B63A100B76A26 /* Models */,
 				291181DF2B4B2EB500B76A26 /* Utilities */,
@@ -281,8 +298,10 @@
 				2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */,
 				2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */,
 				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
+				292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */,
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
 				2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */,
+				292710D72C03D744001F9FDE /* SettingsView.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
@@ -293,6 +312,7 @@
 				292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
+				292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
 				291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */,
 				2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */,
