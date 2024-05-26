@@ -11,6 +11,7 @@ struct ModItemDetailView: View {
   @Environment(\.modelContext) private var modelContext
   let item: ModItem
   let deleteAction: (ModItem) -> Void
+  let saveAction: () -> Void
   
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
@@ -128,14 +129,14 @@ struct ModItemDetailView: View {
     Debug.log("toggleEnabled()")
     withAnimation {
       item.isEnabled.toggle()
-      try? modelContext.save()
+      saveAction()
     }
     modItemManager.toggleModItem(item)
   }
 }
 
 #Preview {
-  ModItemDetailView(item: ModItem.mock, deleteAction: { _ in })
+  ModItemDetailView(item: ModItem.mock, deleteAction: { _ in }, saveAction: {})
 }
 
 extension ModItem {

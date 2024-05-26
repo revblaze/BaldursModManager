@@ -58,6 +58,15 @@ struct ContentView: View {
     }
   }
   
+  func save() {
+    Debug.log("Attempting to save...")
+    do {
+      try modelContext.save()
+    } catch {
+      print("Failed to save: \(error.localizedDescription)")
+    }
+  }
+  
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
@@ -84,7 +93,7 @@ struct ContentView: View {
       List(selection: $selectedModItem) {
         ForEach(modItems) { item in
           NavigationLink {
-            ModItemDetailView(item: item, deleteAction: deleteItem)
+            ModItemDetailView(item: item, deleteAction: deleteItem, saveAction: save)
           } label: {
             HStack {
               SidebarItemView(item: item)
@@ -163,13 +172,13 @@ struct ContentView: View {
       }
     } detail: {
       if let selectedModItem {
-        ModItemDetailView(item: selectedModItem, deleteAction: deleteItem)
+        ModItemDetailView(item: selectedModItem, deleteAction: deleteItem, saveAction: save)
       } else {
         WelcomeDetailView()
       }
     }
     .navigationDestination(for: ModItem.self) { item in
-      ModItemDetailView(item: item, deleteAction: deleteItem)
+      ModItemDetailView(item: item, deleteAction: deleteItem, saveAction: save)
     }
     // MARK: Alerts
     .alert(isPresented: $showAlertForModDeletion) {
@@ -281,7 +290,7 @@ struct ContentView: View {
     }
     // Save the context
     do {
-      try modelContext.save()
+      save()
       Debug.log("Successfully saved context after moving items")
     } catch {
       Debug.log("Error saving context: \(error)")
@@ -324,7 +333,7 @@ struct ContentView: View {
     return modItems.first(where: { $0.modUuid == uuid })
   }
   
-  private func deleteModItem(byUuid uuid: String) -> Bool {
+  private func deleteModItem(byUuid uuid: String, forUpdateReplacement willReplaceUpdate: Bool = false) -> Bool {
     if let modItemToDelete = getModItem(byUuid: uuid) {
       withAnimation {
         if modItemToDelete.isEnabled {
@@ -332,8 +341,10 @@ struct ContentView: View {
         }
         modelContext.delete(modItemToDelete)
         FileUtility.moveModItemToTrash(modItemToDelete)
-        try? modelContext.save()
-        updateOrderOfModItems()
+        save()
+        if willReplaceUpdate == false {
+          updateOrderOfModItems()
+        }
       }
       return true
     } else {
@@ -366,7 +377,7 @@ struct ContentView: View {
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
           isEnabled = modItemNeedsReplacing.isEnabled
-          let success = deleteModItem(byUuid: uuid)
+          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true) //deleteModItem(byUuid: uuid)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
@@ -391,7 +402,7 @@ struct ContentView: View {
             uuid: uuid,
             md5: md5
           )
-          newModItem.isEnabled = isEnabled
+          //newModItem.isEnabled = isEnabled
           
           // Check for optional keys
           for (key, value) in infoDict {
@@ -405,7 +416,16 @@ struct ContentView: View {
             }
           }
           Debug.log("Adding new mod item with order: \(newOrderNumber), name: \(name)")
-          addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL)
+          addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL) {
+            if isEnabled {
+              withAnimation {
+                newModItem.isEnabled.toggle()
+                modItemManager.toggleModItem(newModItem)
+                save()
+                updateOrderOfModItems()
+              }
+            }
+          }
         }
       }
     } else {
@@ -413,15 +433,17 @@ struct ContentView: View {
     }
   }
   
-  private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL) {
+  private func addNewModItem(_ modItem: ModItem, orderNumber: Int, fromDirectoryUrl directoryUrl: URL, completion: @escaping () -> Void) {
     modelContext.insert(modItem)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
       selectModItem(modItem)
       Debug.log("Added new mod item with order: \(orderNumber), name: \(modItem.modName)")
+      
+      importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress) {
+        completion()
+      }
     }
-    
-    importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress)
   }
   
   private func getDirectoryContents(at url: URL) -> [String]? {
@@ -519,8 +541,8 @@ struct ContentView: View {
           Debug.log("Deleted mod item with order: \(modItem.order), name: \(modItem.modName)")
         }
       }
-      try? modelContext.save() // Save the context after deletion
-      updateOrderOfModItems()  // Update the order of remaining items
+      save()
+      updateOrderOfModItems()
       
       offsetsToDelete = nil
       modItemToDelete = nil
@@ -559,9 +581,7 @@ struct ContentView: View {
     }
   }
   
-  private func importModFolderAndUpdateModItemDirectoryPath(
-    at originalPath: URL, modItem: ModItem, progress: Binding<Double>
-  ) {
+  private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem, progress: Binding<Double>, completion: @escaping () -> Void) {
     // Mark transfer as started
     DispatchQueue.main.async {
       self.isFileTransferInProgress = true
@@ -594,17 +614,20 @@ struct ContentView: View {
               self.fileTransferProgress = 0
             }
           }
+          
+          completion()
         }
       }
     )
   }
   
-  
   private func importModFolderAndReturnNewDirectoryPath(at originalPath: URL, progressHandler: @escaping (Progress) -> Void, completionHandler: @escaping (String?) -> Void) {
     DispatchQueue.global(qos: .userInitiated).async {
       let fileManager = FileManager.default
       guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-        completionHandler(nil)
+        DispatchQueue.main.async {
+          completionHandler(nil)
+        }
         return
       }
       
