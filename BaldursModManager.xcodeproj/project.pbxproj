@@ -21,6 +21,7 @@
 		2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */; };
 		2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */; };
 		2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */; };
+		292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D42C03B100001F9FDE /* SidebarItemView.swift */; };
 		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
 		297196572B716784000F7960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297196562B716784000F7960 /* Debug.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
@@ -49,6 +50,7 @@
 		2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+DefaultModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+ReplaceModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDetailView.swift; sourceTree = "<group>"; };
+		292710D42C03B100001F9FDE /* SidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItemView.swift; sourceTree = "<group>"; };
 		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
 		297196562B716784000F7960 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 			children = (
 				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
+				292710D42C03B100001F9FDE /* SidebarItemView.swift */,
 				291181DC2B4B277700B76A26 /* Views */,
 				291181EA2B4B63A100B76A26 /* Models */,
 				291181DF2B4B2EB500B76A26 /* Utilities */,
@@ -287,6 +290,7 @@
 				297196572B716784000F7960 /* Debug.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
 				2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */,
+				292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
