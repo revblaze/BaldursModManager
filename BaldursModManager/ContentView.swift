@@ -66,6 +66,12 @@ struct ContentView: View {
     } catch {
       print("Failed to save: \(error.localizedDescription)")
     }
+    
+    if !UserSettings.shared.enableMods {
+      restoreDefaultModSettingsLsx()
+    } else if UserSettings.shared.saveModsAutomatically {
+      generateAndSaveModSettingsLsx()
+    }
   }
   
   private func performInitialSetup() {
@@ -110,14 +116,15 @@ struct ContentView: View {
       }
       .listStyle(.sidebar)
       .navigationSplitViewColumnWidth(min: 200, ideal: 350)
-      // MARK: Toolbar
+      // MARK: Navigation Toolbar
       .toolbar {
         ToolbarItem {
           Button(action: addItem) {
             Label("Add Item", systemImage: "plus")
           }
         }
-        ToolbarItemGroup(placement: .navigation) {
+        
+        ToolbarItem(placement: .navigation) {
           if debug.isActive {
             Button(action: {
               openUserModsFolder()
@@ -125,14 +132,13 @@ struct ContentView: View {
               Label("Open UserMods", systemImage: "folder")
             }
           }
-          Button(action: {
-            // preview modsettings.lsx
+        }
+        
+        ToolbarItem(placement: .navigation) {
+          ToolbarSymbolButton(title: "Preview LSX", symbol: .code) {
             previewModSettingsLsx()
-          }) {
-            Label("Preview modsettings.lsx", systemImage: "eye") // "command"
           }
           .sheet(isPresented: $showXmlPreview) {
-            // Custom view for displaying the XML content
             XMLPreviewView(xmlContent: $previewXmlContent)
           }
         }
@@ -154,32 +160,34 @@ struct ContentView: View {
         }
       }
       
-      ToolbarItem {
-        Button(action: {
-          restoreDefaultModSettingsLsx()
-          showCheckmarkForRestore = true
-          confirmationMessage = "Restored!"
-          showConfirmationText = true
-          resetButtonAndMessage()
-        }) {
-          Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+      if !UserSettings.shared.saveModsAutomatically {
+        ToolbarItem {
+          Button(action: {
+            restoreDefaultModSettingsLsx()
+            showCheckmarkForRestore = true
+            confirmationMessage = "Restored!"
+            showConfirmationText = true
+            resetButtonAndMessage()
+          }) {
+            Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+          }
+        }
+        
+        ToolbarItem {
+          Button(action: {
+            generateAndSaveModSettingsLsx()
+            showCheckmarkForSync = true
+            confirmationMessage = "Saved!"
+            showConfirmationText = true
+            resetButtonAndMessage()
+          }) {
+            Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
+          }
         }
       }
       
       ToolbarItem {
-        Button(action: {
-          generateAndSaveModSettingsLsx()
-          showCheckmarkForSync = true
-          confirmationMessage = "Saved!"
-          showConfirmationText = true
-          resetButtonAndMessage()
-        }) {
-          Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
-        }
-      }
-      
-      ToolbarItem {
-        if showConfirmationText {
+        if showConfirmationText && UserSettings.shared.saveModsAutomatically {
           Text(confirmationMessage)
             .opacity(showConfirmationText ? 1 : 0)
             .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
@@ -234,7 +242,7 @@ struct ContentView: View {
     }
     .sheet(isPresented: $showSettingsView) {
       SettingsView(isPresented: $showSettingsView)
-        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 320, maxHeight: 700)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
     }
     .onAppear {
       performInitialSetup()
