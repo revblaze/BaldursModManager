@@ -20,5 +20,8 @@ struct SidebarItemView: View {
       
       Text(item.modName)
     }
+    .onChange(of: item.isEnabled) {
+      print("Performing operation for isEnabled state: \(item.isEnabled)")
+    }
   }
 }
