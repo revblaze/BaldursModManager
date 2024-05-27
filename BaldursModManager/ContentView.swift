@@ -60,11 +60,11 @@ struct ContentView: View {
   }
   
   func save() {
-    Debug.log("Attempting to save...")
+    Debug.log("Saving...")
     do {
       try modelContext.save()
     } catch {
-      print("Failed to save: \(error.localizedDescription)")
+      Debug.log("Failed to save: \(error.localizedDescription)")
     }
     
     if !UserSettings.shared.enableMods {
@@ -77,10 +77,12 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     
+    /*
     if debug.isActive {
       ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
       LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
     }
+     */
     
     if let backupUrl = FileUtility.backupModSettingsLsxFile() {
       Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
@@ -210,9 +212,6 @@ struct ContentView: View {
         }
       }
     }
-    .navigationDestination(for: ModItem.self) { item in
-      ModItemDetailView(item: item, deleteAction: deleteItem, saveAction: save)
-    }
     // MARK: Alerts
     .alert(isPresented: $showAlertForModDeletion) {
       Alert(
@@ -286,7 +285,7 @@ struct ContentView: View {
       
       let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
       let xmlString = xmlBuilder.buildXMLString()
-      Debug.log(xmlString)
+      //Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
       showModSettingsSavedSuccessfullyToast = toast
     }

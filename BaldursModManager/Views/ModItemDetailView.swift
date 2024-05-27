@@ -126,7 +126,6 @@ struct ModItemDetailView: View {
   }
   
   private func toggleEnabled() {
-    Debug.log("toggleEnabled()")
     withAnimation {
       item.isEnabled.toggle()
       saveAction()
