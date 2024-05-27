@@ -69,6 +69,7 @@ struct BrowseRequiredFileRow: View {
         Button("Browse...") {
           Task {
             if let path = await browseAction() {
+              textValue = path
               updateIndicator(for: path)
             }
           }
@@ -88,7 +89,6 @@ struct BrowseRequiredFileRow: View {
               .foregroundColor(modSettingsExists ? .green : .red)
             Text(modSettingsExists ? "Valid modsettings.lsx file found" : "Unable to locate modsettings.lsx")
           }
-          
         }
         .padding(.horizontal, 20)
         .fontDesign(.rounded)
@@ -115,6 +115,7 @@ struct BrowseRequiredFileRow: View {
       if modsExists && modSettingsExists {
         indicatorType = .checkmark
         textValue = value
+        UserSettings.shared.baldursGateDirectory = value
       } else {
         indicatorType = .xmark
       }

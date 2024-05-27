@@ -14,7 +14,7 @@ struct ModItemDetailView: View {
   let saveAction: () -> Void
   
   private let modItemManager = ModItemManager.shared
-  @ObservedObject var debug = Debug.shared
+  var debug = Debug.shared
   
   var body: some View {
     VStack {

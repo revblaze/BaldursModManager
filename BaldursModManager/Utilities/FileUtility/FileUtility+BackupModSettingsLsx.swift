@@ -8,7 +8,8 @@
 import Foundation
 
 extension FileUtility {
-  
+  /// Backs up the mod settings LSX file to the user backups directory.
+  /// - Returns: The URL of the backup file if the backup was successful, otherwise nil.
   static func backupModSettingsLsxFile() -> URL? {
     let fileManager = FileManager.default
     
@@ -39,8 +40,7 @@ extension FileUtility {
     // Determine the backup file URL
     var backupFileURL = userBackupsURL.appendingPathComponent(modSettingsLsxFileURL.lastPathComponent)
     if fileManager.fileExists(atPath: backupFileURL.path) {
-      let timestamp = formattedCurrentTimestamp()
-      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent).\(modSettingsLsxFileURL.pathExtension) \(timestamp)")
+      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent).\(modSettingsLsxFileURL.pathExtension.appendingDateAndTime())")
     }
     
     // Perform the backup
@@ -54,14 +54,24 @@ extension FileUtility {
     }
   }
   
-  private static func formattedCurrentTimestamp() -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let datePart = dateFormatter.string(from: Date())
+  /// Removes the entire backup mod folder if it exists.
+  static func removeBackupModSettingsDirectory() {
+    let fileManager = FileManager.default
     
-    dateFormatter.dateFormat = "h.mm.ss a"
-    let timePart = dateFormatter.string(from: Date())
+    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Application Support directory.")
+      return
+    }
     
-    return "\(datePart) at \(timePart)"
+    let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
+    
+    if fileManager.fileExists(atPath: userBackupsURL.path) {
+      do {
+        try fileManager.removeItem(at: userBackupsURL)
+        Debug.log("Backup folder removed successfully.")
+      } catch {
+        Debug.log("Failed to remove backup folder: \(error.localizedDescription)")
+      }
+    }
   }
 }

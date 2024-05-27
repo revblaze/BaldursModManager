@@ -10,14 +10,25 @@ import Foundation
 /// A debugging utility class that conditionally performs logging and actions based on its active state.
 ///
 /// This class provides a global access point through `Debug.shared` to perform logging and execute closures conditionally if debugging is enabled.
-class Debug: ObservableObject {
+@Observable
+class Debug {
   /// The singleton instance for global access.
   static let shared = Debug()
   static var fileTransferUI = false
   static var permissionsView = false
   
+  var logModItems = false
+  
+  var sessionLog = ""
+  
+  private func appendToSessionLog<T>(_ value: T) {
+    if value is String {
+      sessionLog += "\(value)\n"
+    }
+  }
+  
   /// Indicates whether debugging actions should be performed.
-  @Published var isActive = false
+  var isActive = false
   
   /// Logs a given value to the console if debugging is active.
   ///
@@ -33,6 +44,7 @@ class Debug: ObservableObject {
   ///
   /// - important: Use `Debug.log` instead.
   private func logInstance<T>(_ value: T) {
+    appendToSessionLog(value)
     if isActive {
       print(value)
     }
@@ -89,4 +101,10 @@ class Debug: ObservableObject {
   static func perform(action: @escaping () -> Void) {
     Debug.shared.perform(action: action)
   }
+  
+  static func logSection() {
+    Debug.shared.appendToSessionLog("\n\n")
+  }
+  
+  var simulateErrorToast: Bool = false
 }

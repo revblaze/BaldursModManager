@@ -43,6 +43,7 @@ enum SFSymbol: String {
   case pull = "arrow.triangle.pull"
   case gyro = "gyroscope"
   case newMessage = "plus.message"
+  case downloadDoc = "arrow.down.doc"
   
   case tabBar = "character.textbox"
   case tabGallery = "square.on.square"
