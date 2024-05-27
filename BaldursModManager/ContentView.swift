@@ -386,7 +386,7 @@ struct ContentView: View {
     reorderedItems.move(fromOffsets: source, toOffset: destination)
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
-      Debug.log("Updated mod item order: \(item.modName) to \(index)")
+      //Debug.log("Updated mod item order: \(item.modName) to \(index)")
     }
     save()
   }
