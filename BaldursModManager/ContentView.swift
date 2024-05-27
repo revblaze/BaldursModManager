@@ -27,18 +27,33 @@ struct ContentView: View {
   @State private var showXmlPreview = false
   @State private var previewXmlContent = ""
   
+  @State private var showToastError = false
+  @State private var toastErrorMessage = ""
+  
+  func showToastError(_ message: String, withLogDetails logDetails: String = "") {
+    Debug.log("[Toast] Error: \(message)")
+    
+    if !logDetails.isEmpty {
+      Debug.log("Log Details: \(logDetails)")
+    }
+    
+    toastErrorMessage = message
+    showToastError = true
+  }
+  
+  @State private var showToastSuccess = false
+  @State private var toastSuccessMessage = ""
+  
+  func showToastSuccess(_ message: String) {
+    Debug.log("[Toast] \(message)")
+    toastSuccessMessage = message
+    showToastSuccess = true
+  }
+  
   @State private var showCheckmarkForRestore = false
   @State private var showCheckmarkForSync = false
   @State private var showConfirmationText = false
   @State private var confirmationMessage = ""
-  
-  @State private var showUnableToFindInfoJsonFileToast = false
-  @State private var showUnableToReplaceExistingModToast = false
-  @State private var showModSuccessfullyAddedToast = false
-  @State private var showModSuccessfullyUpdatedToast = false
-  
-  @State private var showModSettingsSavedSuccessfullyToast = false
-  @State private var showModSettingsRevertedSuccessfullyToast = false
   
   private let modItemManager = ModItemManager.shared
   @ObservedObject var debug = Debug.shared
@@ -64,7 +79,7 @@ struct ContentView: View {
     do {
       try modelContext.save()
     } catch {
-      Debug.log("Failed to save: \(error.localizedDescription)")
+      showToastError("Failed to save to local database.", withLogDetails: error.localizedDescription)
     }
     
     if !UserSettings.shared.enableMods {
@@ -76,13 +91,6 @@ struct ContentView: View {
   
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
-    
-    /*
-    if debug.isActive {
-      ModItemUtility.logModItems(fetchEnabledModItemsSortedByOrder())
-      LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
-    }
-     */
     
     if let backupUrl = FileUtility.backupModSettingsLsxFile() {
       Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
@@ -234,23 +242,11 @@ struct ContentView: View {
       )
     }
     // MARK: Toasts
-    .toast(isPresenting: $showUnableToFindInfoJsonFileToast, duration: 6) {
-      AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Invalid mod folder: Unable to locate Info.json file")
+    .toast(isPresenting: $showToastError, duration: 6) {
+      AlertToast(displayMode: .banner(.pop), type: .error(.red), title: toastErrorMessage)
     }
-    .toast(isPresenting: $showUnableToReplaceExistingModToast, duration: 6) {
-      AlertToast(displayMode: .banner(.pop), type: .error(.red), title: "Unable to replace existing mod with newer version")
-    }
-    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 3) {
-      AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod added")
-    }
-    .toast(isPresenting: $showModSuccessfullyAddedToast, duration: 3) {
-      AlertToast(displayMode: .banner(.pop), type: .complete(.green), title: "Mod successfully updated")
-    }
-    .toast(isPresenting: $showModSettingsSavedSuccessfullyToast, duration: 4) {
-      AlertToast(type: .complete(.green), title: "Mods have been applied successfully")
-    }
-    .toast(isPresenting: $showModSettingsRevertedSuccessfullyToast, duration: 4) {
-      AlertToast(type: .complete(.gray), title: "Mods have been reverted")
+    .toast(isPresenting: $showToastSuccess, duration: 4) {
+      AlertToast(type: .complete(.green), title: toastSuccessMessage)
     }
     .sheet(isPresented: $showPermissionsView) {
       PermissionsView(onDismiss: {
@@ -259,11 +255,11 @@ struct ContentView: View {
     }
     .sheet(isPresented: $global.showSettingsView) {
       SettingsView(isPresented: $global.showSettingsView)
-        .frame(idealWidth: 600, maxWidth: 600, idealHeight: 700, maxHeight: 700)
+        .frame(minWidth: 400, idealWidth: 600, maxWidth: 600, minHeight: 400, idealHeight: 700, maxHeight: 700)
     }
     .sheet(isPresented: $global.showWhatsNewView) {
       WhatsNewView(isPresented: $global.showWhatsNewView)
-        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+        .frame(width: 550, height: 470)
     }
     .sheet(isPresented: $showXmlPreview) {
       XMLPreviewView(xmlContent: $previewXmlContent)
@@ -289,37 +285,30 @@ struct ContentView: View {
   }
   
   private func generateAndSaveModSettingsLsx(withToast toast: Bool = true) {
-    Debug.log("User did select generateAndSaveModSettingsLsx()")
     if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let modItems = fetchEnabledModItemsSortedByOrder()
-      
       let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
       let xmlString = xmlBuilder.buildXMLString()
-      //Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsSavedSuccessfullyToast = toast
+      showToastSuccess("Mod settings applied")
     }
   }
   
   private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {
-    Debug.log("User did select restoreDefaultModSettingsLsx()")
-    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
-      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: [])
-      let xmlString = xmlBuilder.buildXMLString()
-      Debug.log(xmlString)
-      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsRevertedSuccessfullyToast = toast
-    }
+    let contents = FileUtility.getDefaultModSettingsLsxContents()
+    FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: contents)
+    showToastSuccess("Mod settings restored to default")
   }
   
   private func previewModSettingsLsx() {
-    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
+    if UserSettings.shared.enableMods, let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let modItems = fetchEnabledModItemsSortedByOrder()
-      
       let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
       previewXmlContent = xmlBuilder.buildXMLString()
-      showXmlPreview = true
+    } else {
+      previewXmlContent = FileUtility.getDefaultModSettingsLsxContents()
     }
+    showXmlPreview = true
   }
   
   private func openUserModsFolder() {
@@ -365,11 +354,10 @@ struct ContentView: View {
           Debug.log("JSON contents: \n\(infoDict)")
           createNewModItemFrom(infoDict: infoDict, infoJsonPath: fullPath, directoryContents: contents)
         } else {
-          Debug.log("Error parsing JSON content. Bring up manual entry screen.")
+          showToastError("Error parsing JSON content.")
         }
       } else {
-        Debug.log("Error: Unable to locate info.json file of imported mod")
-        showUnableToFindInfoJsonFileToast = true
+        showToastError("Unable to locate info.json file of imported mod.")
       }
     }
   }
@@ -393,7 +381,7 @@ struct ContentView: View {
       }
       return true
     } else {
-      Debug.log("Error: No ModItem found with UUID: \(uuid)")
+      showToastError("No mod found with UUID: \(uuid)")
       return false
     }
   }
@@ -424,11 +412,10 @@ struct ContentView: View {
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
-              showModSuccessfullyUpdatedToast = true
+              showToastSuccess("Mod updated successfully")
             }
           } else {
-            Debug.log("Error: Unable to delete mod \(modItemNeedsReplacing.modName)")
-            showUnableToReplaceExistingModToast = true
+            showToastError("Unable to delete mod \(modItemNeedsReplacing.modName)")
             return
           }
         }
@@ -473,6 +460,7 @@ struct ContentView: View {
       }
     } else {
       Debug.log("Error: Unable to resolve pakFileString from \(directoryContents)")
+      showToastError("Unable to resolve pakFileString", withLogDetails: "from directoryContents: \(directoryContents)")
     }
   }
   
@@ -482,7 +470,6 @@ struct ContentView: View {
     DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
       selectModItem(modItem)
       Debug.log("Added new mod item with order: \(orderNumber), name: \(modItem.modName)")
-      
       importModFolderAndUpdateModItemDirectoryPath(at: directoryUrl, modItem: modItem, progress: $fileTransferProgress) {
         completion()
       }
@@ -496,7 +483,7 @@ struct ContentView: View {
       Debug.log("Directory contents: \(contents)")
       return contents
     } catch {
-      Debug.log("Error listing directory contents: \(error)")
+      showToastError("Unable to list directory contents", withLogDetails: "\(error)")
     }
     return nil
   }
@@ -517,28 +504,23 @@ struct ContentView: View {
         if let dict = jsonObject as? [String: Any],
            let mods = dict["Mods"] as? [[String: Any]],
            let firstMod = mods.first {
-          
           var result: [String: String] = [:]
-          
           // Extract key-value pairs from the "Mods" dictionary
           for (key, value) in firstMod {
             if let stringValue = value as? String {
               result[key] = stringValue
             }
           }
-          
           // Extract MD5 from the top-level dictionary
           if let md5 = dict["MD5"] as? String {
             result["MD5"] = md5
           }
-          
           return result
         }
       } catch {
-        Debug.log("Error parsing JSON: \(error.localizedDescription)")
+        showToastError("Error parsing Info.json contents", withLogDetails: error.localizedDescription)
       }
     }
-    
     return nil
   }
   
@@ -634,17 +616,16 @@ struct ContentView: View {
             modItem.directoryUrl = URL(fileURLWithPath: directoryPath)
             modItem.directoryPath = directoryPath
           } else {
-            Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
+            showToastError("Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
           }
           self.isFileTransferInProgress = false
           SoundUtility.play(systemSound: .mount)
-          showModSuccessfullyAddedToast = true
+          showToastSuccess("Mod successfully added")
           if (!Debug.fileTransferUI) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
             }
           }
-          
           completion()
         }
       }
@@ -679,7 +660,7 @@ struct ContentView: View {
         }
       } catch {
         DispatchQueue.main.async {
-          Debug.log("Error handling mod folder: \(error)")
+          showToastError("Unable to manage mod folder", withLogDetails: error.localizedDescription)
           completionHandler(nil)
         }
       }
@@ -690,29 +671,4 @@ struct ContentView: View {
 #Preview {
   ContentView()
     .modelContainer(for: ModItem.self, inMemory: true)
-}
-
-struct ToolbarButtonStyle: ButtonStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .padding(3)
-      .background(configuration.isPressed ? Color.gray.opacity(0.2) : Color.clear)
-      .cornerRadius(5)
-  }
-}
-
-struct IconLabelView: View {
-  let icon: String
-  let label: String
-  
-  var body: some View {
-    VStack {
-      Image(systemName: icon)
-        .font(.system(size: 18))
-        .opacity(0.75)
-      Text(label)
-        .font(.system(size: 10))
-        .opacity(0.75)
-    }
-  }
 }
