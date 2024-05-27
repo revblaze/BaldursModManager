@@ -35,6 +35,9 @@ enum SFSymbol: String {
   case plus
   case folder
   case code = "chevron.left.forwardslash.chevron.right"
+  case curlyBraces = "ellipsis.curlybraces"
+  case starBubble = "star.bubble"
+  case sparkles
   
   case tabBar = "character.textbox"
   case tabGallery = "square.on.square"
