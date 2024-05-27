@@ -39,6 +39,11 @@ enum SFSymbol: String {
   case starBubble = "star.bubble"
   case sparkles
   
+  case link
+  case pull = "arrow.triangle.pull"
+  case gyro = "gyroscope"
+  case newMessage = "plus.message"
+  
   case tabBar = "character.textbox"
   case tabGallery = "square.on.square"
   

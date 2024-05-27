@@ -18,4 +18,8 @@ struct Constants {
   
   static let defaultModSettingsFileFromDocumentsRelativePath = "Larian Studios/Baldur's Gate 3/PlayerProfiles/Public/modsettings.lsx"
   static let defaultModFolderFromDocumentsRelativePath = "Larian Studios/Baldur's Gate 3/Mods"
+  
+  static let GitHubUrl = "https://github.com/revblaze/BaldursModManager"
+  static let ReportIssue = "https://github.com/revblaze/BaldursModManager/issues"
+  static let NexusUrl = "https://www.nexusmods.com/baldursgate3/mods/5848"
 }

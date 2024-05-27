@@ -41,6 +41,7 @@
 		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
 		29DD55EF2B4875ED003729AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55EE2B4875ED003729AD /* Assets.xcassets */; };
 		29DD55F22B4875ED003729AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55F12B4875ED003729AD /* Preview Assets.xcassets */; };
+		29FC3F7D2C043CFC006097DD /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7C2C043CFC006097DD /* StringExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		29DD55EE2B4875ED003729AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29DD55F12B4875ED003729AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaldursModManager.entitlements; sourceTree = "<group>"; };
+		29FC3F7C2C043CFC006097DD /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 		291181DF2B4B2EB500B76A26 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				29FC3F7B2C043CF1006097DD /* Extensions */,
 				2912B37C2B4CD4A60074AF2D /* XMLUtilities */,
 				2979B3FE2B4CA90700F3A227 /* FileUtility */,
 				2979B3FB2B4CA88600F3A227 /* LSXParsingUtility */,
@@ -246,6 +249,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		29FC3F7B2C043CF1006097DD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				29FC3F7C2C043CFC006097DD /* StringExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -346,6 +357,7 @@
 				2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */,
 				292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
+				29FC3F7D2C043CFC006097DD /* StringExtensions.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
 				292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,

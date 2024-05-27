@@ -201,6 +201,16 @@ struct ContentView: View {
           if debug.isActive {
             MenuButton(title: "Open Mod Folder", symbol: .folder, action: openUserModsFolder)
           }
+          Divider()
+          MenuButton(title: "Nexus Page", symbol: .gyro) {
+            Constants.NexusUrl.openAsURL()
+          }
+          MenuButton(title: "GitHub Page", symbol: .pull) {
+            Constants.GitHubUrl.openAsURL()
+          }
+          MenuButton(title: "Report Issue", symbol: .newMessage) {
+            Constants.ReportIssue.openAsURL()
+          }
         } label: {
           Label("Actions", systemImage: "ellipsis.circle")
         }

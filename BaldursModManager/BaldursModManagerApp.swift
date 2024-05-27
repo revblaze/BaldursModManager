@@ -43,6 +43,19 @@ struct BaldursModManagerApp: App {
           Debug.shared.isActive.toggle()
         }
       }
+      CommandGroup(after: .help) {
+        Divider()
+        MenuButton(title: "Nexus Page", symbol: .gyro) {
+          Constants.NexusUrl.openAsURL()
+        }
+        MenuButton(title: "GitHub Page", symbol: .pull) {
+          Constants.GitHubUrl.openAsURL()
+        }
+        Divider()
+        MenuButton(title: "Report Issue", symbol: .newMessage) {
+          Constants.ReportIssue.openAsURL()
+        }
+      }
     }
   }
   
