@@ -25,6 +25,10 @@ struct BaldursModManagerApp: App {
     .modelContainer(container)
     .commands {
       CommandGroup(before: .appSettings) {
+        MenuButton(title: "What's New") {
+          global.showWhatsNewView = true
+        }
+        Divider()
         Button("Settings...") {
           global.showSettingsView = true
         }
@@ -42,6 +46,14 @@ struct BaldursModManagerApp: App {
         Button(Debug.shared.isActive ? "Disable Debug" : "Enable Debug") {
           Debug.shared.isActive.toggle()
         }
+        Divider()
+        MenuButton(title: "Log ModItems") {
+          Debug.shared.logModItems = true
+        }
+        Divider()
+        MenuButton(title: "Simulate Error Toast") {
+          Debug.shared.simulateErrorToast.toggle()
+        }
       }
       CommandGroup(after: .help) {
         Divider()
@@ -54,6 +66,13 @@ struct BaldursModManagerApp: App {
         Divider()
         MenuButton(title: "Report Issue", symbol: .newMessage) {
           Constants.ReportIssue.openAsURL()
+        }
+        MenuButton(title: "Export Session Log", symbol: .downloadDoc) {
+          global.exportSessionLog = true
+        }
+        Divider()
+        MenuButton(title: "Experiencing Issues?", symbol: .help) {
+          global.showExperiencingIssuesView = true
         }
       }
     }
@@ -81,5 +100,6 @@ struct BaldursModManagerApp: App {
 #if DEBUG
     Debug.shared.isActive = true
 #endif
+    UserSettings.setDefaultGameDirectoryPath()
   }
 }

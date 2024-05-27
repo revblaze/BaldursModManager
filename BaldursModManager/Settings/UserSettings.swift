@@ -16,6 +16,7 @@ class UserSettings {
   private let keyEnableMods = "enableMods"
   private let keySaveModsAutomatically = "saveModsAutomatically"
   private let keyEnableModOnImport = "enableModOnImport"
+  private let keyBaldursGateDirectory = "baldursGateDirectory"
   
   var enableMods: Bool {
     didSet { userDefaults.set(enableMods, forKey: keyEnableMods) }
@@ -33,11 +34,16 @@ class UserSettings {
     didSet { userDefaults.set(makeCopyOfModFolderOnImport, forKey: keyMakeCopyOfModFolderOnImport) }
   }
   
+  var baldursGateDirectory: String {
+    didSet { userDefaults.set(baldursGateDirectory, forKey: keyBaldursGateDirectory) }
+  }
+  
   init() {
     self.makeCopyOfModFolderOnImport = userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) as? Bool ?? true
     self.enableMods = userDefaults.object(forKey: keyEnableMods) as? Bool ?? true
     self.saveModsAutomatically = userDefaults.object(forKey: keySaveModsAutomatically) as? Bool ?? true
     self.enableModOnImport = userDefaults.object(forKey: keyEnableModOnImport) as? Bool ?? true
+    self.baldursGateDirectory = userDefaults.object(forKey: keyBaldursGateDirectory) as? String ?? ""
   }
   
   func restoreDefaults() {
@@ -45,5 +51,60 @@ class UserSettings {
     self.enableMods = true
     self.saveModsAutomatically = true
     self.enableModOnImport = true
+    self.baldursGateDirectory = UserSettings.baseGameDirectoryPath()
+  }
+  
+  var modsFolderUrl: URL? {
+    guard let baseGameDirUrl = UserSettings.baseGameDirUrl() else { return nil }
+    return baseGameDirUrl.appendingPathComponent(Constants.relativeModsFolderPath)
+  }
+  
+  var modsFolderPath: String? {
+    return modsFolderUrl?.path(percentEncoded: false)
+  }
+  
+  var modSettingsFileUrl: URL? {
+    guard let baseGameDirUrl = UserSettings.baseGameDirUrl() else { return nil }
+    return baseGameDirUrl.appendingPathComponent(Constants.relativeModSettingsFilePath)
+  }
+  
+  var modSettingsFilePath: String? {
+    return modSettingsFileUrl?.path(percentEncoded: false)
+  }
+  
+  static func setDefaultGameDirectoryPath() {
+    Debug.log("Game Directory: \(baseGameDirectoryPath())")
+    if UserSettings.shared.baldursGateDirectory.isEmpty {
+      UserSettings.shared.baldursGateDirectory = baseGameDirectoryPath()
+    }
+  }
+  
+  static func baseGameDirectoryPath() -> String {
+    guard let baseGameDirPath = baseGameDirUrl()?.path(percentEncoded: false) else {
+      return ""
+    }
+    return baseGameDirPath
+  }
+  
+  static func baseGameDirUrl() -> URL? {
+    let fileManager = FileManager.default
+    guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Documents directory.")
+      return nil
+    }
+    
+    return documentsURL.appendingPathComponent(Constants.baseGameFolderFromDocumentsRelativePath)
+  }
+  
+  func logUserSettings() -> String {
+    return """
+    enableMods: \(UserSettings.shared.enableMods)
+    saveModsAutomatically: \(UserSettings.shared.saveModsAutomatically)
+    enableModOnImport: \(UserSettings.shared.enableModOnImport)
+    makeCopyOfModFolderOnImport: \(UserSettings.shared.makeCopyOfModFolderOnImport)
+    
+    baldursGateDirectory: \(UserSettings.shared.baldursGateDirectory)
+    > exists: \(UserSettings.shared.baldursGateDirectory.doesExist())
+    """
   }
 }

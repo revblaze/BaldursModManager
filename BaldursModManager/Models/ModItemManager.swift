@@ -19,7 +19,12 @@ class ModItemManager {
       return
     }
     
-    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    let oldModFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    Debug.log("oldModFolderPath: \(oldModFolderPath)")
+    
+    let modFolderPath = UserSettings.shared.modsFolderUrl ?? oldModFolderPath
+    Debug.log("newModFolderPath: \(modFolderPath)")
+    
     let modItemOriginalFolderPath = URL(fileURLWithPath: modItem.directoryPath)
     let modItemPakFilePath = modItemOriginalFolderPath.appendingPathComponent(modItem.pakFileString)
     
@@ -70,7 +75,12 @@ class ModItemManager {
       return
     }
     
-    let modFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    let oldModFolderPath = documentsURL.appendingPathComponent(Constants.defaultModFolderFromDocumentsRelativePath)
+    Debug.log("oldModFolderPath: \(oldModFolderPath)")
+    
+    let modFolderPath = UserSettings.shared.modsFolderUrl ?? oldModFolderPath
+    Debug.log("newModFolderPath: \(modFolderPath)")
+    
     let modItemPakFilePath = URL(fileURLWithPath: modItem.directoryPath).appendingPathComponent(modItem.pakFileString)
     let sourcePath = modFolderPath.appendingPathComponent(modItem.pakFileString)
     
