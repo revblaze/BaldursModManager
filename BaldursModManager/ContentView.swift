@@ -13,6 +13,7 @@ let UIDELAY: CGFloat = 0.01
 
 struct ContentView: View {
   @Environment(\.global) var global
+  @Environment(\.updateManager) var updateManager
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItem: ModItem?
@@ -105,6 +106,7 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     FileUtility.removeBackupModSettingsDirectory()
+    checkForUpdatesIfAutomaticUpdatesAreEnabled()
   }
   
   private func selectModItem(_ item: ModItem?) {
@@ -284,6 +286,10 @@ struct ContentView: View {
     .sheet(isPresented: $global.showSettingsView) {
       SettingsView(isPresented: $global.showSettingsView)
         .frame(minWidth: 400, idealWidth: 600, maxWidth: 600, minHeight: 400, idealHeight: 700, maxHeight: 700)
+    }
+    .sheet(isPresented: $global.showUpdateView) {
+      UpdateView(isPresented: $global.showUpdateView)
+        .frame(width: 400, height: 300)
     }
     .sheet(isPresented: $global.showWhatsNewView) {
       WhatsNewView(isPresented: $global.showWhatsNewView)
