@@ -42,6 +42,7 @@
 		29DD55EF2B4875ED003729AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55EE2B4875ED003729AD /* Assets.xcassets */; };
 		29DD55F22B4875ED003729AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55F12B4875ED003729AD /* Preview Assets.xcassets */; };
 		29FC3F7D2C043CFC006097DD /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7C2C043CFC006097DD /* StringExtensions.swift */; };
+		29FC3F802C0449F8006097DD /* FilePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7F2C0449F8006097DD /* FilePickerService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		29DD55F12B4875ED003729AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaldursModManager.entitlements; sourceTree = "<group>"; };
 		29FC3F7C2C043CFC006097DD /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		29FC3F7F2C0449F8006097DD /* FilePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +234,7 @@
 				292710E72C0407F2001F9FDE /* WhatsNewView.swift */,
 				291181DC2B4B277700B76A26 /* Views */,
 				291181EA2B4B63A100B76A26 /* Models */,
+				29FC3F7E2C0449EB006097DD /* Services */,
 				291181DF2B4B2EB500B76A26 /* Utilities */,
 				291181D62B4B1A7A00B76A26 /* Settings */,
 				29DD55EE2B4875ED003729AD /* Assets.xcassets */,
@@ -255,6 +258,14 @@
 				29FC3F7C2C043CFC006097DD /* StringExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		29FC3F7E2C0449EB006097DD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				29FC3F7F2C0449F8006097DD /* FilePickerService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +358,7 @@
 				292710D72C03D744001F9FDE /* SettingsView.swift in Sources */,
 				292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
+				29FC3F802C0449F8006097DD /* FilePickerService.swift in Sources */,
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
 				2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */,
