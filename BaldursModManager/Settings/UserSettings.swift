@@ -7,23 +7,43 @@
 
 import Foundation
 
-struct UserSettings {
-  static let shared = UserSettings()
+@Observable
+class UserSettings {
+  static var shared = UserSettings()
   
   private let userDefaults = UserDefaults.standard
   private let keyMakeCopyOfModFolderOnImport = "makeCopyOfModFolderOnImport"
+  private let keyEnableMods = "enableMods"
+  private let keySaveModsAutomatically = "saveModsAutomatically"
+  private let keyEnableModOnImport = "enableModOnImport"
   
-  //private let keyBaldursGateDocumentsDirectoryPath = "baldursGateDocumentsDirectoryPath"
+  var enableMods: Bool {
+    didSet { userDefaults.set(enableMods, forKey: keyEnableMods) }
+  }
+  
+  var saveModsAutomatically: Bool {
+    didSet { userDefaults.set(saveModsAutomatically, forKey: keySaveModsAutomatically) }
+  }
+  
+  var enableModOnImport: Bool {
+    didSet { userDefaults.set(enableModOnImport, forKey: keyEnableModOnImport) }
+  }
   
   var makeCopyOfModFolderOnImport: Bool {
-    get { userDefaults.bool(forKey: keyMakeCopyOfModFolderOnImport) }
-    set { userDefaults.set(newValue, forKey: keyMakeCopyOfModFolderOnImport) }
+    didSet { userDefaults.set(makeCopyOfModFolderOnImport, forKey: keyMakeCopyOfModFolderOnImport) }
   }
   
   init() {
-    if userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) == nil {
-      // Set the default value on first launch
-      userDefaults.set(true, forKey: keyMakeCopyOfModFolderOnImport)
-    }
+    self.makeCopyOfModFolderOnImport = userDefaults.object(forKey: keyMakeCopyOfModFolderOnImport) as? Bool ?? true
+    self.enableMods = userDefaults.object(forKey: keyEnableMods) as? Bool ?? true
+    self.saveModsAutomatically = userDefaults.object(forKey: keySaveModsAutomatically) as? Bool ?? true
+    self.enableModOnImport = userDefaults.object(forKey: keyEnableModOnImport) as? Bool ?? true
+  }
+  
+  func restoreDefaults() {
+    self.makeCopyOfModFolderOnImport = true
+    self.enableMods = true
+    self.saveModsAutomatically = true
+    self.enableModOnImport = true
   }
 }

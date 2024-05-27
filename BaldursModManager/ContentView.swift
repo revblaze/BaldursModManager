@@ -12,12 +12,13 @@ import AlertToast
 let UIDELAY: CGFloat = 0.01
 
 struct ContentView: View {
+  @Environment(\.global) var global
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
-  // Properties to store deletion details
+  
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
   @State private var isFileTransferInProgress = false
@@ -65,6 +66,12 @@ struct ContentView: View {
     } catch {
       print("Failed to save: \(error.localizedDescription)")
     }
+    
+    if !UserSettings.shared.enableMods {
+      restoreDefaultModSettingsLsx(withToast: false)
+    } else if UserSettings.shared.saveModsAutomatically {
+      generateAndSaveModSettingsLsx(withToast: false)
+    }
   }
   
   private func performInitialSetup() {
@@ -75,7 +82,6 @@ struct ContentView: View {
       LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
     }
     
-    // Backup modsettings.lsx on startup
     if let backupUrl = FileUtility.backupModSettingsLsxFile() {
       Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
     }
@@ -89,6 +95,7 @@ struct ContentView: View {
   }
   
   var body: some View {
+    @Bindable var global = global
     NavigationSplitView {
       List(selection: $selectedModItem) {
         ForEach(modItems) { item in
@@ -108,32 +115,22 @@ struct ContentView: View {
         selectModItem(selectedModItem)
       }
       .listStyle(.sidebar)
-      .navigationSplitViewColumnWidth(min: 200, ideal: 350)
-      // MARK: Toolbar
+      .navigationSplitViewColumnWidth(min: 200, ideal: 260)
+      // MARK: Navigation Toolbar
       .toolbar {
         ToolbarItem {
-          Button(action: addItem) {
-            Label("Add Item", systemImage: "plus")
+          ToolbarSymbolButton(title: "Import Mod", symbol: .plus, action: addItem)
+            .onChange(of: global.showImportModPanel) {
+              if global.showImportModPanel { addItem() }
+            }
+        }
+        ToolbarItem(placement: .navigation) {
+          ToolbarSymbolButton(title: "Home", symbol: .house, tint: selectedModItem == nil ? .blue : .secondary) {
+            selectedModItem = nil
           }
         }
-        ToolbarItemGroup(placement: .navigation) {
-          if debug.isActive {
-            Button(action: {
-              openUserModsFolder()
-            }) {
-              Label("Open UserMods", systemImage: "folder")
-            }
-          }
-          Button(action: {
-            // preview modsettings.lsx
-            previewModSettingsLsx()
-          }) {
-            Label("Preview modsettings.lsx", systemImage: "eye") // "command"
-          }
-          .sheet(isPresented: $showXmlPreview) {
-            // Custom view for displaying the XML content
-            XMLPreviewView(xmlContent: $previewXmlContent)
-          }
+        ToolbarItem(placement: .principal) {
+          Spacer()
         }
       }
     } detail: {
@@ -153,43 +150,63 @@ struct ContentView: View {
         }
       }
       
-      ToolbarItem {
-        Button(action: {
-          restoreDefaultModSettingsLsx()
-          showCheckmarkForRestore = true
-          confirmationMessage = "Restored!"
-          showConfirmationText = true
-          resetButtonAndMessage()
-        }) {
-          Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
-        }
-      }
-      
-      ToolbarItem {
-        Button(action: {
-          generateAndSaveModSettingsLsx()
-          showCheckmarkForSync = true
-          confirmationMessage = "Saved!"
-          showConfirmationText = true
-          resetButtonAndMessage()
-        }) {
-          Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
-        }
-      }
-      
-      ToolbarItem {
+      if !UserSettings.shared.saveModsAutomatically {
         if showConfirmationText {
-          Text(confirmationMessage)
-            .opacity(showConfirmationText ? 1 : 0)
-            .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+          ToolbarItem {
+            Text(confirmationMessage)
+              .opacity(showConfirmationText ? 1 : 0)
+              .animation(.easeInOut(duration: 0.5), value: showConfirmationText)
+          }
+        }
+        
+        ToolbarItem {
+          Button(action: {
+            restoreDefaultModSettingsLsx()
+            showCheckmarkForRestore = true
+            confirmationMessage = "Restored"
+            showConfirmationText = true
+            resetButtonAndMessage()
+          }) {
+            Label("Restore", systemImage: showCheckmarkForRestore ? "checkmark" : "gobackward")
+          }
+        }
+        
+        ToolbarItem {
+          Button(action: {
+            generateAndSaveModSettingsLsx()
+            showCheckmarkForSync = true
+            confirmationMessage = "Saved"
+            showConfirmationText = true
+            resetButtonAndMessage()
+          }) {
+            Label("Sync", systemImage: showCheckmarkForSync ? "checkmark" : "arrow.triangle.2.circlepath")
+          }
+        }
+        ToolbarItem {
+          HStack {
+            Divider()
+          }
         }
       }
       
       ToolbarItem {
-        Button(action: {
-          // open settings
-        }) {
-          Label("Sync", systemImage: "gear")
+        Menu {
+          MenuButton(title: "What's New", symbol: .sparkles) {
+            global.showWhatsNewView = true
+          }
+          Divider()
+          MenuButton(title: "Preview LSX", symbol: .curlyBraces, action: previewModSettingsLsx)
+          if debug.isActive {
+            MenuButton(title: "Open Mod Folder", symbol: .folder, action: openUserModsFolder)
+          }
+        } label: {
+          Label("Actions", systemImage: "ellipsis.circle")
+        }
+      }
+      
+      ToolbarItem {
+        ToolbarSymbolButton(title: "Settings", symbol: .gear) {
+          global.showSettingsView = true
         }
       }
     }
@@ -231,6 +248,17 @@ struct ContentView: View {
         self.showPermissionsView = false
       })
     }
+    .sheet(isPresented: $global.showSettingsView) {
+      SettingsView(isPresented: $global.showSettingsView)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+    }
+    .sheet(isPresented: $global.showWhatsNewView) {
+      WhatsNewView(isPresented: $global.showWhatsNewView)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+    }
+    .sheet(isPresented: $showXmlPreview) {
+      XMLPreviewView(xmlContent: $previewXmlContent)
+    }
     .onAppear {
       performInitialSetup()
       if Debug.permissionsView {
@@ -242,7 +270,7 @@ struct ContentView: View {
   }
   
   private func resetButtonAndMessage() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Adjust the time as needed
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
       showCheckmarkForRestore = false
       showCheckmarkForSync = false
       withAnimation {
@@ -251,7 +279,7 @@ struct ContentView: View {
     }
   }
   
-  private func generateAndSaveModSettingsLsx() {
+  private func generateAndSaveModSettingsLsx(withToast toast: Bool = true) {
     Debug.log("User did select generateAndSaveModSettingsLsx()")
     if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let modItems = fetchEnabledModItemsSortedByOrder()
@@ -260,18 +288,18 @@ struct ContentView: View {
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsSavedSuccessfullyToast = true
+      showModSettingsSavedSuccessfullyToast = toast
     }
   }
   
-  private func restoreDefaultModSettingsLsx() {
+  private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {
     Debug.log("User did select restoreDefaultModSettingsLsx()")
     if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
       let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: [])
       let xmlString = xmlBuilder.buildXMLString()
       Debug.log(xmlString)
       FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showModSettingsRevertedSuccessfullyToast = true
+      showModSettingsRevertedSuccessfullyToast = toast
     }
   }
   
@@ -299,7 +327,6 @@ struct ContentView: View {
   private func moveItems(from source: IndexSet, to destination: Int) {
     var reorderedItems = modItems
     reorderedItems.move(fromOffsets: source, toOffset: destination)
-    // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
       Debug.log("Updated mod item order: \(item.modName) to \(index)")
@@ -322,7 +349,6 @@ struct ContentView: View {
   
   private func parseImportedModFolder(at url: URL) {
     if let contents = getDirectoryContents(at: url) {
-      // Find info.json file
       if let infoJsonUrl = contents.first(where: { $0.caseInsensitiveCompare("info.json") == .orderedSame }) {
         let fullPath = url.appendingPathComponent(infoJsonUrl).path
         
@@ -387,7 +413,7 @@ struct ContentView: View {
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
           isEnabled = modItemNeedsReplacing.isEnabled
-          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true) //deleteModItem(byUuid: uuid)
+          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
@@ -412,7 +438,6 @@ struct ContentView: View {
             uuid: uuid,
             md5: md5
           )
-          //newModItem.isEnabled = isEnabled
           
           // Check for optional keys
           for (key, value) in infoDict {
@@ -509,14 +534,12 @@ struct ContentView: View {
     return nil
   }
   
-  // Triggered by UI delete button
   private func deleteItem(item: ModItem) {
     modItemToDelete = item
     offsetsToDelete = nil
     showAlertForModDeletion = true
   }
   
-  // Triggered by menu bar item Edit > Delete
   private func deleteItems(offsets: IndexSet) {
     offsetsToDelete = offsets
     modItemToDelete = nil
@@ -573,13 +596,7 @@ struct ContentView: View {
       Debug.log("Updated order for item \(item.modName) to \(updatedOrder)")
       updatedOrder += 1
     }
-    // Save the context after reordering
-    do {
-      try modelContext.save()
-      Debug.log("Successfully saved context after reordering items")
-    } catch {
-      Debug.log("Error saving context after reordering: \(error)")
-    }
+    save()
   }
   
   private func nextOrderValue() -> Int {
@@ -592,7 +609,6 @@ struct ContentView: View {
   }
   
   private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem, progress: Binding<Double>, completion: @escaping () -> Void) {
-    // Mark transfer as started
     DispatchQueue.main.async {
       self.isFileTransferInProgress = true
     }
@@ -612,13 +628,9 @@ struct ContentView: View {
           } else {
             Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
           }
-          // Mark transfer as finished
           self.isFileTransferInProgress = false
           SoundUtility.play(systemSound: .mount)
-          
           showModSuccessfullyAddedToast = true
-          
-          // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
           if (!Debug.fileTransferUI) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
@@ -642,7 +654,7 @@ struct ContentView: View {
       }
       
       let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName).appendingPathComponent(originalPath.lastPathComponent)
-      let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
+      let progress = Progress(totalUnitCount: 1)
       
       do {
         if UserSettings.shared.makeCopyOfModFolderOnImport {
