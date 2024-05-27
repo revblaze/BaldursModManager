@@ -18,7 +18,12 @@ extension FileUtility {
       return nil
     }
     
-    let modSettingsLsxFileURL = documentsURL.appendingPathComponent(Constants.defaultModSettingsFileFromDocumentsRelativePath)
+    let oldModSettingsLsxFileURL = documentsURL.appendingPathComponent(Constants.defaultModSettingsFileFromDocumentsRelativePath)
+    Debug.log("old modSettingsLsxFileURL: \(oldModSettingsLsxFileURL)")
+    
+    let modSettingsLsxFileURL = UserSettings.shared.modSettingsFileUrl ?? oldModSettingsLsxFileURL
+    Debug.log("new modSettingsLsxFileURL: \(modSettingsLsxFileURL)")
+    
     let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
     
     // Ensure the backup folder exists

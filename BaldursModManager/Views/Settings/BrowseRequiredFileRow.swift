@@ -84,14 +84,21 @@ struct BrowseRequiredFileRow: View {
   
   private func updateIndicator(for value: String) {
     if requiresEntry {
-        if FileManager.default.fileExists(atPath: value) {
-          indicatorType = .checkmark
-        } else {
-          indicatorType = .xmark
-        }
+      let modsPath = "\(value)/\(Constants.relativeModsFolderPath)"
+      let modSettingsPath = "\(value)/\(Constants.relativeModSettingsFilePath)"
+      
+      let modsExists = FileManager.default.fileExists(atPath: modsPath)
+      let modSettingsExists = FileManager.default.fileExists(atPath: modSettingsPath)
+      
+      if modsExists && modSettingsExists {
+        indicatorType = .checkmark
       } else {
-        indicatorType = .none
+        indicatorType = .xmark
       }
+    } else {
+      indicatorType = .none
+    }
   }
+  
 }
 
