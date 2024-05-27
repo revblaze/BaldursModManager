@@ -81,5 +81,6 @@ struct BaldursModManagerApp: App {
 #if DEBUG
     Debug.shared.isActive = true
 #endif
+    UserSettings.setDefaultGameDirectoryPath()
   }
 }
