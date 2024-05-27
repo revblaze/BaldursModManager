@@ -45,6 +45,9 @@
 		29FC3F802C0449F8006097DD /* FilePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7F2C0449F8006097DD /* FilePickerService.swift */; };
 		29FC3F832C04541E006097DD /* BrowseBaseGameDirectoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F822C04541E006097DD /* BrowseBaseGameDirectoryRow.swift */; };
 		29FC3F852C045431006097DD /* BrowseRequiredFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F842C045431006097DD /* BrowseRequiredFileRow.swift */; };
+		29FC3F872C04EA3F006097DD /* ContentView+LogSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */; };
+		29FC3F892C04EB46006097DD /* FileExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F882C04EB46006097DD /* FileExtensions.swift */; };
+		29FC3F8B2C04F3EC006097DD /* ExperiencingIssuesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +90,9 @@
 		29FC3F7F2C0449F8006097DD /* FilePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerService.swift; sourceTree = "<group>"; };
 		29FC3F822C04541E006097DD /* BrowseBaseGameDirectoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBaseGameDirectoryRow.swift; sourceTree = "<group>"; };
 		29FC3F842C045431006097DD /* BrowseRequiredFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseRequiredFileRow.swift; sourceTree = "<group>"; };
+		29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+LogSession.swift"; sourceTree = "<group>"; };
+		29FC3F882C04EB46006097DD /* FileExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExtensions.swift; sourceTree = "<group>"; };
+		29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperiencingIssuesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 				291181D72B4B1A8900B76A26 /* UserSettings.swift */,
 				291181EB2B4B691300B76A26 /* Constants.swift */,
 				297196562B716784000F7960 /* Debug.swift */,
+				29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -236,6 +243,7 @@
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
 				292710D42C03B100001F9FDE /* SidebarItemView.swift */,
 				292710E72C0407F2001F9FDE /* WhatsNewView.swift */,
+				29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */,
 				291181DC2B4B277700B76A26 /* Views */,
 				291181EA2B4B63A100B76A26 /* Models */,
 				29FC3F7E2C0449EB006097DD /* Services */,
@@ -260,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				29FC3F7C2C043CFC006097DD /* StringExtensions.swift */,
+				29FC3F882C04EB46006097DD /* FileExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -363,11 +372,14 @@
 				291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */,
 				29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */,
 				2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */,
+				29FC3F8B2C04F3EC006097DD /* ExperiencingIssuesView.swift in Sources */,
 				292710E62C03F3AA001F9FDE /* Global.swift in Sources */,
 				2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */,
 				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
 				292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */,
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
+				29FC3F872C04EA3F006097DD /* ContentView+LogSession.swift in Sources */,
+				29FC3F892C04EB46006097DD /* FileExtensions.swift in Sources */,
 				2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */,
 				292710D72C03D744001F9FDE /* SettingsView.swift in Sources */,
 				292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */,
