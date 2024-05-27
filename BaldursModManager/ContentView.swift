@@ -259,7 +259,7 @@ struct ContentView: View {
     }
     .sheet(isPresented: $global.showSettingsView) {
       SettingsView(isPresented: $global.showSettingsView)
-        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 525, maxHeight: 700)
     }
     .sheet(isPresented: $global.showWhatsNewView) {
       WhatsNewView(isPresented: $global.showWhatsNewView)
