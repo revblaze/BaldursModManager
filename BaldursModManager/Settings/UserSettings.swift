@@ -54,6 +54,24 @@ class UserSettings {
     self.baldursGateDirectory = UserSettings.baseGameDirectoryPath()
   }
   
+  var modsFolderUrl: URL? {
+    guard let baseGameDirUrl = UserSettings.baseGameDirUrl() else { return nil }
+    return baseGameDirUrl.appendingPathComponent(Constants.relativeModsFolderPath)
+  }
+  
+  var modsFolderPath: String? {
+    return modsFolderUrl?.path(percentEncoded: false)
+  }
+  
+  var modSettingsFileUrl: URL? {
+    guard let baseGameDirUrl = UserSettings.baseGameDirUrl() else { return nil }
+    return baseGameDirUrl.appendingPathComponent(Constants.relativeModSettingsFilePath)
+  }
+  
+  var modSettingsFilePath: String? {
+    return modSettingsFileUrl?.path(percentEncoded: false)
+  }
+  
   static func setDefaultGameDirectoryPath() {
     Debug.log("Game Directory: \(baseGameDirectoryPath())")
     if UserSettings.shared.baldursGateDirectory.isEmpty {
@@ -68,7 +86,7 @@ class UserSettings {
     return baseGameDirPath
   }
   
-  static private func baseGameDirUrl() -> URL? {
+  static func baseGameDirUrl() -> URL? {
     let fileManager = FileManager.default
     guard let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
       Debug.log("Unable to find the Documents directory.")
