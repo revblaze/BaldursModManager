@@ -18,7 +18,7 @@ struct ContentView: View {
   @State private var selectedModItem: ModItem?
   @State private var showAlertForModDeletion = false
   @State private var showPermissionsView = false
-  // Properties to store deletion details
+  
   @State private var offsetsToDelete: IndexSet?
   @State private var modItemToDelete: ModItem?
   @State private var isFileTransferInProgress = false
@@ -82,7 +82,6 @@ struct ContentView: View {
       LsxUtilityTest.testXmlGenerationFromModSettingsLsxBackup()
     }
     
-    // Backup modsettings.lsx on startup
     if let backupUrl = FileUtility.backupModSettingsLsxFile() {
       Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
     }
@@ -264,7 +263,7 @@ struct ContentView: View {
   }
   
   private func resetButtonAndMessage() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Adjust the time as needed
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
       showCheckmarkForRestore = false
       showCheckmarkForSync = false
       withAnimation {
@@ -321,7 +320,6 @@ struct ContentView: View {
   private func moveItems(from source: IndexSet, to destination: Int) {
     var reorderedItems = modItems
     reorderedItems.move(fromOffsets: source, toOffset: destination)
-    // Update the 'order' of each 'ModItem' to its new index
     for (index, item) in reorderedItems.enumerated() {
       item.order = index
       Debug.log("Updated mod item order: \(item.modName) to \(index)")
@@ -344,7 +342,6 @@ struct ContentView: View {
   
   private func parseImportedModFolder(at url: URL) {
     if let contents = getDirectoryContents(at: url) {
-      // Find info.json file
       if let infoJsonUrl = contents.first(where: { $0.caseInsensitiveCompare("info.json") == .orderedSame }) {
         let fullPath = url.appendingPathComponent(infoJsonUrl).path
         
@@ -409,7 +406,7 @@ struct ContentView: View {
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
           isEnabled = modItemNeedsReplacing.isEnabled
-          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true) //deleteModItem(byUuid: uuid)
+          let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
               newOrderNumber = oldOrderNumber
@@ -434,7 +431,6 @@ struct ContentView: View {
             uuid: uuid,
             md5: md5
           )
-          //newModItem.isEnabled = isEnabled
           
           // Check for optional keys
           for (key, value) in infoDict {
@@ -531,14 +527,12 @@ struct ContentView: View {
     return nil
   }
   
-  // Triggered by UI delete button
   private func deleteItem(item: ModItem) {
     modItemToDelete = item
     offsetsToDelete = nil
     showAlertForModDeletion = true
   }
   
-  // Triggered by menu bar item Edit > Delete
   private func deleteItems(offsets: IndexSet) {
     offsetsToDelete = offsets
     modItemToDelete = nil
@@ -595,13 +589,7 @@ struct ContentView: View {
       Debug.log("Updated order for item \(item.modName) to \(updatedOrder)")
       updatedOrder += 1
     }
-    // Save the context after reordering
-    do {
-      try modelContext.save()
-      Debug.log("Successfully saved context after reordering items")
-    } catch {
-      Debug.log("Error saving context after reordering: \(error)")
-    }
+    save()
   }
   
   private func nextOrderValue() -> Int {
@@ -614,7 +602,6 @@ struct ContentView: View {
   }
   
   private func importModFolderAndUpdateModItemDirectoryPath(at originalPath: URL, modItem: ModItem, progress: Binding<Double>, completion: @escaping () -> Void) {
-    // Mark transfer as started
     DispatchQueue.main.async {
       self.isFileTransferInProgress = true
     }
@@ -634,13 +621,9 @@ struct ContentView: View {
           } else {
             Debug.log("Error: Unable to resolve directoryPath from importModFolderAndReturnNewDirectoryPath(at: \(originalPath))")
           }
-          // Mark transfer as finished
           self.isFileTransferInProgress = false
           SoundUtility.play(systemSound: .mount)
-          
           showModSuccessfullyAddedToast = true
-          
-          // Fade out the ProgressView after 1.5 seconds if fileTransferUI is not active
           if (!Debug.fileTransferUI) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
               self.fileTransferProgress = 0
@@ -664,7 +647,7 @@ struct ContentView: View {
       }
       
       let destinationURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserModsFolderName).appendingPathComponent(originalPath.lastPathComponent)
-      let progress = Progress(totalUnitCount: 1)  // You might want to find a better way to estimate progress
+      let progress = Progress(totalUnitCount: 1)
       
       do {
         if UserSettings.shared.makeCopyOfModFolderOnImport {
