@@ -406,12 +406,10 @@ struct ContentView: View {
       if let name = name, let folder = folder, let uuid = uuid, let md5 = md5 {
         var newOrderNumber = nextOrderValue()
         var replaceWithOrderNumber: Int?
-        var isEnabled = false
         
         // Check if the mod item needs replacing
         if let modItemNeedsReplacing = getModItem(byUuid: uuid) {
           replaceWithOrderNumber = modItemNeedsReplacing.order
-          isEnabled = modItemNeedsReplacing.isEnabled
           let success = deleteModItem(byUuid: uuid, forUpdateReplacement: true)
           if success {
             if let oldOrderNumber = replaceWithOrderNumber {
@@ -451,7 +449,8 @@ struct ContentView: View {
           }
           Debug.log("Adding new mod item with order: \(newOrderNumber), name: \(name)")
           addNewModItem(newModItem, orderNumber: newOrderNumber, fromDirectoryUrl: directoryURL) {
-            if isEnabled {
+            
+            if UserSettings.shared.enableModOnImport {
               withAnimation {
                 newModItem.isEnabled.toggle()
                 modItemManager.toggleModItem(newModItem)
