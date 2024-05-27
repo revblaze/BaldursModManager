@@ -13,6 +13,7 @@ let UIDELAY: CGFloat = 0.01
 
 struct ContentView: View {
   @Environment(\.global) var global
+  @Environment(\.updateManager) var updateManager
   @Environment(\.modelContext) private var modelContext
   @Query(sort: \ModItem.order, order: .forward) private var modItems: [ModItem]
   @State private var selectedModItem: ModItem?
@@ -105,6 +106,7 @@ struct ContentView: View {
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
     FileUtility.removeBackupModSettingsDirectory()
+    checkForUpdatesIfAutomaticUpdatesAreEnabled()
   }
   
   private func selectModItem(_ item: ModItem?) {
