@@ -159,6 +159,8 @@ struct FirstSection: View {
         CheckmarkListItem(text: "Automatically apply mod updates")
         CheckmarkListItem(text: "Automatically generate modsettings.lsx")
         CheckmarkListItem(text: "File management improvements")
+        CheckmarkListItem(text: "Fix broken mod link path")
+        CheckmarkListItem(text: "Fix mod update issues with unapplied files")
         CheckmarkListItem(text: "Countless bug fixes")
       }
     }

@@ -65,5 +65,8 @@ struct BaldursModManagerApp: App {
     } catch {
       fatalError("Failed to configure SwiftData container: \(error)")
     }
+#if DEBUG
+    Debug.shared.isActive = true
+#endif
   }
 }
