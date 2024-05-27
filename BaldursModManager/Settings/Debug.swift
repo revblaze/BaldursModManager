@@ -17,7 +17,7 @@ class Debug: ObservableObject {
   static var permissionsView = false
   
   /// Indicates whether debugging actions should be performed.
-  @Published var isActive = true
+  @Published var isActive = false
   
   /// Logs a given value to the console if debugging is active.
   ///

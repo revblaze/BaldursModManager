@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WelcomeDetailView: View {
+  @Environment(\.global) var global
   var appVersion: String? {
     Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
   }
@@ -15,7 +16,6 @@ struct WelcomeDetailView: View {
   var body: some View {
     VStack {
       Spacer()
-      
       HStack {
         Image("red-tiefling")
           .resizable()
@@ -24,13 +24,16 @@ struct WelcomeDetailView: View {
         VStack(alignment: .leading) {
           Text("BaldursModManager")
             .font(.title)
+          Text("Aw, was that Gale's granddad?")
+            .italic().font(.subheadline)
+            .padding(.bottom, 2)
           if let appVersion = appVersion {
             Text("v\(appVersion)")
               .monoStyle()
           }
-          Text("Aw, was that Gale's granddad?")
-            .italic().font(.subheadline)
-            .padding(2)
+          OutlineButton(title: "􀆿 What's New?") {
+            global.showWhatsNewView = true
+          }
         }
       }
       
