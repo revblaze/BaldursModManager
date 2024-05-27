@@ -25,6 +25,10 @@ struct SettingsView: View {
             .disabled(!userSettings.enableMods)
           ToggleWithHeader(isToggled: $userSettings.makeCopyOfModFolderOnImport, header: "Copy Mod Folder on Import", description: "When a mod folder is imported, a copy will be made of the original folder. If this is disabled, BaldursModManager will import the original folder instead.", showAllDescriptions: true)
             .disabled(!userSettings.enableMods)
+          
+          Divider()
+            .padding(.horizontal, 20)
+          
           BrowseBaseGameDirectoryRow()
         }
         .padding(20)
@@ -50,5 +54,5 @@ struct SettingsView: View {
 
 #Preview {
   SettingsView(isPresented: .constant(true))
-    .frame(width: 600)
+    .frame(width: 600, height: 700)
 }

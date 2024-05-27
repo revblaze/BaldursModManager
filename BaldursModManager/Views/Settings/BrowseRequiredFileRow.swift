@@ -15,6 +15,8 @@ struct BrowseRequiredFileRow: View {
   var browseAction: () async -> String?
   
   @State private var indicatorType: IndicatorType = .none
+  @State private var modsExists: Bool = false
+  @State private var modSettingsExists: Bool = false
   
   private enum IndicatorType {
     case checkmark, xmark, none
@@ -67,12 +69,32 @@ struct BrowseRequiredFileRow: View {
         Button("Browse...") {
           Task {
             if let path = await browseAction() {
-              textValue = path
+              updateIndicator(for: path)
             }
           }
         }
       }
       .padding(.bottom, 14)
+      
+      if requiresEntry {
+        VStack(alignment: .leading, spacing: 6) {
+          HStack {
+            Image(systemName: modsExists ? "checkmark.circle.fill" : "xmark.circle.fill")
+              .foregroundColor(modsExists ? .green : .red)
+            Text(modsExists ? "Valid Mods directory found" : "Unable to locate Mods directory")
+          }
+          HStack {
+            Image(systemName: modSettingsExists ? "checkmark.circle.fill" : "xmark.circle.fill")
+              .foregroundColor(modSettingsExists ? .green : .red)
+            Text(modSettingsExists ? "Valid modsettings.lsx file found" : "Unable to locate modsettings.lsx")
+          }
+          
+        }
+        .padding(.horizontal, 20)
+        .fontDesign(.rounded)
+        
+        Divider().padding(.vertical)
+      }
     }
     .onChange(of: textValue) {
       updateIndicator(for: textValue)
@@ -87,11 +109,12 @@ struct BrowseRequiredFileRow: View {
       let modsPath = "\(value)/\(Constants.relativeModsFolderPath)"
       let modSettingsPath = "\(value)/\(Constants.relativeModSettingsFilePath)"
       
-      let modsExists = FileManager.default.fileExists(atPath: modsPath)
-      let modSettingsExists = FileManager.default.fileExists(atPath: modSettingsPath)
+      modsExists = FileManager.default.fileExists(atPath: modsPath)
+      modSettingsExists = FileManager.default.fileExists(atPath: modSettingsPath)
       
       if modsExists && modSettingsExists {
         indicatorType = .checkmark
+        textValue = value
       } else {
         indicatorType = .xmark
       }
@@ -99,6 +122,9 @@ struct BrowseRequiredFileRow: View {
       indicatorType = .none
     }
   }
-  
 }
 
+#Preview {
+  BrowseBaseGameDirectoryRow()
+    .padding()
+}

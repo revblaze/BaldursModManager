@@ -18,17 +18,20 @@ struct BrowseBaseGameDirectoryRow: View {
       ){
         await FilePickerService.browseForDirectory()
       }
-      .onChange(of: userSettings.baldursGateDirectory) {
-        //userSettings.setDefaultPathsForEmptySettings()
-      }
       .padding(.horizontal, 20)
+      .padding(.bottom, 12)
       Text("Make sure the base game directory is properly set. It should look something like this:")
+        .font(.subheadline)
         .padding(.horizontal, 24)
         .padding(.bottom, 8)
       Text("/Users/me/Documents/Larian Studios/Baldur's Gate 3")
         .monoStyle()
         .padding(.horizontal, 24)
-        .padding(.bottom, 18)
     }
   }
+}
+
+#Preview {
+  BrowseBaseGameDirectoryRow()
+    .padding()
 }
