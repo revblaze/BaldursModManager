@@ -285,6 +285,10 @@ struct ContentView: View {
       SettingsView(isPresented: $global.showSettingsView)
         .frame(minWidth: 400, idealWidth: 600, maxWidth: 600, minHeight: 400, idealHeight: 700, maxHeight: 700)
     }
+    .sheet(isPresented: $global.showUpdateView) {
+      UpdateView(isPresented: $global.showUpdateView)
+        .frame(width: 400, height: 300)
+    }
     .sheet(isPresented: $global.showWhatsNewView) {
       WhatsNewView(isPresented: $global.showWhatsNewView)
         .frame(width: 550, height: 470)

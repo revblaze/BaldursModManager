@@ -25,14 +25,18 @@ struct BaldursModManagerApp: App {
     .modelContainer(container)
     .commands {
       CommandGroup(before: .appSettings) {
-        MenuButton(title: "What's New") {
-          global.showWhatsNewView = true
-        }
-        Divider()
         Button("Settings...") {
           global.showSettingsView = true
         }
         .keyboardShortcut(",", modifiers: [.command])
+        Divider()
+        MenuButton(title: "What's New") {
+          global.showWhatsNewView = true
+        }
+        MenuButton(title: "Check for Updates...") {
+          global.showUpdateView = true
+        }
+        .keyboardShortcut("U", modifiers: [.command])
       }
       CommandGroup(replacing: .newItem) {}
       CommandGroup(before: .importExport) {
