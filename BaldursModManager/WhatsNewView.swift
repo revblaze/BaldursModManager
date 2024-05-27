@@ -153,7 +153,7 @@ struct FirstSection: View {
         .padding(.bottom, 20)
       
       VStack(alignment: .leading) {
-        CheckmarkListItem(text: "User settings and preferences")
+        CheckmarkListItem(text: "User settings, preferences and updates")
         CheckmarkListItem(text: "Automated mod management")
         CheckmarkListItem(text: "Automatically install mods on import")
         CheckmarkListItem(text: "Automatically apply mod updates")
@@ -161,7 +161,7 @@ struct FirstSection: View {
         CheckmarkListItem(text: "File management improvements")
         CheckmarkListItem(text: "Fix broken mod link path")
         CheckmarkListItem(text: "Fix mod update issues with unapplied files")
-        CheckmarkListItem(text: "Countless bug fixes")
+        CheckmarkListItem(text: "Countless other bug fixes, improvements")
       }
     }
     .padding(.horizontal, 10)
@@ -182,13 +182,12 @@ struct SecondSection: View {
         .padding(.bottom, 20)
       
       VStack(alignment: .leading) {
-        CheckmarkListItem(text: "Check for Updates")
-        CheckmarkListItem(text: "Report issues with attached log details")
-        CheckmarkListItem(text: "Mod compatibility (no Info.json, sole PAK)")
+        CheckmarkListItem(text: "Report issues with attached log details in-app")
+        CheckmarkListItem(text: "Mod compatibility (no info.json, sole PAK, ...)")
         CheckmarkListItem(text: "Profiles to enable selective mods")
         CheckmarkListItem(text: "Local mod version control")
         CheckmarkListItem(text: "Nexus API integration")
-        CheckmarkListItem(text: "Notify user on new mod update available")
+        CheckmarkListItem(text: "Notify user on new mod update availability")
         CheckmarkListItem(text: "Much, much more (see the GitHub page)")
       }
     }
