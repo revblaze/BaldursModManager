@@ -41,7 +41,6 @@ class ModItem {
   }
 }
 
-
 class ModItemUtility {
   static func logModItems(_ modItems: [ModItem]) {
     Debug.shared.logModItems = false

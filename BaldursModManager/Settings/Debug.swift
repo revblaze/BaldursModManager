@@ -23,7 +23,7 @@ class Debug {
   
   private func appendToSessionLog<T>(_ value: T) {
     if value is String {
-      sessionLog += "\(sessionLog)\n"
+      sessionLog += "\(value)\n"
     }
   }
   
