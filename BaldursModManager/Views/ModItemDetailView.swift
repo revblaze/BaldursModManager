@@ -106,10 +106,11 @@ struct ModItemDetailView: View {
         Spacer()
       }
       
-      HStack {
+      HStack(alignment: .bottom) {
         if debug.isActive {
           Text(item.isInstalledInModFolder ? "Installed" : "Not Installed")
             .monoStyle()
+            .bold()
         }
         Spacer()
         Button(action: { deleteAction(item) }) {
