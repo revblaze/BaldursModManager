@@ -53,6 +53,7 @@
 		29FC3F932C050A4F006097DD /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8F2C050A4F006097DD /* UpdateView.swift */; };
 		29FC3F942C050A4F006097DD /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F902C050A4F006097DD /* UpdateManager.swift */; };
 		29FC3F962C050C63006097DD /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F952C050C63006097DD /* Delay.swift */; };
+		29FC3F982C0510E2006097DD /* ContentView+UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +104,7 @@
 		29FC3F8F2C050A4F006097DD /* UpdateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
 		29FC3F902C050A4F006097DD /* UpdateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
 		29FC3F952C050C63006097DD /* Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+UpdateManager.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -310,6 +312,7 @@
 				29FC3F902C050A4F006097DD /* UpdateManager.swift */,
 				29FC3F8F2C050A4F006097DD /* UpdateView.swift */,
 				29FC3F8E2C050A4F006097DD /* UpdateViewState.swift */,
+				29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */,
 			);
 			path = Update;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 				29FC3F852C045431006097DD /* BrowseRequiredFileRow.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
 				292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */,
+				29FC3F982C0510E2006097DD /* ContentView+UpdateManager.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
 				291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */,
 				2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */,
