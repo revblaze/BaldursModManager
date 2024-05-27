@@ -18,16 +18,16 @@ struct WhatsNewView: View {
     ZStack {
       VStack {
         ScrollView {
-          VStack {
+          VStack(alignment: .leading) {
             HStack {
               Spacer()
               Group {
                 if currentStep == 1 {
-                  LogoStepView()
+                  FirstSection(title: "What's New?", subTitle: "Bug fixes, quality of life changes and more!")
                 } else if currentStep == 2 {
-                  SetupTypeStepView(title: "Setup Automatic", subTitle: "Would you like to use an existing Automatic setup,\nor start a new one?", videoName: "preview")
+                  SecondSection(title: "Coming Soon", subTitle: "What to expect in the coming months")
                 } else if currentStep == 3 {
-                  SetupTypeStepView(title: "Setup Automatic", subTitle: "Would you like to use an existing Automatic setup,\nor start a new one?", videoName: "preview")
+                  LogoStepView()
                 }
               }
               .transition(.opacity)
@@ -86,7 +86,17 @@ struct WhatsNewView: View {
   }
 }
 
-
+struct CheckmarkListItem: View {
+  let text: String
+  
+  var body: some View {
+    HStack {
+      Image(systemName: "checkmark.circle.fill")
+      Text(text)
+    }
+    .padding(.vertical, 4)
+  }
+}
 
 #Preview {
   WhatsNewView(isPresented: .constant(true))
@@ -126,6 +136,60 @@ struct LogoStepView: View {
     }
     .padding(.top, 10)
     .padding(.bottom, 40)
+  }
+}
+
+struct FirstSection: View {
+  let title: String
+  let subTitle: String
+  
+  var body: some View {
+    VStack(alignment: .center) {
+      Text(title)
+        .font(.system(size: 20, weight: .semibold, design: .rounded))
+        .padding(.bottom, 8)
+      
+      Text(subTitle)
+        .padding(.bottom, 20)
+      
+      VStack(alignment: .leading) {
+        CheckmarkListItem(text: "User settings and preferences")
+        CheckmarkListItem(text: "Automated mod management")
+        CheckmarkListItem(text: "Automatically install mods on import")
+        CheckmarkListItem(text: "Automatically apply mod updates")
+        CheckmarkListItem(text: "Automatically generate modsettings.lsx")
+        CheckmarkListItem(text: "File management improvements")
+        CheckmarkListItem(text: "Countless bug fixes")
+      }
+    }
+    .padding(.horizontal, 10)
+  }
+}
+
+struct SecondSection: View {
+  let title: String
+  let subTitle: String
+  
+  var body: some View {
+    VStack(alignment: .center) {
+      Text(title)
+        .font(.system(size: 20, weight: .semibold, design: .rounded))
+        .padding(.bottom, 8)
+      
+      Text(subTitle)
+        .padding(.bottom, 20)
+      
+      VStack(alignment: .leading) {
+        CheckmarkListItem(text: "Check for Updates")
+        CheckmarkListItem(text: "Mod compatibility (no Info.json, sole PAK)")
+        CheckmarkListItem(text: "Profiles to enable selective mods")
+        CheckmarkListItem(text: "Local mod version control")
+        CheckmarkListItem(text: "Nexus API integration")
+        CheckmarkListItem(text: "Notify user on new mod update available")
+        CheckmarkListItem(text: "Much, much more (see the GitHub page)")
+      }
+    }
+    .padding(.horizontal, 10)
   }
 }
 
