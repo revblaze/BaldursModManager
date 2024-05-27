@@ -102,7 +102,9 @@ class UserSettings {
     saveModsAutomatically: \(UserSettings.shared.saveModsAutomatically)
     enableModOnImport: \(UserSettings.shared.enableModOnImport)
     makeCopyOfModFolderOnImport: \(UserSettings.shared.makeCopyOfModFolderOnImport)
+    
     baldursGateDirectory: \(UserSettings.shared.baldursGateDirectory)
+    > exists: \(UserSettings.shared.baldursGateDirectory.doesExist())
     """
   }
 }

@@ -25,6 +25,10 @@ struct BaldursModManagerApp: App {
     .modelContainer(container)
     .commands {
       CommandGroup(before: .appSettings) {
+        MenuButton(title: "What's New") {
+          global.showWhatsNewView = true
+        }
+        Divider()
         Button("Settings...") {
           global.showSettingsView = true
         }
@@ -46,6 +50,10 @@ struct BaldursModManagerApp: App {
         MenuButton(title: "Log ModItems") {
           Debug.shared.logModItems = true
         }
+        Divider()
+        MenuButton(title: "Simulate Error Toast") {
+          Debug.shared.simulateErrorToast.toggle()
+        }
       }
       CommandGroup(after: .help) {
         Divider()
@@ -61,6 +69,10 @@ struct BaldursModManagerApp: App {
         }
         MenuButton(title: "Export Session Log", symbol: .downloadDoc) {
           global.exportSessionLog = true
+        }
+        Divider()
+        MenuButton(title: "Experiencing Issues?", symbol: .help) {
+          global.showExperiencingIssuesView = true
         }
       }
     }

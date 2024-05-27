@@ -101,63 +101,10 @@ class Debug {
   static func perform(action: @escaping () -> Void) {
     Debug.shared.perform(action: action)
   }
-}
-
-import AppKit
-import UniformTypeIdentifiers
-
-extension ContentView {
-  func exportSessionLog() {
-    global.exportSessionLog = false
-    
-    Debug.log("\n\n")
-    Debug.log("----------------------")
-    Debug.log("[Creating Log Session]")
-    Debug.log("----------------------")
-    Debug.log("\n\n")
-    Debug.log("[UserSettings]")
-    Debug.log(UserSettings.shared.logUserSettings())
-    
-    if let appSupportDirPath = FileUtility.appSupportDirUrl()?.path(percentEncoded: false) {
-      Debug.log("AppSupportDirUrl: \(appSupportDirPath)")
-    } else {
-      Debug.log("AppSupportDirUrl: [ERROR]")
-    }
-    
-    Debug.log("\n\n")
-    
-    Debug.log("\n\n")
-    Debug.log("[Log All ModItems]")
-    ModItemUtility.logModItems(fetchAllModItemsSortedByOrder())
-    Debug.log("\n\n")
-    Debug.log("[modsettings.lsx]")
-    if let modSettingsXml = generateModSettingsXmlContents() {
-      Debug.log(modSettingsXml)
-    } else {
-      Debug.log("Error: Unable to log modsettings.lsx contents")
-    }
-    
-    let cleanedSessionLog = Debug.shared.sessionLog.cleanUserPaths()
-    saveLogFile(contents: cleanedSessionLog)
+  
+  static func logSection() {
+    Debug.shared.appendToSessionLog("\n\n")
   }
   
-  func saveLogFile(contents: String) {
-    let savePanel = NSSavePanel()
-    savePanel.title = "Save Log File"
-    savePanel.allowedContentTypes = [UTType.plainText]
-    savePanel.nameFieldStringValue = "BMM Session".appendingDateAndTime().appending(".log")
-    
-    savePanel.begin { result in
-      if result == .OK, let url = savePanel.url {
-        do {
-          try contents.write(to: url, atomically: true, encoding: .utf8)
-          Debug.log("Log file saved to \(url.path)")
-        } catch {
-          Debug.log("Error saving log file: \(error.localizedDescription)")
-        }
-      } else {
-        Debug.log("Save panel was cancelled")
-      }
-    }
-  }
+  var simulateErrorToast: Bool = false
 }

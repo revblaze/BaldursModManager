@@ -39,13 +39,23 @@ struct WelcomeDetailView: View {
       
       Spacer()
       
-      Text("For now, this app only accepts folders that contain an info.json and .pak file")
+      Text("Mods are now managed automatically! Simply enable the mods you want to use and BaldursModManager will handle the rest!")
+        .padding(.horizontal, 40)
+        .padding(.bottom, 6)
+        .frame(maxWidth: 470)
+      Text("You can turn this off at any time in Settings")
         .lineLimit(2)
         .font(.footnote)
+        .foregroundStyle(.secondary)
       
       Divider()
         .padding()
         .padding(.horizontal, 40)
+      
+      Text("Currently, this app only accepts folders that contain an info.json and .pak file")
+        .lineLimit(2)
+        .font(.footnote)
+        .padding(.bottom, 6)
       
       if UserSettings.shared.saveModsAutomatically {
         AppInstructions()
@@ -56,13 +66,14 @@ struct WelcomeDetailView: View {
       Spacer()
       
       HStack {
-        Text("Click the")
+        Text("Click")
         Image(systemName: "ellipsis.circle")
-        Text("toolbar button for more actions.")
+        Text("for more actions.")
       }
       .font(.subheadline)
     }
     .padding()
+    .frame(minWidth: 360, idealWidth: 500)
   }
 }
 
@@ -95,7 +106,7 @@ struct AppInstructions: View {
       .padding(.horizontal, 40)
     
     HStack {
-      Text("More options are available in")
+      Text("User preferences are available in")
       Image(systemName: "gear")
       Text("Settings")
     }

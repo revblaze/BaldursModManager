@@ -27,8 +27,22 @@ struct ContentView: View {
   @State private var showXmlPreview = false
   @State private var previewXmlContent = ""
   
+  @State private var showCheckmarkForRestore = false
+  @State private var showCheckmarkForSync = false
+  @State private var showConfirmationText = false
+  @State private var confirmationMessage = ""
+  
+  @State private var showToastSuccess = false
+  @State private var toastSuccessMessage = ""
   @State private var showToastError = false
   @State private var toastErrorMessage = ""
+  @State private var showReportProblemButton = false
+  
+  func showToastSuccess(_ message: String) {
+    Debug.log("[Toast] \(message)")
+    toastSuccessMessage = message
+    showToastSuccess = true
+  }
   
   func showToastError(_ message: String, withLogDetails logDetails: String = "") {
     Debug.log("[Toast] Error: \(message)")
@@ -37,21 +51,9 @@ struct ContentView: View {
     }
     toastErrorMessage = message
     showToastError = true
+    
+    showReportProblemButton = true
   }
-  
-  @State private var showToastSuccess = false
-  @State private var toastSuccessMessage = ""
-  
-  func showToastSuccess(_ message: String) {
-    Debug.log("[Toast] \(message)")
-    toastSuccessMessage = message
-    showToastSuccess = true
-  }
-  
-  @State private var showCheckmarkForRestore = false
-  @State private var showCheckmarkForSync = false
-  @State private var showConfirmationText = false
-  @State private var confirmationMessage = ""
   
   private let modItemManager = ModItemManager.shared
   var debug = Debug.shared
@@ -163,6 +165,15 @@ struct ContentView: View {
     }
     .navigationTitle("Baldur's Mod Manager")
     .toolbar {
+      
+      if showReportProblemButton {
+        ToolbarItem {
+          MenuButton(title: "Experiencing Issues?") {
+            global.showExperiencingIssuesView = true
+          }
+        }
+      }
+      
       ToolbarItem {
         if Debug.fileTransferUI || isFileTransferInProgress {
           ProgressView(value: fileTransferProgress, total: 1.0)
@@ -234,6 +245,10 @@ struct ContentView: View {
           MenuButton(title: "Export Session Log", symbol: .downloadDoc) {
             global.exportSessionLog = true
           }
+          Divider()
+          MenuButton(title: "Experiencing Issues?", symbol: .help) {
+            global.showExperiencingIssuesView = true
+          }
         } label: {
           Label("Actions", systemImage: "ellipsis.circle")
         }
@@ -276,6 +291,10 @@ struct ContentView: View {
       WhatsNewView(isPresented: $global.showWhatsNewView)
         .frame(width: 550, height: 470)
     }
+    .sheet(isPresented: $global.showExperiencingIssuesView) {
+      ExperiencingIssuesView(isPresented: $global.showExperiencingIssuesView)
+        .frame(width: 600, height: 550)
+    }
     .sheet(isPresented: $showXmlPreview) {
       XMLPreviewView(xmlContent: $previewXmlContent)
     }
@@ -284,6 +303,9 @@ struct ContentView: View {
     }
     .onChange(of: debug.logModItems) {
       if debug.logModItems { ModItemUtility.logModItems(modItems) }
+    }
+    .onChange(of: debug.simulateErrorToast) {
+      showToastError("This is a simulated error toast")
     }
     .onAppear {
       performInitialSetup()
