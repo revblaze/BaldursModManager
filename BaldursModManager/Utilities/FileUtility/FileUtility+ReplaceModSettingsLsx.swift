@@ -14,7 +14,10 @@ extension FileUtility {
   static func replaceModSettingsLsxInUserDocuments(withFileContents: String) {
     let fileManager = FileManager.default
     let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-    let modSettingsFileURL = documentsURL.appendingPathComponent(Constants.defaultModSettingsFileFromDocumentsRelativePath)
+    let oldModSettingsFileURL = documentsURL.appendingPathComponent(Constants.defaultModSettingsFileFromDocumentsRelativePath)
+    Debug.log("old modSettingsFileURL: \(oldModSettingsFileURL)")
+    let modSettingsFileURL = UserSettings.shared.modSettingsFileUrl ?? oldModSettingsFileURL
+    Debug.log("new modSettingsFileURL: \(modSettingsFileURL)")
     
     // Remove existing file if it exists
     if fileManager.fileExists(atPath: modSettingsFileURL.path) {

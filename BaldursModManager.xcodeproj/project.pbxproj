@@ -21,7 +21,17 @@
 		2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */; };
 		2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */; };
 		2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */; };
+		292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D42C03B100001F9FDE /* SidebarItemView.swift */; };
+		292710D72C03D744001F9FDE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D62C03D744001F9FDE /* SettingsView.swift */; };
+		292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710D92C03E3DA001F9FDE /* Buttons.swift */; };
+		292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710DB2C03E402001F9FDE /* ButtonStyles.swift */; };
+		292710DF2C03EB46001F9FDE /* ToggleWithHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */; };
+		292710E32C03EEAD001F9FDE /* SFSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E02C03EEAC001F9FDE /* SFSymbol.swift */; };
+		292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E12C03EEAC001F9FDE /* SymbolButtons.swift */; };
+		292710E62C03F3AA001F9FDE /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E52C03F3AA001F9FDE /* Global.swift */; };
+		292710E82C0407F2001F9FDE /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 292710E72C0407F2001F9FDE /* WhatsNewView.swift */; };
 		295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295CF2C92B59D4890058767F /* XMLPreviewView.swift */; };
+		297196572B716784000F7960 /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297196562B716784000F7960 /* Debug.swift */; };
 		2979B3FA2B4CA86100F3A227 /* XmlAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */; };
 		2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */; };
 		2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */; };
@@ -31,6 +41,19 @@
 		29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29DD55EC2B4875EC003729AD /* ModItem.swift */; };
 		29DD55EF2B4875ED003729AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55EE2B4875ED003729AD /* Assets.xcassets */; };
 		29DD55F22B4875ED003729AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 29DD55F12B4875ED003729AD /* Preview Assets.xcassets */; };
+		29FC3F7D2C043CFC006097DD /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7C2C043CFC006097DD /* StringExtensions.swift */; };
+		29FC3F802C0449F8006097DD /* FilePickerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F7F2C0449F8006097DD /* FilePickerService.swift */; };
+		29FC3F832C04541E006097DD /* BrowseBaseGameDirectoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F822C04541E006097DD /* BrowseBaseGameDirectoryRow.swift */; };
+		29FC3F852C045431006097DD /* BrowseRequiredFileRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F842C045431006097DD /* BrowseRequiredFileRow.swift */; };
+		29FC3F872C04EA3F006097DD /* ContentView+LogSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */; };
+		29FC3F892C04EB46006097DD /* FileExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F882C04EB46006097DD /* FileExtensions.swift */; };
+		29FC3F8B2C04F3EC006097DD /* ExperiencingIssuesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */; };
+		29FC3F912C050A4F006097DD /* GitHubReleaseFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8D2C050A4F006097DD /* GitHubReleaseFetcher.swift */; };
+		29FC3F922C050A4F006097DD /* UpdateViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8E2C050A4F006097DD /* UpdateViewState.swift */; };
+		29FC3F932C050A4F006097DD /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F8F2C050A4F006097DD /* UpdateView.swift */; };
+		29FC3F942C050A4F006097DD /* UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F902C050A4F006097DD /* UpdateManager.swift */; };
+		29FC3F962C050C63006097DD /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F952C050C63006097DD /* Delay.swift */; };
+		29FC3F982C0510E2006097DD /* ContentView+UpdateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +71,17 @@
 		2912B37F2B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+DefaultModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3812B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+ReplaceModSettingsLsx.swift"; sourceTree = "<group>"; };
 		2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeDetailView.swift; sourceTree = "<group>"; };
+		292710D42C03B100001F9FDE /* SidebarItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarItemView.swift; sourceTree = "<group>"; };
+		292710D62C03D744001F9FDE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		292710D92C03E3DA001F9FDE /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		292710DB2C03E402001F9FDE /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleWithHeader.swift; sourceTree = "<group>"; };
+		292710E02C03EEAC001F9FDE /* SFSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSymbol.swift; sourceTree = "<group>"; };
+		292710E12C03EEAC001F9FDE /* SymbolButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolButtons.swift; sourceTree = "<group>"; };
+		292710E52C03F3AA001F9FDE /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
+		292710E72C0407F2001F9FDE /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		295CF2C92B59D4890058767F /* XMLPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLPreviewView.swift; sourceTree = "<group>"; };
+		297196562B716784000F7960 /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
 		2979B3F92B4CA86100F3A227 /* XmlAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XmlAttributes.swift; sourceTree = "<group>"; };
 		2979B3FC2B4CA89D00F3A227 /* LsxParserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LsxParserDelegate.swift; sourceTree = "<group>"; };
 		2979B3FF2B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileUtility+BackupModSettingsLsx.swift"; sourceTree = "<group>"; };
@@ -59,6 +92,19 @@
 		29DD55EE2B4875ED003729AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		29DD55F12B4875ED003729AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		29DD55F32B4875ED003729AD /* BaldursModManager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaldursModManager.entitlements; sourceTree = "<group>"; };
+		29FC3F7C2C043CFC006097DD /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		29FC3F7F2C0449F8006097DD /* FilePickerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerService.swift; sourceTree = "<group>"; };
+		29FC3F822C04541E006097DD /* BrowseBaseGameDirectoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBaseGameDirectoryRow.swift; sourceTree = "<group>"; };
+		29FC3F842C045431006097DD /* BrowseRequiredFileRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseRequiredFileRow.swift; sourceTree = "<group>"; };
+		29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+LogSession.swift"; sourceTree = "<group>"; };
+		29FC3F882C04EB46006097DD /* FileExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileExtensions.swift; sourceTree = "<group>"; };
+		29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperiencingIssuesView.swift; sourceTree = "<group>"; };
+		29FC3F8D2C050A4F006097DD /* GitHubReleaseFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubReleaseFetcher.swift; sourceTree = "<group>"; };
+		29FC3F8E2C050A4F006097DD /* UpdateViewState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewState.swift; sourceTree = "<group>"; };
+		29FC3F8F2C050A4F006097DD /* UpdateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
+		29FC3F902C050A4F006097DD /* UpdateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateManager.swift; sourceTree = "<group>"; };
+		29FC3F952C050C63006097DD /* Delay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+UpdateManager.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +124,8 @@
 			children = (
 				291181D72B4B1A8900B76A26 /* UserSettings.swift */,
 				291181EB2B4B691300B76A26 /* Constants.swift */,
+				297196562B716784000F7960 /* Debug.swift */,
+				29FC3F862C04EA3F006097DD /* ContentView+LogSession.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -85,6 +133,11 @@
 		291181DC2B4B277700B76A26 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				29FC3F812C045403006097DD /* Settings */,
+				29FC3F8C2C050A38006097DD /* Update */,
+				292710E22C03EEAC001F9FDE /* Symbols */,
+				292710DD2C03EB37001F9FDE /* Components */,
+				292710D82C03E3D0001F9FDE /* Buttons */,
 				2912B3832B4CFE770074AF2D /* WelcomeDetailView.swift */,
 				291181F32B4B8A5500B76A26 /* ModItemDetailView.swift */,
 				291181E62B4B4E8700B76A26 /* PermissionsView.swift */,
@@ -97,11 +150,13 @@
 		291181DF2B4B2EB500B76A26 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				29FC3F7B2C043CF1006097DD /* Extensions */,
 				2912B37C2B4CD4A60074AF2D /* XMLUtilities */,
 				2979B3FE2B4CA90700F3A227 /* FileUtility */,
 				2979B3FB2B4CA88600F3A227 /* LSXParsingUtility */,
 				291181E22B4B3B3A00B76A26 /* SoundUtility.swift */,
 				291181E82B4B4E9F00B76A26 /* PermissionsUtility.swift */,
+				29FC3F952C050C63006097DD /* Delay.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -121,6 +176,32 @@
 				2912B37D2B4CD4B90074AF2D /* XMLBuilder.swift */,
 			);
 			path = XMLUtilities;
+			sourceTree = "<group>";
+		};
+		292710D82C03E3D0001F9FDE /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				292710D92C03E3DA001F9FDE /* Buttons.swift */,
+				292710DB2C03E402001F9FDE /* ButtonStyles.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		292710DD2C03EB37001F9FDE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				292710DE2C03EB46001F9FDE /* ToggleWithHeader.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		292710E22C03EEAC001F9FDE /* Symbols */ = {
+			isa = PBXGroup;
+			children = (
+				292710E02C03EEAC001F9FDE /* SFSymbol.swift */,
+				292710E12C03EEAC001F9FDE /* SymbolButtons.swift */,
+			);
+			path = Symbols;
 			sourceTree = "<group>";
 		};
 		2979B3F82B4CA85700F3A227 /* XMLAttributesObject */ = {
@@ -172,9 +253,14 @@
 			isa = PBXGroup;
 			children = (
 				29DD55E82B4875EC003729AD /* BaldursModManagerApp.swift */,
+				292710E52C03F3AA001F9FDE /* Global.swift */,
 				29DD55EA2B4875EC003729AD /* ContentView.swift */,
+				292710D42C03B100001F9FDE /* SidebarItemView.swift */,
+				292710E72C0407F2001F9FDE /* WhatsNewView.swift */,
+				29FC3F8A2C04F3EC006097DD /* ExperiencingIssuesView.swift */,
 				291181DC2B4B277700B76A26 /* Views */,
 				291181EA2B4B63A100B76A26 /* Models */,
+				29FC3F7E2C0449EB006097DD /* Services */,
 				291181DF2B4B2EB500B76A26 /* Utilities */,
 				291181D62B4B1A7A00B76A26 /* Settings */,
 				29DD55EE2B4875ED003729AD /* Assets.xcassets */,
@@ -190,6 +276,45 @@
 				29DD55F12B4875ED003729AD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		29FC3F7B2C043CF1006097DD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				29FC3F7C2C043CFC006097DD /* StringExtensions.swift */,
+				29FC3F882C04EB46006097DD /* FileExtensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		29FC3F7E2C0449EB006097DD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				29FC3F7F2C0449F8006097DD /* FilePickerService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		29FC3F812C045403006097DD /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				292710D62C03D744001F9FDE /* SettingsView.swift */,
+				29FC3F822C04541E006097DD /* BrowseBaseGameDirectoryRow.swift */,
+				29FC3F842C045431006097DD /* BrowseRequiredFileRow.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		29FC3F8C2C050A38006097DD /* Update */ = {
+			isa = PBXGroup;
+			children = (
+				29FC3F8D2C050A4F006097DD /* GitHubReleaseFetcher.swift */,
+				29FC3F902C050A4F006097DD /* UpdateManager.swift */,
+				29FC3F8F2C050A4F006097DD /* UpdateView.swift */,
+				29FC3F8E2C050A4F006097DD /* UpdateViewState.swift */,
+				29FC3F972C0510E2006097DD /* ContentView+UpdateManager.swift */,
+			);
+			path = Update;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,7 +348,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1510;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					29DD55E42B4875EC003729AD = {
 						CreatedOnToolsVersion = 15.1;
@@ -272,23 +397,46 @@
 				295CF2CA2B59D4890058767F /* XMLPreviewView.swift in Sources */,
 				291181E12B4B2F9C00B76A26 /* FileUtility.swift in Sources */,
 				29DD55EB2B4875EC003729AD /* ContentView.swift in Sources */,
+				29FC3F962C050C63006097DD /* Delay.swift in Sources */,
 				2912B37E2B4CD4B90074AF2D /* XMLBuilder.swift in Sources */,
+				29FC3F8B2C04F3EC006097DD /* ExperiencingIssuesView.swift in Sources */,
+				292710E62C03F3AA001F9FDE /* Global.swift in Sources */,
+				29FC3F932C050A4F006097DD /* UpdateView.swift in Sources */,
+				29FC3F942C050A4F006097DD /* UpdateManager.swift in Sources */,
 				2912B3842B4CFE770074AF2D /* WelcomeDetailView.swift in Sources */,
 				291181D82B4B1A8900B76A26 /* UserSettings.swift in Sources */,
+				292710DC2C03E402001F9FDE /* ButtonStyles.swift in Sources */,
 				291181E32B4B3B3A00B76A26 /* SoundUtility.swift in Sources */,
+				29FC3F872C04EA3F006097DD /* ContentView+LogSession.swift in Sources */,
+				29FC3F892C04EB46006097DD /* FileExtensions.swift in Sources */,
 				2912B3802B4CE6F50074AF2D /* FileUtility+DefaultModSettingsLsx.swift in Sources */,
+				292710D72C03D744001F9FDE /* SettingsView.swift in Sources */,
+				292710E42C03EEAD001F9FDE /* SymbolButtons.swift in Sources */,
 				29DD55ED2B4875EC003729AD /* ModItem.swift in Sources */,
+				29FC3F802C0449F8006097DD /* FilePickerService.swift in Sources */,
 				291181F42B4B8A5500B76A26 /* ModItemDetailView.swift in Sources */,
 				291181EC2B4B691300B76A26 /* Constants.swift in Sources */,
 				2912B3822B4CEB4D0074AF2D /* FileUtility+ReplaceModSettingsLsx.swift in Sources */,
+				297196572B716784000F7960 /* Debug.swift in Sources */,
+				292710E32C03EEAD001F9FDE /* SFSymbol.swift in Sources */,
 				291181DE2B4B278900B76A26 /* ViewExtensions.swift in Sources */,
+				292710E82C0407F2001F9FDE /* WhatsNewView.swift in Sources */,
+				29FC3F912C050A4F006097DD /* GitHubReleaseFetcher.swift in Sources */,
 				2979B3FD2B4CA89D00F3A227 /* LsxParserDelegate.swift in Sources */,
+				292710D52C03B100001F9FDE /* SidebarItemView.swift in Sources */,
+				29FC3F832C04541E006097DD /* BrowseBaseGameDirectoryRow.swift in Sources */,
 				29DD55E92B4875EC003729AD /* BaldursModManagerApp.swift in Sources */,
+				29FC3F7D2C043CFC006097DD /* StringExtensions.swift in Sources */,
+				29FC3F852C045431006097DD /* BrowseRequiredFileRow.swift in Sources */,
 				291181E92B4B4E9F00B76A26 /* PermissionsUtility.swift in Sources */,
+				292710DA2C03E3DA001F9FDE /* Buttons.swift in Sources */,
+				29FC3F982C0510E2006097DD /* ContentView+UpdateManager.swift in Sources */,
 				291181E72B4B4E8700B76A26 /* PermissionsView.swift in Sources */,
 				291181F02B4B883900B76A26 /* LsxUtility.swift in Sources */,
 				2979B4002B4CA92300F3A227 /* FileUtility+BackupModSettingsLsx.swift in Sources */,
+				292710DF2C03EB46001F9FDE /* ToggleWithHeader.swift in Sources */,
 				291181EE2B4B7A3A00B76A26 /* ModItemManager.swift in Sources */,
+				29FC3F922C050A4F006097DD /* UpdateViewState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +477,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -392,6 +541,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -421,7 +571,8 @@
 				CODE_SIGN_ENTITLEMENTS = BaldursModManager/BaldursModManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 200;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"BaldursModManager/Preview Content\"";
 				DEVELOPMENT_TEAM = 85N3S3DG8M;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -434,7 +585,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -450,7 +601,8 @@
 				CODE_SIGN_ENTITLEMENTS = BaldursModManager/BaldursModManager.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 200;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"BaldursModManager/Preview Content\"";
 				DEVELOPMENT_TEAM = 85N3S3DG8M;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -463,7 +615,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.justinbush.BaldursModManager;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

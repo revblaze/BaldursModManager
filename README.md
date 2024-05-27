@@ -7,14 +7,37 @@ Baldur's Gate 3 Mod Manager for macOS
 
 To download the latest version, check [Releases](https://github.com/revblaze/BaldursModManager/releases).
 
-<img width="936" alt="Screenshot 2024-01-18 at 3 13 29 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/f19ee471-c5e3-45ba-8f7d-74b7aeed3a06">
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" width="957" alt="Dark Cover" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/a3d476cc-367b-4957-b70f-477a9b4a0ae1">
+  <source media="(prefers-color-scheme: light)" width="957" alt="Light Cover" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/08ed41c6-8073-4037-a4b3-7bb2aea611dc">
+  <img width="957" alt="Cover" src="https://github.com/revblaze/BaldursModManager/assets/158503966/08ed41c6-8073-4037-a4b3-7bb2aea611dc">
+</picture>
+</p>
 
 <details>
 
 <summary><h4>Expand to See Screenshots</h4></summary>
 
-<img width="913" alt="Screenshot 2024-01-08 at 9 18 33 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/463dec79-6fc8-4fee-998b-a19b15faecf2">
-<img width="972" alt="Screenshot 2024-01-08 at 9 19 16 PM" src="https://github.com/revblaze/BaldursModManager/assets/1476332/129b03c3-4531-4179-8cb1-e81aaeef9050">
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" width="957" alt="Dark" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/1c8ef241-263f-4390-af26-283f8b2c4a2f">
+  <source media="(prefers-color-scheme: light)" width="957" alt="Light" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/7eff44fe-05c3-4b45-8ba8-fb57a9d9c176">
+  <img width="957" alt="Cover" src="https://github.com/revblaze/BaldursModManager/assets/158503966/7eff44fe-05c3-4b45-8ba8-fb57a9d9c176">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" width="957" alt="Dark" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/83aa5e12-d3f3-48a4-ac16-79a263db6129">
+  <source media="(prefers-color-scheme: light)" width="957" alt="Light" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/7b3dcc0a-ffa2-440f-a64e-58af3248920c">
+  <img width="957" alt="Cover" src="https://github.com/revblaze/BaldursModManager/assets/158503966/7b3dcc0a-ffa2-440f-a64e-58af3248920c">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" width="972" alt="Dark" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/04871e71-594f-42b1-a2b4-94735d4c2ba3">
+  <source media="(prefers-color-scheme: light)" width="972" alt="Light" srcset="https://github.com/revblaze/BaldursModManager/assets/158503966/658d8bef-9eee-4aa0-8130-b8fc7709ee8c">
+  <img width="972" alt="Cover" src="https://github.com/revblaze/BaldursModManager/assets/158503966/658d8bef-9eee-4aa0-8130-b8fc7709ee8c">
+</picture>
+</p>
 
 </details>
 
