@@ -327,6 +327,7 @@
 				29DD55E12B4875EC003729AD /* Sources */,
 				29DD55E22B4875EC003729AD /* Frameworks */,
 				29DD55E32B4875EC003729AD /* Resources */,
+				29FC3F992C0529F3006097DD /* chmod for open command in CLI */,
 			);
 			buildRules = (
 			);
@@ -387,6 +388,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		29FC3F992C0529F3006097DD /* chmod for open command in CLI */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "chmod for open command in CLI";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Contents/MacOS/${PRODUCT_NAME}\n",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "chmod +x \"${TARGET_BUILD_DIR}/${WRAPPER_NAME}/Contents/MacOS/${PRODUCT_NAME}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		29DD55E12B4875EC003729AD /* Sources */ = {
