@@ -58,14 +58,29 @@ extension ContentView {
     Debug.logSection()
     Debug.log("[Log All ModItems]")
     ModItemUtility.logModItems(fetchAllModItemsSortedByOrder())
-    Debug.logSection()
     
     // Log modsettings.lsx contents
-    Debug.log("[modsettings.lsx]")
+    Debug.logSection()
+    Debug.log("[Generated modsettings.lsx]")
+    Debug.log("---------------------------")
     if let modSettingsXml = generateModSettingsXmlContents() {
       Debug.log(modSettingsXml)
     } else {
       Debug.log("Error: Unable to log modsettings.lsx contents")
+    }
+    
+    Debug.logSection()
+    Debug.log("[Active modsettings.lsx file]")
+    Debug.log("-----------------------------")
+    if let modSettingsFileUrl = UserSettings.shared.modSettingsFileUrl {
+      do {
+        let fileContents = try String(contentsOf: modSettingsFileUrl, encoding: .utf8)
+        Debug.log(fileContents)
+      } catch {
+        Debug.log("Failed to read file: \(error.localizedDescription)")
+      }
+    } else {
+      Debug.log("Error: modSettingsFileUrl = UserSettings.shared.modSettingsFileUrl \(String(describing: UserSettings.shared.modSettingsFileUrl))")
     }
     
     // Clean user paths from the session log and save the log file
