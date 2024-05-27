@@ -15,7 +15,7 @@ class FileUtility {
     if let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first {
       let baseFolderURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName)
       _ = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.UserModsFolderName), withFileManager: fileManager)
-      _ = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.UserBackupsFolderName), withFileManager: fileManager)
+      //_ = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.UserBackupsFolderName), withFileManager: fileManager)
       let defaultFilesURL = createDirectoryIfNeeded(at: baseFolderURL.appendingPathComponent(Constants.DefaultFilesFolderName), withFileManager: fileManager)
       createDefaultSettingsFileIfNeeded(in: defaultFilesURL, withFileManager: fileManager)
     }

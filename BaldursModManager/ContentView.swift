@@ -104,10 +104,7 @@ struct ContentView: View {
   
   private func performInitialSetup() {
     FileUtility.createUserModsAndBackupFoldersIfNeeded()
-    
-    if let backupUrl = FileUtility.backupModSettingsLsxFile() {
-      Debug.log("Successfully backed up modsettings.lsx at \(backupUrl)")
-    }
+    FileUtility.removeBackupModSettingsDirectory()
   }
   
   private func selectModItem(_ item: ModItem?) {
@@ -170,6 +167,7 @@ struct ContentView: View {
         ToolbarItem {
           MenuButton(title: "Experiencing Issues?") {
             global.showExperiencingIssuesView = true
+            showReportProblemButton = false
           }
         }
       }
@@ -344,7 +342,6 @@ struct ContentView: View {
       return
     }
     FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlContents)
-    showToastSuccess("Mod settings applied")
   }
   
   private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {

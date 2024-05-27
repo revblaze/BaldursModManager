@@ -8,7 +8,8 @@
 import Foundation
 
 extension FileUtility {
-  
+  /// Backs up the mod settings LSX file to the user backups directory.
+  /// - Returns: The URL of the backup file if the backup was successful, otherwise nil.
   static func backupModSettingsLsxFile() -> URL? {
     let fileManager = FileManager.default
     
@@ -50,6 +51,27 @@ extension FileUtility {
     } catch {
       Debug.log("Failed to backup file: \(error.localizedDescription)")
       return nil
+    }
+  }
+  
+  /// Removes the entire backup mod folder if it exists.
+  static func removeBackupModSettingsDirectory() {
+    let fileManager = FileManager.default
+    
+    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+      Debug.log("Unable to find the Application Support directory.")
+      return
+    }
+    
+    let userBackupsURL = appSupportURL.appendingPathComponent(Constants.ApplicationSupportFolderName).appendingPathComponent(Constants.UserBackupsFolderName)
+    
+    if fileManager.fileExists(atPath: userBackupsURL.path) {
+      do {
+        try fileManager.removeItem(at: userBackupsURL)
+        Debug.log("Backup folder removed successfully.")
+      } catch {
+        Debug.log("Failed to remove backup folder: \(error.localizedDescription)")
+      }
     }
   }
 }

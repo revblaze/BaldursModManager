@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BrowseBaseGameDirectoryRow: View {
   @State private var userSettings = UserSettings.shared
+  
   var body: some View {
     VStack(alignment: .leading) {
       BrowseRequiredFileRow(labelText: "Base Game Directory",
