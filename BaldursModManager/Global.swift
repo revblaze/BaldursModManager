@@ -11,6 +11,7 @@ import Observation
 @Observable
 class Global {
   var showSettingsView: Bool = false
+  var showWhatsNewView: Bool = false
   var showImportModPanel: Bool = false
 }
 

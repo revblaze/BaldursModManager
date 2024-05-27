@@ -191,19 +191,22 @@ struct ContentView: View {
       
       ToolbarItem {
         Menu {
-          MenuButton(title: "Preview LSX", action: previewModSettingsLsx)
-          MenuButton(title: "Open Mod Folder", action: openUserModsFolder)
-          
+          MenuButton(title: "What's New", symbol: .sparkles) {
+            global.showWhatsNewView = true
+          }
+          Divider()
+          MenuButton(title: "Preview LSX", symbol: .curlyBraces, action: previewModSettingsLsx)
+          if debug.isActive {
+            MenuButton(title: "Open Mod Folder", symbol: .folder, action: openUserModsFolder)
+          }
         } label: {
           Label("Actions", systemImage: "ellipsis.circle")
         }
       }
       
       ToolbarItem {
-        Button(action: {
+        ToolbarSymbolButton(title: "Settings", symbol: .gear) {
           global.showSettingsView = true
-        }) {
-          Label("Settings", systemImage: "gear")
         }
       }
     }
@@ -220,9 +223,6 @@ struct ContentView: View {
         },
         secondaryButton: .cancel()
       )
-    }
-    .sheet(isPresented: $showXmlPreview) {
-      XMLPreviewView(xmlContent: $previewXmlContent)
     }
     // MARK: Toasts
     .toast(isPresenting: $showUnableToFindInfoJsonFileToast, duration: 6) {
@@ -251,6 +251,13 @@ struct ContentView: View {
     .sheet(isPresented: $global.showSettingsView) {
       SettingsView(isPresented: $global.showSettingsView)
         .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+    }
+    .sheet(isPresented: $global.showWhatsNewView) {
+      WhatsNewView(isPresented: $global.showWhatsNewView)
+        .frame(idealWidth: 550, maxWidth: 900, idealHeight: 470, maxHeight: 700)
+    }
+    .sheet(isPresented: $showXmlPreview) {
+      XMLPreviewView(xmlContent: $previewXmlContent)
     }
     .onAppear {
       performInitialSetup()
