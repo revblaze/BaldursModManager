@@ -99,7 +99,7 @@ class GitHubReleaseFetcher {
     let dateStartIndex = section.index(dateStartRange.upperBound, offsetBy: 0)
     if let dateEndIndex = section[dateStartIndex...].firstIndex(of: "\"") {
       let date = section[dateStartIndex..<dateEndIndex]
-      Debug.log("Extracted release date: \(date)")
+      //Debug.log("Extracted release date: \(date)")
       return String(date)
     } else {
       Debug.log("No closing quote for datetime attribute found.")
@@ -127,12 +127,12 @@ class GitHubReleaseFetcher {
       Debug.log("Regex error: \(error)")
     }
     
-    Debug.log("Failed to extract release tag.")
+    //Debug.log("Failed to extract release tag.")
     return nil
   }
   
   func extractReleaseDownloadUrl(from section: String) -> String? {
-    let pattern = #"<a href=\"([^\"]+/releases/download/[^\"]+)\".*?>Download SwiftDiffusion.app</a>"#
+    let pattern = #"<a href=\"([^\"]+/releases/download/[^\"]+)\".*?>Download BaldursModManager.app</a>"#
     
     do {
       let regex = try NSRegularExpression(pattern: pattern, options: [])
