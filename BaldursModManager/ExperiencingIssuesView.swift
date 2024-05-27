@@ -96,7 +96,7 @@ struct ReportingIssueSteps: View {
             .padding(.vertical, 4)
           Spacer()
         }
-        StepListItem(step: "3", text: "Describe your issue in detail, as well as any additional information that you think might help (when did this start occuring, did you recently add any new mods or update older mods, ...)")
+        StepListItem(step: "3", text: "Describe your issue in detail, as well as any additional information that you think might help (when did this start occuring, did you recently add any new mods or update older mods, steps to reproduce the issue, ...)")
           .padding(.top)
         StepListItem(step: "4", text: "(Optional) If you're creating an issue on GitHub, include the session log file. If you're reporting a bug on Nexus, you can open the session log file in TextEdit and copy as much of the log as possible to the end of your report.")
           .padding(.top)
