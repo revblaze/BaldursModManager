@@ -183,6 +183,7 @@ struct SecondSection: View {
       
       VStack(alignment: .leading) {
         CheckmarkListItem(text: "Check for Updates")
+        CheckmarkListItem(text: "Report issues with attached log details")
         CheckmarkListItem(text: "Mod compatibility (no Info.json, sole PAK)")
         CheckmarkListItem(text: "Profiles to enable selective mods")
         CheckmarkListItem(text: "Local mod version control")
