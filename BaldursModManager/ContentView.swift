@@ -242,7 +242,7 @@ struct ContentView: View {
           MenuButton(title: "Report Issue", symbol: .newMessage) {
             Constants.ReportIssue.openAsURL()
           }
-          MenuButton(title: "Export Session Log", symbol: .downloadDoc) {
+          MenuButton(title: "Save Session Log...", symbol: .downloadDoc) {
             global.exportSessionLog = true
           }
           Divider()
