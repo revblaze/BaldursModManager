@@ -39,8 +39,7 @@ extension FileUtility {
     // Determine the backup file URL
     var backupFileURL = userBackupsURL.appendingPathComponent(modSettingsLsxFileURL.lastPathComponent)
     if fileManager.fileExists(atPath: backupFileURL.path) {
-      let timestamp = formattedCurrentTimestamp()
-      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent).\(modSettingsLsxFileURL.pathExtension) \(timestamp)")
+      backupFileURL = userBackupsURL.appendingPathComponent("\(modSettingsLsxFileURL.deletingPathExtension().lastPathComponent).\(modSettingsLsxFileURL.pathExtension.appendingDateAndTime())")
     }
     
     // Perform the backup
@@ -52,16 +51,5 @@ extension FileUtility {
       Debug.log("Failed to backup file: \(error.localizedDescription)")
       return nil
     }
-  }
-  
-  private static func formattedCurrentTimestamp() -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let datePart = dateFormatter.string(from: Date())
-    
-    dateFormatter.dateFormat = "h.mm.ss a"
-    let timePart = dateFormatter.string(from: Date())
-    
-    return "\(datePart) at \(timePart)"
   }
 }

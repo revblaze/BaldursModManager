@@ -95,4 +95,14 @@ class UserSettings {
     
     return documentsURL.appendingPathComponent(Constants.baseGameFolderFromDocumentsRelativePath)
   }
+  
+  func logUserSettings() -> String {
+    return """
+    enableMods: \(UserSettings.shared.enableMods)
+    saveModsAutomatically: \(UserSettings.shared.saveModsAutomatically)
+    enableModOnImport: \(UserSettings.shared.enableModOnImport)
+    makeCopyOfModFolderOnImport: \(UserSettings.shared.makeCopyOfModFolderOnImport)
+    baldursGateDirectory: \(UserSettings.shared.baldursGateDirectory)
+    """
+  }
 }

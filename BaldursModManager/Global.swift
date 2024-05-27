@@ -13,6 +13,7 @@ class Global {
   var showSettingsView: Bool = false
   var showWhatsNewView: Bool = false
   var showImportModPanel: Bool = false
+  var exportSessionLog: Bool = false
 }
 
 struct GlobalKey: EnvironmentKey {

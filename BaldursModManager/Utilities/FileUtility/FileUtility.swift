@@ -107,10 +107,18 @@ class FileUtility {
 
 extension FileUtility {
   
+  static func appSupportDirUrl() -> URL? {
+    let fileManager = FileManager.default
+    guard let appSupportDirUrl = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+      Debug.log("Application Support directory not found.")
+      return nil
+    }
+    return appSupportDirUrl
+  }
+  
   static func moveSwiftDataStoreFiles() {
     let fileManager = FileManager.default
-    guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-      Debug.log("Application Support directory not found.")
+    guard let appSupportURL = appSupportDirUrl() else {
       return
     }
     

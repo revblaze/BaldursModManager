@@ -44,8 +44,9 @@ class ModItem {
 
 class ModItemUtility {
   static func logModItems(_ modItems: [ModItem]) {
+    Debug.shared.logModItems = false
     for modItem in modItems {
-      Debug.log("ModItem Details:")
+      Debug.log("[ModItem] \(modItem.modName)")
       Debug.log("Order: \(modItem.order)")
       Debug.log("Directory URL: \(modItem.directoryUrl)")
       Debug.log("Directory Path: \(modItem.directoryPath)")

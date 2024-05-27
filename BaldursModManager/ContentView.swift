@@ -32,11 +32,9 @@ struct ContentView: View {
   
   func showToastError(_ message: String, withLogDetails logDetails: String = "") {
     Debug.log("[Toast] Error: \(message)")
-    
     if !logDetails.isEmpty {
       Debug.log("Log Details: \(logDetails)")
     }
-    
     toastErrorMessage = message
     showToastError = true
   }
@@ -56,7 +54,7 @@ struct ContentView: View {
   @State private var confirmationMessage = ""
   
   private let modItemManager = ModItemManager.shared
-  @ObservedObject var debug = Debug.shared
+  var debug = Debug.shared
   
   private func fetchEnabledModItemsSortedByOrder() -> [ModItem] {
     let predicate = #Predicate { (modItem: ModItem) in
@@ -70,6 +68,19 @@ struct ContentView: View {
       return modItems
     } catch {
       Debug.log("Failed to load ModItem model: \(error)")
+      return []
+    }
+  }
+  
+  func fetchAllModItemsSortedByOrder() -> [ModItem] {
+    let sortDescriptor = SortDescriptor(\ModItem.order)
+    let fetchDescriptor = FetchDescriptor<ModItem>(sortBy: [sortDescriptor])
+    
+    do {
+      let modItems = try modelContext.fetch(fetchDescriptor)
+      return modItems
+    } catch {
+      Debug.log("Failed to load ModItem models: \(error)")
       return []
     }
   }
@@ -216,8 +227,12 @@ struct ContentView: View {
           MenuButton(title: "GitHub Page", symbol: .pull) {
             Constants.GitHubUrl.openAsURL()
           }
+          Divider()
           MenuButton(title: "Report Issue", symbol: .newMessage) {
             Constants.ReportIssue.openAsURL()
+          }
+          MenuButton(title: "Export Session Log", symbol: .downloadDoc) {
+            global.exportSessionLog = true
           }
         } label: {
           Label("Actions", systemImage: "ellipsis.circle")
@@ -264,6 +279,12 @@ struct ContentView: View {
     .sheet(isPresented: $showXmlPreview) {
       XMLPreviewView(xmlContent: $previewXmlContent)
     }
+    .onChange(of: global.exportSessionLog) {
+      if global.exportSessionLog { exportSessionLog() }
+    }
+    .onChange(of: debug.logModItems) {
+      if debug.logModItems { ModItemUtility.logModItems(modItems) }
+    }
     .onAppear {
       performInitialSetup()
       if Debug.permissionsView {
@@ -284,14 +305,24 @@ struct ContentView: View {
     }
   }
   
-  private func generateAndSaveModSettingsLsx(withToast toast: Bool = true) {
-    if let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) {
-      let modItems = fetchEnabledModItemsSortedByOrder()
-      let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
-      let xmlString = xmlBuilder.buildXMLString()
-      FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlString)
-      showToastSuccess("Mod settings applied")
+  func generateModSettingsXmlContents() -> String? {
+    guard let xmlAttributes = LsxUtility.parseFileContents(FileUtility.getDefaultModSettingsLsxFile()) else {
+      return nil
     }
+    
+    let modItems = fetchEnabledModItemsSortedByOrder()
+    let xmlBuilder = XMLBuilder(xmlAttributes: xmlAttributes, modItems: modItems)
+    let xmlString = xmlBuilder.buildXMLString()
+    return xmlString
+  }
+  
+  private func generateAndSaveModSettingsLsx(withToast toast: Bool = true) {
+    guard let xmlContents = generateModSettingsXmlContents() else {
+      showToastError("Unable to generate mod settings XML contents")
+      return
+    }
+    FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlContents)
+    showToastSuccess("Mod settings applied")
   }
   
   private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {
