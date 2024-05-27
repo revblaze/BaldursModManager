@@ -342,6 +342,9 @@ struct ContentView: View {
       return
     }
     FileUtility.replaceModSettingsLsxInUserDocuments(withFileContents: xmlContents)
+    if !UserSettings.shared.saveModsAutomatically {
+      showToastSuccess("Mod settings applied")
+    }
   }
   
   private func restoreDefaultModSettingsLsx(withToast toast: Bool = true) {
