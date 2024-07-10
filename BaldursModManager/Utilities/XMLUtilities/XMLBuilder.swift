@@ -58,7 +58,8 @@ class XMLBuilder {
   /// - Returns: A string representing the version XML element.
   private func buildVersionString() -> String {
     let version = xmlAttributes.version
-    return "<version major=\"\(version.majorString)\" minor=\"\(version.minorString)\" revision=\"\(version.revisionString)\" build=\"\(version.buildString)\" />"
+    //return "<version major=\"\(version.majorString)\" minor=\"\(version.minorString)\" revision=\"\(version.revisionString)\" build=\"\(version.buildString)\" />"
+    return "<version major=\"4\" minor=\"6\" revision=\"0\" build=\"900\"/>"
   }
   /// Builds the mod order string for the XML.
   ///
