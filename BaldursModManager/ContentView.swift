@@ -631,8 +631,9 @@ struct ContentView: View {
       
       if let index = indexToSelect {
         DispatchQueue.main.asyncAfter(deadline: .now() + UIDELAY) {
-          selectModItem(modItems[index - 1])
-          Debug.log("Selected mod item order after deletion: \(modItems[index - 1])")
+          let selectIndex = index != 0 ? index-1 : index
+          selectModItem(modItems[selectIndex])
+          Debug.log("Selected mod item order after deletion: \(modItems[selectIndex])")
         }
       }
     }
